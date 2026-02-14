@@ -1,0 +1,179 @@
+---
+import { t, ids, type Lang } from '../i18n/translations';
+
+interface Props { lang?: Lang; }
+const { lang = 'es' } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const i = t(lang);
+const id = ids(lang);
+const jobs = i.experience.jobs;
+---
+
+<section class="section" id={id.experience}>
+  <div class="container">
+    <span class="section-eyebrow reveal">{i.experience.eyebrow}</span>
+    <h2 class="section-heading reveal reveal-delay-1">{i.experience.heading} <span class="gradient-text">{i.experience.headingAccent}</span></h2>
+    <p class="section-desc reveal reveal-delay-2">{i.experience.desc}</p>
+
+    <div class="timeline">
+      {jobs.map((job, idx) => (
+        <div class={`tl-item reveal reveal-delay-${Math.min(idx + 1, 4)}`}>
+          <div class="tl-dot-col">
+            <div class={`tl-dot ${job.current ? 'tl-dot-active' : ''}`}></div>
+            {idx < jobs.length - 1 && <div class="tl-line"></div>}
+          </div>
+
+          <div class="tl-card glass">
+            <div class="tl-top">
+              <div class="tl-top-text">
+                {job.logo && (
+                  <div class={`tl-logo ${job.logoDark ? 'tl-logo-dark' : ''}`}>
+                    <img src={`${base}images/${job.logo}`} alt={job.company} />
+                  </div>
+                )}
+                <div>
+                  <h3 class="tl-role">{job.role}</h3>
+                  <p class="tl-company">{job.company} <span class="tl-type">· {job.type}</span></p>
+                </div>
+              </div>
+              <span class={`tl-period ${job.current ? 'tl-current' : ''}`}>
+                {job.current && <span class="dot-pulse"></span>}
+                {job.period}
+              </span>
+            </div>
+            <p class="tl-desc">{job.desc}</p>
+            <div class="tl-tags">
+              {job.tags.map(tag => <span class="tag">{tag}</span>)}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .timeline { display: flex; flex-direction: column; }
+
+  .tl-item { display: flex; gap: 1.5rem; }
+
+  .tl-dot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1.5rem;
+  }
+
+  .tl-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--bg-3);
+    border: 2px solid var(--text-4);
+    flex-shrink: 0;
+    transition: all 0.3s var(--ease);
+  }
+
+  .tl-dot-active {
+    background: var(--emerald);
+    border-color: var(--emerald);
+    box-shadow: 0 0 12px rgba(52, 211, 153, 0.5), 0 0 24px rgba(52, 211, 153, 0.2);
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .tl-line {
+    width: 2px;
+    flex: 1;
+    background: linear-gradient(180deg, var(--border-2), transparent);
+  }
+
+  .tl-card {
+    flex: 1;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: var(--r-lg);
+  }
+
+  .tl-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tl-top-text {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .tl-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--r-md);
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 6px;
+    overflow: hidden;
+  }
+
+  .tl-logo-dark {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .tl-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .tl-role { font-size: 1rem; font-weight: 700; color: var(--text); }
+
+  .tl-company { font-size: 0.85rem; color: var(--accent); margin-top: 0.2rem; }
+
+  .tl-type { color: var(--text-4); }
+
+  .tl-period {
+    font-size: 0.75rem;
+    font-family: var(--mono);
+    color: var(--text-4);
+    white-space: nowrap;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .tl-current { color: var(--emerald); }
+
+  .dot-pulse {
+    width: 7px;
+    height: 7px;
+    background: var(--emerald);
+    border-radius: 50%;
+    animation: pulse-glow 2s ease-in-out infinite;
+    box-shadow: 0 0 6px rgba(52, 211, 153, 0.5);
+  }
+
+  .tl-desc {
+    font-size: 0.88rem;
+    color: var(--text-3);
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .tl-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+  @media (max-width: 768px) {
+    .tl-dot-col { display: none; }
+    .tl-top { flex-direction: column; gap: 0.25rem; }
+    .tl-card { border-left: 3px solid var(--accent); }
+  }
+</style>

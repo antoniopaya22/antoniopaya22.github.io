@@ -1,0 +1,84 @@
+---
+import { t, ids, type Lang } from '../i18n/translations';
+
+interface Props { lang?: Lang; }
+const { lang = 'es' } = Astro.props;
+
+const i = t(lang);
+const id = ids(lang);
+const awards = i.awards.items;
+---
+
+<section class="section" id={id.awards}>
+  <div class="container">
+    <span class="section-eyebrow reveal">{i.awards.eyebrow}</span>
+    <h2 class="section-heading reveal reveal-delay-1"><span class="gradient-text">{i.awards.headingAccent}</span></h2>
+    <p class="section-desc reveal reveal-delay-2">{i.awards.desc}</p>
+
+    <div class="awards-grid">
+      {awards.map((a, idx) => (
+        <div class={`award-card glass reveal reveal-delay-${Math.min((idx % 3) + 1, 3)}`}>
+          <div class="award-glow" style={`--glow-color: ${a.color}`}></div>
+          <div class="award-icon">{a.icon}</div>
+          <div class="award-content">
+            <h3 class="award-title">{a.title}</h3>
+            <p class="award-org">{a.org} · {a.year}</p>
+            <p class="award-desc">{a.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .awards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .award-card {
+    padding: 1.5rem;
+    border-radius: var(--r-lg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .award-glow {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 80px;
+    height: 80px;
+    background: var(--glow-color);
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+  }
+
+  .award-card:hover .award-glow { opacity: 0.15; }
+
+  .award-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    transition: transform 0.3s var(--ease-spring);
+  }
+
+  .award-card:hover .award-icon { transform: scale(1.2) rotate(-5deg); }
+
+  .award-title { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+
+  .award-org {
+    font-size: 0.78rem;
+    font-family: var(--mono);
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .award-desc { font-size: 0.82rem; color: var(--text-3); line-height: 1.65; }
+
+  @media (max-width: 900px) { .awards-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px) { .awards-grid { grid-template-columns: 1fr; } }
+</style>

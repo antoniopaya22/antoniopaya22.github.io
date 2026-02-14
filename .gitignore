@@ -1,0 +1,14 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# environment variables
+.env
+.env.*
+
+# editor / OS
+.vscode/
+.DS_Store
+Thumbs.db

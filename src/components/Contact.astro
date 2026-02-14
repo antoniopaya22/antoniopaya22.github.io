@@ -1,0 +1,263 @@
+---
+import { t, ids, type Lang } from '../i18n/translations';
+
+interface Props { lang?: Lang; }
+const { lang = 'es' } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const i = t(lang);
+const id = ids(lang);
+
+const links = [
+  {
+    label: 'Email',
+    value: 'antoniopaya@outlook.com',
+    href: 'mailto:antoniopaya@outlook.com',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>`,
+  },
+  {
+    label: 'GitHub',
+    value: 'antoniopaya22',
+    href: 'https://github.com/antoniopaya22',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>`,
+  },
+  {
+    label: 'LinkedIn',
+    value: 'antoniopaya22',
+    href: 'https://www.linkedin.com/in/antoniopaya22/',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>`,
+  },
+  {
+    label: 'Google Scholar',
+    value: 'Antonio Payá',
+    href: 'https://scholar.google.com/citations?user=4bCBOysAAAAJ',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>`,
+  },
+  {
+    label: 'ORCID',
+    value: '0000-0001-8353-7902',
+    href: 'https://orcid.org/0000-0001-8353-7902',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>`,
+  },
+  {
+    label: 'ResearchGate',
+    value: 'Antonio Payá',
+    href: 'https://www.researchgate.net/profile/Antonio-Paya-3',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>`,
+  },
+];
+---
+
+<section class="section" id={id.contact}>
+  <div class="container">
+    <div class="contact-wrap">
+      <div class="contact-left reveal">
+        <span class="section-eyebrow">{i.contact.eyebrow}</span>
+        <h2 class="section-heading">{i.contact.heading}<span class="gradient-text">{i.contact.headingAccent}</span>{i.contact.headingSuffix}</h2>
+        <p class="contact-text">{i.contact.text}</p>
+
+        <div class="contact-terminal">
+          <div class="terminal-header">
+            <span class="terminal-dot" style="background: var(--rose);"></span>
+            <span class="terminal-dot" style="background: #fbbf24;"></span>
+            <span class="terminal-dot" style="background: var(--emerald);"></span>
+            <span class="terminal-title">{i.contact.terminalFile}</span>
+          </div>
+          <div class="terminal-body">
+            {i.contact.terminalLines.map(line => (
+              <p><span class="t-prompt">{line.prompt}</span> <span class="t-cmd">{line.cmd}</span> <span class="t-string">{line.arg}</span></p>
+            ))}
+            <p class="t-cursor"><span class="t-prompt">$</span> <span class="cursor-blink">▊</span></p>
+          </div>
+        </div>
+
+        <a class="contact-cta" href="mailto:antoniopaya@outlook.com">
+          <span>{i.contact.cta}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <div class="contact-right reveal reveal-delay-2">
+        {links.map((l, idx) => (
+          <a class={`link-row reveal-delay-${Math.min(idx + 1, 6)}`} href={l.href} target="_blank" rel="noopener noreferrer">
+            <span class="link-icon" set:html={l.icon} />
+            <div class="link-text">
+              <span class="link-label">{l.label}</span>
+              <span class="link-value">{l.value}</span>
+            </div>
+            <div class="link-arrow-wrap">
+              <svg class="link-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .contact-text {
+    font-size: 1rem;
+    color: var(--text-2);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    max-width: 420px;
+  }
+
+  .contact-terminal {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    font-family: var(--mono);
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .terminal-title {
+    font-size: 0.7rem;
+    color: var(--text-4);
+    margin-left: 0.5rem;
+  }
+
+  .terminal-body {
+    padding: 1rem 1.25rem;
+    font-size: 0.82rem;
+    line-height: 2;
+  }
+
+  .t-prompt { color: var(--emerald); }
+  .t-cmd { color: var(--cyan); }
+  .t-string { color: var(--accent); }
+
+  .cursor-blink {
+    color: var(--accent);
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .contact-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.8rem;
+    background: var(--gradient);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: var(--r-full);
+    text-decoration: none;
+    transition: all 0.3s var(--ease);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  }
+
+  .contact-cta:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.5);
+  }
+
+  .contact-cta svg { transition: transform 0.3s var(--ease); }
+  .contact-cta:hover svg { transform: translateX(3px); }
+
+  .contact-right { display: flex; flex-direction: column; gap: 0.35rem; }
+
+  .link-row {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--r-md);
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid transparent;
+    transition: all 0.3s var(--ease);
+  }
+
+  .link-row:hover {
+    color: inherit;
+    background: var(--bg-card);
+    border-color: var(--border);
+  }
+
+  .link-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--r-md);
+    background: rgba(129, 140, 248, 0.06);
+    border: 1px solid rgba(129, 140, 248, 0.1);
+    color: var(--accent);
+    flex-shrink: 0;
+    transition: all 0.3s var(--ease);
+  }
+
+  .link-row:hover .link-icon {
+    background: rgba(129, 140, 248, 0.12);
+    border-color: var(--border-accent);
+    box-shadow: 0 0 12px rgba(129, 140, 248, 0.15);
+  }
+
+  .link-text { flex: 1; min-width: 0; }
+
+  .link-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .link-value {
+    font-size: 0.78rem;
+    color: var(--text-4);
+    font-family: var(--mono);
+  }
+
+  .link-arrow-wrap {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--border);
+    color: var(--text-4);
+    flex-shrink: 0;
+    transition: all 0.3s var(--ease);
+  }
+
+  .link-row:hover .link-arrow-wrap {
+    border-color: var(--border-accent);
+    color: var(--accent);
+  }
+
+  .link-arrow { transition: transform 0.3s var(--ease); }
+  .link-row:hover .link-arrow { transform: translate(2px, -2px); }
+
+  @media (max-width: 768px) {
+    .contact-wrap { grid-template-columns: 1fr; gap: 2rem; }
+  }
+</style>

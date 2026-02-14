@@ -1,0 +1,186 @@
+---
+import { t, ids, type Lang } from '../i18n/translations';
+
+interface Props { lang?: Lang; }
+const { lang = 'es' } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const i = t(lang);
+const id = ids(lang);
+---
+
+<section class="section" id={id.about}>
+  <div class="container">
+    <div class="about-layout">
+      <div class="about-content">
+        <span class="section-eyebrow reveal">{i.about.eyebrow}</span>
+        <h2 class="section-heading reveal reveal-delay-1">{i.about.heading} <span class="gradient-text">{i.about.headingAccent}</span></h2>
+        <div class="about-body reveal reveal-delay-2">
+          {i.about.body.map(p => <p set:html={p} />)}
+        </div>
+
+        <div class="about-logos reveal reveal-delay-3">
+          <a href="https://thenextpangea.com" target="_blank" rel="noopener" class="logo-link">
+            <img src={`${base}images/logo-tnp.png`} alt="TheNextPangea" />
+          </a>
+          <span class="logo-divider"></span>
+          <a href="https://www.uniovi.es" target="_blank" rel="noopener" class="logo-link logo-link-uniovi">
+            <img src={`${base}images/logo-uniovi.jpg`} alt="Universidad de Oviedo" />
+          </a>
+        </div>
+
+        <div class="about-skills reveal reveal-delay-4">
+          {i.about.skills.map(s => <span class="tag">{s}</span>)}
+        </div>
+      </div>
+
+      <div class="about-side">
+        <div class="about-photo reveal reveal-delay-2">
+          <div class="photo-glow"></div>
+          <img src={`${base}images/foto1.jpg`} alt="Antonio en conferencia" loading="lazy" />
+        </div>
+
+        <div class="about-numbers reveal reveal-delay-3">
+          {i.about.stats.map(s => (
+            <div class="number-item glass">
+              <span class="number-val">{s.value}</span>
+              <span class="number-label">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-body p {
+    color: var(--text-2);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.85;
+  }
+
+  :global(.about-body strong) { color: var(--text); font-weight: 600; }
+  :global(.about-body em) { font-style: italic; color: var(--accent); }
+
+  .about-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .about-logos {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    backdrop-filter: blur(20px);
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    transition: opacity 0.3s var(--ease);
+    opacity: 0.7;
+  }
+
+  .logo-link:hover { opacity: 1; }
+
+  .logo-link img {
+    height: 28px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .logo-link-uniovi img {
+    height: 36px;
+    border-radius: 4px;
+  }
+
+  .logo-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border-2);
+    flex-shrink: 0;
+  }
+
+  .about-photo {
+    position: relative;
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .photo-glow {
+    position: absolute;
+    inset: -2px;
+    background: var(--gradient);
+    border-radius: var(--r-xl);
+    opacity: 0.5;
+    z-index: -1;
+    filter: blur(15px);
+    transition: opacity 0.4s var(--ease);
+  }
+
+  .about-photo:hover .photo-glow { opacity: 0.8; }
+
+  .about-photo img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    border-radius: var(--r-xl);
+    border: 1px solid var(--border-2);
+    transition: transform 0.5s var(--ease);
+  }
+
+  .about-photo:hover img { transform: scale(1.02); }
+
+  .about-numbers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .number-item {
+    padding: 1.25rem;
+    text-align: center;
+    border-radius: var(--r-lg);
+  }
+
+  .number-val {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+  }
+
+  .number-label {
+    font-size: 0.72rem;
+    color: var(--text-4);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 768px) {
+    .about-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .about-side { order: -1; }
+  }
+</style>

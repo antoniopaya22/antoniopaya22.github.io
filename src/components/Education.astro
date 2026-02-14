@@ -1,0 +1,233 @@
+---
+import { t, ids, type Lang } from '../i18n/translations';
+
+interface Props { lang?: Lang; }
+const { lang = 'es' } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const i = t(lang);
+const id = ids(lang);
+const degrees = i.education.degrees;
+const certs = i.education.certs;
+---
+
+<section class="section" id={id.education}>
+  <div class="container">
+    <span class="section-eyebrow reveal">{i.education.eyebrow}</span>
+    <h2 class="section-heading reveal reveal-delay-1">{i.education.heading} <span class="gradient-text">{i.education.headingAccent}</span></h2>
+    <p class="section-desc reveal reveal-delay-2">{i.education.desc}</p>
+
+    <div class="edu-grid">
+      <div class="edu-main">
+        {degrees.map((d, idx) => (
+          <div class={`edu-card glass reveal reveal-delay-${Math.min(idx + 1, 4)}`}>
+            <div class="edu-head">
+              <div class="edu-head-text">
+                {d.logo && (
+                  <div class="edu-logo">
+                    <img src={`${base}images/${d.logo}`} alt={d.school} />
+                  </div>
+                )}
+                <div>
+                  <h3 class="edu-title">{d.title}</h3>
+                  <p class="edu-school">{d.school}</p>
+                </div>
+              </div>
+              <span class={`edu-period ${d.current ? 'edu-current' : ''}`}>
+                {d.current && <span class="dot-pulse"></span>}
+                {d.period}
+              </span>
+            </div>
+            <p class="edu-desc">{d.desc}</p>
+            {d.honors.length > 0 && (
+              <div class="edu-honors">
+                <span class="honors-label">{i.education.honorsLabel}</span>
+                <div class="honors-list">
+                  {d.honors.map(h => <span class="tag">{h}</span>)}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <aside class="edu-sidebar">
+        <div class="sidebar-photo reveal reveal-delay-2">
+          <img src={`${base}images/foto3.jpg`} alt="Universidad" loading="lazy" />
+        </div>
+
+        <div class="cert-box glass reveal reveal-delay-3">
+          <h4 class="cert-heading">
+            <span class="cert-icon">📜</span>
+            {i.education.certsHeading}
+          </h4>
+          <ul class="cert-list">
+            {certs.map(c => (
+              <li class="cert-item">
+                <span class="cert-title">{c.title}</span>
+                <span class="cert-meta">{c.issuer} · {c.year}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .edu-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .edu-card {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: var(--r-lg);
+  }
+
+  .edu-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .edu-head-text {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .edu-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--r-md);
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 4px;
+    overflow: hidden;
+  }
+
+  .edu-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 3px;
+  }
+
+  .edu-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+
+  .edu-school { font-size: 0.85rem; color: var(--accent); margin-top: 0.15rem; }
+
+  .edu-period {
+    font-size: 0.75rem;
+    font-family: var(--mono);
+    font-weight: 500;
+    color: var(--text-4);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .edu-current { color: var(--emerald); }
+
+  .dot-pulse {
+    width: 7px;
+    height: 7px;
+    background: var(--emerald);
+    border-radius: 50%;
+    animation: pulse-glow 2s ease-in-out infinite;
+    box-shadow: 0 0 6px rgba(52, 211, 153, 0.5);
+  }
+
+  .edu-desc {
+    font-size: 0.88rem;
+    color: var(--text-3);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+  }
+
+  .edu-honors {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .honors-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-3);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .honors-list { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+  /* Sidebar */
+  .sidebar-photo {
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+  }
+
+  .sidebar-photo img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+  }
+
+  .cert-box {
+    padding: 1.5rem;
+    border-radius: var(--r-lg);
+  }
+
+  .cert-heading {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-3);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .cert-icon { font-size: 1rem; }
+
+  .cert-list { list-style: none; }
+
+  .cert-item {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .cert-item:last-child { border-bottom: none; }
+
+  .cert-title { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+
+  .cert-meta {
+    font-size: 0.75rem;
+    color: var(--text-4);
+    font-family: var(--mono);
+  }
+
+  @media (max-width: 768px) {
+    .edu-grid { grid-template-columns: 1fr; }
+    .edu-head { flex-direction: column; gap: 0.25rem; }
+  }
+</style>

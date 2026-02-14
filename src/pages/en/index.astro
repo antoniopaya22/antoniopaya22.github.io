@@ -1,0 +1,30 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Hero from '../../components/Hero.astro';
+import About from '../../components/About.astro';
+import Experience from '../../components/Experience.astro';
+import Education from '../../components/Education.astro';
+import Skills from '../../components/Skills.astro';
+import Publications from '../../components/Publications.astro';
+import Awards from '../../components/Awards.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+
+const lang = 'en';
+---
+
+<Layout title="Antonio Payá González — Software Architect & PhD Researcher" lang={lang}>
+  <Header lang={lang} />
+  <main>
+    <Hero lang={lang} />
+    <About lang={lang} />
+    <Experience lang={lang} />
+    <Education lang={lang} />
+    <Skills lang={lang} />
+    <Publications lang={lang} />
+    <Awards lang={lang} />
+    <Contact lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Layout>
