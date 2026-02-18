@@ -3,10 +3,39 @@ interface Props {
   title: string;
   description?: string;
   lang?: 'es' | 'en';
+  ogImage?: string;
 }
 
-const { title, description = 'Antonio Payá González — Software Architect & PhD', lang = 'es' } = Astro.props;
+const { title, description = 'Antonio Payá González — Software Architect & PhD Researcher specializing in cybersecurity, intelligent systems and blockchain technologies.', lang = 'es', ogImage = '/images/foto1.jpg' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const siteUrl = 'https://antoniopaya22.github.io';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const altLang = lang === 'es' ? 'en' : 'es';
+const altUrl = lang === 'es' ? `${siteUrl}/en/` : `${siteUrl}/`;
+const ogImageUrl = new URL(ogImage, siteUrl).href;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Antonio Payá González",
+  "url": siteUrl,
+  "image": `${siteUrl}/images/foto1.jpg`,
+  "jobTitle": "Software Architect",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "TheNextPangea S.L."
+  },
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "Universidad de Oviedo"
+  },
+  "knowsAbout": ["Software Architecture", "Cybersecurity", "Machine Learning", "Blockchain", "Web Development"],
+  "sameAs": [
+    "https://github.com/antoniopaya22",
+    "https://www.linkedin.com/in/antoniopaya/",
+    "https://scholar.google.com/citations?user=YOUR_ID"
+  ]
+};
 ---
 
 <!doctype html>
@@ -17,6 +46,36 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
     <meta name="description" content={description} />
     <meta name="author" content="Antonio Payá González" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Google Search Console Verification -->
+    <meta name="google-site-verification" content="UQinHbKmnToC-3fal-2WekX6NkpLHj5RfP4i_JO1Q4U" />
+
+    <!-- Canonical & Hreflang -->
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang={lang} href={canonicalUrl} />
+    <link rel="alternate" hreflang={altLang} href={altUrl} />
+    <link rel="alternate" hreflang="x-default" href={siteUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+    <meta property="og:locale:alternate" content={lang === 'es' ? 'en_US' : 'es_ES'} />
+    <meta property="og:site_name" content="Antonio Payá González" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
