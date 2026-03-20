@@ -41,7 +41,10 @@ const certs = i.education.certs;
             <p class="edu-desc">{d.desc}</p>
             {d.honors.length > 0 && (
               <div class="edu-honors">
-                <span class="honors-label">{i.education.honorsLabel}</span>
+                <span class="honors-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="honors-icon"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
+                {i.education.honorsLabel}
+              </span>
                 <div class="honors-list">
                   {d.honors.map(h => <span class="tag">{h}</span>)}
                 </div>
@@ -58,7 +61,7 @@ const certs = i.education.certs;
 
         <div class="cert-box glass reveal reveal-delay-3">
           <h4 class="cert-heading">
-            <span class="cert-icon">📜</span>
+            <span class="cert-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M9 15v-1h6v1"/><path d="M11 11.5h2"/></svg></span>
             {i.education.certsHeading}
           </h4>
           <ul class="cert-list">
@@ -167,9 +170,13 @@ const certs = i.education.certs;
     font-size: 0.78rem;
     font-weight: 600;
     color: var(--text-3);
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
     margin-bottom: 0.5rem;
   }
+
+  .honors-icon { color: var(--accent); flex-shrink: 0; }
 
   .honors-list { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 
@@ -204,7 +211,11 @@ const certs = i.education.certs;
     gap: 0.5rem;
   }
 
-  .cert-icon { font-size: 1rem; }
+  .cert-icon {
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+  }
 
   .cert-list { list-style: none; }
 

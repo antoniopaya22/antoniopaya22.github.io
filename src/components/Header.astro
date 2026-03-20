@@ -14,7 +14,7 @@ const otherLabel = other === 'en' ? 'EN' : 'ES';
 
 <header class="header" id="header">
   <nav class="nav container">
-    <a href={`${base}`} class="logo">
+    <a href={lang === 'en' ? `${base}en/` : base} class="logo">
       <span class="logo-bracket">&lt;</span>Antonio<span class="logo-accent">Payá</span><span class="logo-bracket"> /&gt;</span>
     </a>
 
@@ -34,7 +34,7 @@ const otherLabel = other === 'en' ? 'EN' : 'ES';
       <a href={otherPath} class="lang-btn-mobile" aria-label={`Switch to ${other}`}>
         {otherLabel}
       </a>
-      <button class="menu-btn" id="menu-btn" aria-label="Menu">
+      <button class="menu-btn" id="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
         <span class="menu-line"></span>
         <span class="menu-line"></span>
         <span class="menu-line"></span>
@@ -50,14 +50,18 @@ const otherLabel = other === 'en' ? 'EN' : 'ES';
     left: 0;
     right: 0;
     z-index: 100;
-    background: rgba(6, 6, 10, 0.7);
-    backdrop-filter: blur(20px) saturate(1.5);
-    border-bottom: 1px solid var(--border);
-    transition: all 0.4s var(--ease);
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: 1px solid transparent;
+    transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease), border-bottom-color 0.4s var(--ease);
   }
 
   .header.scrolled {
-    background: rgba(6, 6, 10, 0.9);
+  }
+
+  .header.scrolled {
+    background: rgba(6, 6, 10, 0.85);
+    backdrop-filter: blur(20px) saturate(1.5);
     border-bottom-color: var(--border-2);
   }
 
@@ -98,7 +102,7 @@ const otherLabel = other === 'en' ? 'EN' : 'ES';
   .nav-link {
     font-size: 0.82rem;
     font-weight: 500;
-    color: var(--text-4);
+    color: rgba(255, 255, 255, 0.85);
     padding: 0.4rem 0.75rem;
     border-radius: var(--r-sm);
     transition: all 0.3s var(--ease);
@@ -212,17 +216,30 @@ const otherLabel = other === 'en' ? 'EN' : 'ES';
   const btn = document.getElementById('menu-btn');
   const links = document.getElementById('nav-links');
 
-  btn?.addEventListener('click', () => {
-    links?.classList.toggle('open');
+  function toggleMenu() {
+    const isOpen = links?.classList.toggle('open');
     btn?.classList.toggle('open');
-  });
+    btn?.setAttribute('aria-expanded', String(!!isOpen));
+  }
+
+  function closeMenu() {
+    links?.classList.remove('open');
+    btn?.classList.remove('open');
+    btn?.setAttribute('aria-expanded', 'false');
+  }
+
+  btn?.addEventListener('click', toggleMenu);
 
   document.querySelectorAll('.nav-link').forEach(l =>
-    l.addEventListener('click', () => {
-      links?.classList.remove('open');
-      btn?.classList.remove('open');
-    })
+    l.addEventListener('click', closeMenu)
   );
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && links?.classList.contains('open')) {
+      closeMenu();
+      btn?.focus();
+    }
+  });
 
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {

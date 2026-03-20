@@ -28,9 +28,7 @@ const year = new Date().getFullYear();
       <div class="footer-divider"></div>
 
       <p class="footer-bottom">
-        {i.footer.designed} <span class="heart">♥</span> {i.footer.using}
-        <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>
-        — &copy; {year} Antonio Payá González
+        &copy; {year} Antonio Payá González
       </p>
     </div>
   </div>
@@ -125,22 +123,5 @@ const year = new Date().getFullYear();
     color: var(--text-4);
   }
 
-  .footer-bottom a {
-    color: var(--accent);
-    font-weight: 600;
-  }
 
-  .heart {
-    color: var(--rose);
-    display: inline-block;
-    animation: heartbeat 2s ease-in-out infinite;
-  }
-
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    14% { transform: scale(1.3); }
-    28% { transform: scale(1); }
-    42% { transform: scale(1.3); }
-    70% { transform: scale(1); }
-  }
 </style>

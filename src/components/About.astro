@@ -32,6 +32,23 @@ const id = ids(lang);
         <div class="about-skills reveal reveal-delay-4">
           {i.about.skills.map(s => <span class="tag">{s}</span>)}
         </div>
+
+        <div class="about-meta reveal reveal-delay-5">
+          <span class="meta-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            {i.about.location}
+          </span>
+          <span class="meta-divider">·</span>
+          {i.about.languages.map((l, idx) => (
+            <>
+              <span class="meta-item">
+                {idx === 0 && <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>}
+                {l}
+              </span>
+              {idx < i.about.languages.length - 1 && <span class="meta-divider">·</span>}
+            </>
+          ))}
+        </div>
       </div>
 
       <div class="about-side">
@@ -77,6 +94,26 @@ const id = ids(lang);
     gap: 0.5rem;
     margin-top: 1.5rem;
   }
+
+  .about-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    color: var(--text-3);
+  }
+
+  .meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .meta-item svg { color: var(--accent); flex-shrink: 0; }
+
+  .meta-divider { color: var(--text-4); }
 
   .about-logos {
     display: flex;

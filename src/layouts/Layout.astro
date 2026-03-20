@@ -6,7 +6,7 @@ interface Props {
   ogImage?: string;
 }
 
-const { title, description = 'Antonio Payá González — Software Architect & PhD Researcher specializing in cybersecurity, intelligent systems and blockchain technologies.', lang = 'es', ogImage = '/images/foto1.jpg' } = Astro.props;
+const { title, description = 'Antonio Payá González — Software Architect & PhD Researcher specializing in cybersecurity, intelligent systems and blockchain technologies.', lang = 'es', ogImage = '/images/og-card.svg' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const siteUrl = 'https://antoniopaya22.github.io';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
@@ -20,6 +20,7 @@ const jsonLd = {
   "name": "Antonio Payá González",
   "url": siteUrl,
   "image": `${siteUrl}/images/foto1.jpg`,
+  "description": "Software Architect at TheNextPangea and PhD in Computer Engineering. Specialist in cloud architecture, AI productization, cybersecurity, and Zero Trust security.",
   "jobTitle": "Software Architect",
   "worksFor": {
     "@type": "Organization",
@@ -29,11 +30,19 @@ const jsonLd = {
     "@type": "CollegeOrUniversity",
     "name": "Universidad de Oviedo"
   },
-  "knowsAbout": ["Software Architecture", "Cybersecurity", "Machine Learning", "Blockchain", "Web Development"],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Gijón",
+    "addressRegion": "Asturias",
+    "addressCountry": "ES"
+  },
+  "knowsAbout": ["Software Architecture", "Cybersecurity", "Machine Learning", "Blockchain", "Cloud Computing", "Terraform", "AI/ML Productization"],
   "sameAs": [
     "https://github.com/antoniopaya22",
-    "https://www.linkedin.com/in/antoniopaya/",
-    "https://scholar.google.com/citations?user=YOUR_ID"
+    "https://www.linkedin.com/in/antoniopaya22/",
+    "https://scholar.google.com/citations?user=4bCBOysAAAAJ",
+    "https://orcid.org/0000-0001-8353-7902",
+    "https://www.researchgate.net/profile/Antonio-Paya-3"
   ]
 };
 ---
@@ -47,6 +56,7 @@ const jsonLd = {
     <meta name="author" content="Antonio Payá González" />
     <meta name="generator" content={Astro.generator} />
     <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#06060a" />
 
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="UQinHbKmnToC-3fal-2WekX6NkpLHj5RfP4i_JO1Q4U" />
@@ -63,6 +73,9 @@ const jsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content="Antonio Payá González — Software Architect & PhD Researcher" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
     <meta property="og:locale:alternate" content={lang === 'es' ? 'en_US' : 'es_ES'} />
     <meta property="og:site_name" content="Antonio Payá González" />
@@ -79,10 +92,11 @@ const jsonLd = {
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <title>{title}</title>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
     <div class="noise"></div>
     <slot />
   </body>
@@ -100,7 +114,7 @@ const jsonLd = {
     --text: #f1f5f9;
     --text-2: #cbd5e1;
     --text-3: #94a3b8;
-    --text-4: #64748b;
+    --text-4: #7c8ba0;
 
     --accent: #818cf8;
     --accent-2: #6366f1;
@@ -118,7 +132,7 @@ const jsonLd = {
     --border-2: rgba(255, 255, 255, 0.1);
     --border-accent: rgba(129, 140, 248, 0.3);
 
-    --sans: 'Inter', 'Space Grotesk', system-ui, sans-serif;
+    --sans: 'Inter', system-ui, sans-serif;
     --mono: 'JetBrains Mono', 'Fira Code', monospace;
 
     --r-sm: 8px;
@@ -218,6 +232,26 @@ const jsonLd = {
     box-shadow: 0 0 12px rgba(129, 140, 248, 0.15);
   }
 
+  .skip-link {
+    position: fixed;
+    top: -100%;
+    left: 1rem;
+    z-index: 10000;
+    padding: 0.75rem 1.5rem;
+    background: var(--accent);
+    color: #fff;
+    border-radius: var(--r-md);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: top 0.2s;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+    color: #fff;
+  }
+
   .glass {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -303,6 +337,16 @@ const jsonLd = {
   @keyframes shimmer {
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+    html { scroll-behavior: auto; }
   }
 </style>
 
