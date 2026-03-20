@@ -25,7 +25,7 @@ export const translations = {
     hero: {
       badge: 'Disponible para colaboraciones',
       role: 'Software Architect · PhD en Ingeniería Informática',
-      intro: 'Arquitecto de Software en <strong>TheNextPangea</strong> y Doctor por la <strong>Universidad de Oviedo</strong>. Investigador en ciberseguridad, sistemas inteligentes y tecnologías blockchain.',
+      intro: '<strong>Arquitecto de Software</strong> en TheNextPangea y <strong>PhD en Ingeniería Informática</strong> por la Universidad de Oviedo. Investigador en ciberseguridad, sistemas inteligentes y tecnologías blockchain.',
       ctaPrimary: 'Contactar',
       ctaSecondary: 'Publicaciones',
       scroll: 'Scroll',
@@ -37,7 +37,7 @@ export const translations = {
       heading: 'Un poco sobre mi',
       headingAccent: 'historia',
       body: [
-        'Mi nombre es <strong>Antonio Payá González</strong>. Soy Arquitecto de Software en <strong>TheNextPangea S.L.</strong> y Doctor en Ingeniería Informática por la <strong>Universidad de Oviedo</strong>, con línea de investigación en Sistemas Inteligentes.',
+        'Mi nombre es Antonio Payá González. Soy <strong>Arquitecto de Software</strong> en TheNextPangea S.L. y <strong>PhD en Ingeniería Informática</strong> por la Universidad de Oviedo, con línea de investigación en Ingeniería del Software.',
         'En mi día a día profesional, me especializo en el diseño de soluciones de software escalables que integran <em>Inteligencia Artificial</em> en entornos de producción. Cuento con amplia experiencia en arquitecturas cloud multiplataforma (<strong>AWS, Azure y GCP</strong>) y en la automatización de despliegues mediante <em>Infraestructura como Código</em> (IaC) con Terraform.',
         'En el ámbito investigador, mi tesis doctoral se centra en mejorar los <em>Software-Defined Perimeters</em> (SDP) integrando sistemas de detección de intrusiones y optimizando la gestión de identidades. Desarrollo configuraciones de seguridad automatizadas y mejoro la resiliencia de IDS frente a ataques de <em>Adversarial Machine Learning</em>.',
         'También soy escritor y editor de <a href="https://medium.com/better-programming" target="_blank" rel="noopener" class="animated-link">Better Programming</a> y <a href="https://medium.com/coinmonks" target="_blank" rel="noopener" class="animated-link">Coinmonks</a> en Medium.',
@@ -58,7 +58,7 @@ export const translations = {
       eyebrow: 'Experiencia',
       heading: 'Trayectoria',
       headingAccent: 'profesional',
-      desc: 'Más de 6 años de experiencia en desarrollo de software, investigación y arquitectura.',
+      desc: 'Más de 7 años de experiencia en desarrollo de software, investigación y arquitectura.',
       jobs: [
         {
           role: 'Arquitecto de Software',

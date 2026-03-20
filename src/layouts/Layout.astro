@@ -41,9 +41,18 @@ const jsonLd = {
     "https://github.com/antoniopaya22",
     "https://www.linkedin.com/in/antoniopaya22/",
     "https://scholar.google.com/citations?user=4bCBOysAAAAJ",
-    "https://orcid.org/0000-0001-8353-7902",
+    "https://orcid.org/0000-0003-3733-3805",
     "https://www.researchgate.net/profile/Antonio-Paya-3"
-  ]
+  ],
+  "alternateName": ["Antonio Payá", "Antonio Paya Gonzalez", "A. Payá González"]
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": siteUrl,
+  "name": "Antonio Payá González",
+  "author": { "@type": "Person", "name": "Antonio Payá González" }
 };
 ---
 
@@ -54,6 +63,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="author" content="Antonio Payá González" />
+    <meta name="keywords" content="Antonio Payá González, Antonio Payá, Antonio Paya Gonzalez, software architect, PhD computer engineering, cybersecurity, blockchain, artificial intelligence, zero trust, Universidad de Oviedo, Gijón" />
     <meta name="generator" content={Astro.generator} />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#06060a" />
@@ -68,7 +78,10 @@ const jsonLd = {
     <link rel="alternate" hreflang="x-default" href={siteUrl} />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="profile" />
+    <meta property="profile:first_name" content="Antonio" />
+    <meta property="profile:last_name" content="Payá González" />
+    <meta property="profile:username" content="antoniopaya22" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
@@ -85,10 +98,13 @@ const jsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:creator" content="@antoniopaya22" />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
 
+    <link rel="preload" as="image" href={`${base}images/fondo.jpg`} fetchpriority="high" />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

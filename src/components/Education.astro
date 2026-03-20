@@ -24,7 +24,7 @@ const certs = i.education.certs;
             <div class="edu-head">
               <div class="edu-head-text">
                 {d.logo && (
-                  <div class="edu-logo">
+                  <div class={`edu-logo ${d.logoDark ? 'edu-logo-dark' : ''}`}>
                     <img src={`${base}images/${d.logo}`} alt={d.school} />
                   </div>
                 )}
@@ -107,24 +107,28 @@ const certs = i.education.certs;
   }
 
   .edu-logo {
-    width: 44px;
-    height: 44px;
+    width: 80px;
+    height: 48px;
     border-radius: var(--r-md);
     border: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(30, 30, 40, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    padding: 4px;
+    padding: 8px 10px;
     overflow: hidden;
+  }
+
+  .edu-logo-dark {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(200, 200, 200, 0.3);
   }
 
   .edu-logo img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    border-radius: 3px;
   }
 
   .edu-title { font-size: 1rem; font-weight: 700; color: var(--text); }
