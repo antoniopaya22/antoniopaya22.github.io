@@ -7,7 +7,8 @@ Personal website of **Antonio Payá González** — Software Architect at TheNex
 ## Stack
 
 - [Astro](https://astro.build) static site, bilingual (ES/EN) via `src/i18n/translations.ts`
-- Playwright end-to-end + axe accessibility tests (`npm test`), run in CI before every deploy
+- Playwright end-to-end + axe accessibility tests (`npm test`), run on every PR and before every deploy
+- Dependabot weekly; grouped minor/patch updates auto-merge once CI passes
 - Editorial design: Instrument Serif, Schibsted Grotesk and IBM Plex Mono; light/dark themes
 - SEO: JSON-LD (`Person`, `WebSite`), Open Graph, hreflang, sitemap
 - Deployed to GitHub Pages with GitHub Actions on every push to `master`

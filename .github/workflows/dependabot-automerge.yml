@@ -1,0 +1,30 @@
+name: dependabot auto-merge
+
+# Merges grouped minor/patch Dependabot PRs after the ci workflow succeeds,
+# then triggers a deploy (pushes made with GITHUB_TOKEN do not start workflows).
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  merge:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.actor.login == 'dependabot[bot]' &&
+      contains(github.event.workflow_run.head_branch, 'minor-patch')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Merge PR
+        run: gh pr merge "${{ github.event.workflow_run.head_branch }}" --squash --delete-branch
+
+      - name: Deploy
+        run: gh workflow run deploy.yml --ref master
