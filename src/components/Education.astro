@@ -1,5 +1,6 @@
 ---
 import { t, ids, type Lang } from '../i18n/translations';
+import SectionHead from './SectionHead.astro';
 
 interface Props { lang?: Lang; }
 const { lang = 'es' } = Astro.props;
@@ -7,242 +8,170 @@ const { lang = 'es' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const i = t(lang);
 const id = ids(lang);
-const degrees = i.education.degrees;
-const certs = i.education.certs;
+const s = i.sections.education;
 ---
 
 <section class="section" id={id.education}>
-  <div class="container">
-    <span class="section-eyebrow reveal">{i.education.eyebrow}</span>
-    <h2 class="section-heading reveal reveal-delay-1">{i.education.heading} <span class="gradient-text">{i.education.headingAccent}</span></h2>
-    <p class="section-desc reveal reveal-delay-2">{i.education.desc}</p>
+  <div class="wrap section-grid">
+    <SectionHead n={s.n} title={s.title} desc={s.desc}>
+      <figure class="edu-fig reveal" style="--d: 0.15s">
+        <img src={`${base}images/foto3.webp`} alt="Antonio Payá González" width="1210" height="911" loading="lazy" decoding="async" />
+      </figure>
+    </SectionHead>
 
-    <div class="edu-grid">
-      <div class="edu-main">
-        {degrees.map((d, idx) => (
-          <div class={`edu-card glass reveal reveal-delay-${Math.min(idx + 1, 4)}`}>
-            <div class="edu-head">
-              <div class="edu-head-text">
-                {d.logo && (
-                  <div class={`edu-logo ${d.logoDark ? 'edu-logo-dark' : ''}`}>
-                    <img src={`${base}images/${d.logo}`} alt={d.school} />
-                  </div>
-                )}
-                <div>
-                  <h3 class="edu-title">{d.title}</h3>
-                  <p class="edu-school">{d.school}</p>
-                </div>
-              </div>
-              <span class={`edu-period ${d.current ? 'edu-current' : ''}`}>
-                {d.current && <span class="dot-pulse"></span>}
-                {d.period}
-              </span>
+    <div class="section-body">
+      <ol class="degrees">
+        {i.education.degrees.map((d) => (
+          <li class="degree reveal">
+            <span class="mono degree-period">{d.period}</span>
+            <div>
+              <h3 class="degree-title">{d.title}</h3>
+              <p class="degree-school">{d.school}</p>
+              <p class="degree-desc">{d.desc}</p>
+              {d.honors.length > 0 && (
+                d.honors.length > 2 ? (
+                  <details class="honors">
+                    <summary class="mono">{d.honors.length} {i.education.honorsLabel}</summary>
+                    <ul>{d.honors.map((h) => <li>{h}</li>)}</ul>
+                  </details>
+                ) : (
+                  <p class="honors-inline mono">{i.education.honorsLabel}: {d.honors.join(', ')}</p>
+                )
+              )}
             </div>
-            <p class="edu-desc">{d.desc}</p>
-            {d.honors.length > 0 && (
-              <div class="edu-honors">
-                <span class="honors-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="honors-icon"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
-                {i.education.honorsLabel}
-              </span>
-                <div class="honors-list">
-                  {d.honors.map(h => <span class="tag">{h}</span>)}
-                </div>
-              </div>
-            )}
-          </div>
+          </li>
         ))}
-      </div>
+      </ol>
 
-      <aside class="edu-sidebar">
-        <div class="sidebar-photo reveal reveal-delay-2">
-          <img src={`${base}images/foto3.webp`} alt="Antonio Payá González" width="1210" height="911" loading="lazy" decoding="async" />
-        </div>
-
-        <div class="cert-box glass reveal reveal-delay-3">
-          <h4 class="cert-heading">
-            <span class="cert-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M9 15v-1h6v1"/><path d="M11 11.5h2"/></svg></span>
-            {i.education.certsHeading}
-          </h4>
-          <ul class="cert-list">
-            {certs.map(c => (
-              <li class="cert-item">
-                <span class="cert-title">{c.title}</span>
-                <span class="cert-meta">{c.issuer} · {c.year}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </aside>
+      <h3 class="list-title mono reveal">{i.education.certsTitle}</h3>
+      <ul class="certs">
+        {i.education.certs.map((c) => (
+          <li class="cert reveal">
+            <span class="cert-title">{c.title}</span>
+            <span class="cert-issuer">{c.issuer}</span>
+            <span class="mono cert-year">{c.year}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
 </section>
 
 <style>
-  .edu-grid {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 2rem;
-    align-items: start;
-  }
-
-  .edu-card {
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    border-radius: var(--r-lg);
-  }
-
-  .edu-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .edu-head-text {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .edu-logo {
-    width: 80px;
-    height: 48px;
-    border-radius: var(--r-md);
-    border: 1px solid var(--border);
-    background: rgba(30, 30, 40, 0.85);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    padding: 8px 10px;
+  .edu-fig {
+    margin-top: 2.25rem;
+    max-width: 320px;
+    aspect-ratio: 4 / 3;
     overflow: hidden;
+    border: 1px solid var(--rule);
+    padding: 8px;
+    background: var(--paper-3);
   }
 
-  .edu-logo-dark {
-    background: rgba(255, 255, 255, 0.95);
-    border-color: rgba(200, 200, 200, 0.3);
-  }
-
-  .edu-logo img {
+  .edu-fig img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-  }
-
-  .edu-title { font-size: 1rem; font-weight: 700; color: var(--text); }
-
-  .edu-school { font-size: 0.85rem; color: var(--accent); margin-top: 0.15rem; }
-
-  .edu-period {
-    font-size: 0.75rem;
-    font-family: var(--mono);
-    font-weight: 500;
-    color: var(--text-4);
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
-
-  .edu-current { color: var(--emerald); }
-
-  .dot-pulse {
-    width: 7px;
-    height: 7px;
-    background: var(--emerald);
-    border-radius: 50%;
-    animation: pulse-glow 2s ease-in-out infinite;
-    box-shadow: 0 0 6px rgba(52, 211, 153, 0.5);
-  }
-
-  .edu-desc {
-    font-size: 0.88rem;
-    color: var(--text-3);
-    line-height: 1.7;
-    margin-bottom: 0.5rem;
-  }
-
-  .edu-honors {
-    margin-top: 0.75rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .honors-label {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--text-3);
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .honors-icon { color: var(--accent); flex-shrink: 0; }
-
-  .honors-list { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-
-  /* Sidebar */
-  .sidebar-photo {
-    border-radius: var(--r-lg);
-    overflow: hidden;
-    margin-bottom: 1rem;
-    border: 1px solid var(--border);
-  }
-
-  .sidebar-photo img {
-    width: 100%;
-    aspect-ratio: 4/3;
     object-fit: cover;
+    filter: grayscale(1) contrast(1.05);
+    transition: filter 0.8s var(--ease);
   }
 
-  .cert-box {
-    padding: 1.5rem;
-    border-radius: var(--r-lg);
+  .edu-fig:hover img { filter: none; }
+
+  .degrees { list-style: none; border-top: 1px solid var(--ink); margin-bottom: 3rem; }
+
+  .degree {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 2rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--rule);
   }
 
-  .cert-heading {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-3);
-    font-weight: 700;
-    margin-bottom: 1rem;
-    display: flex;
+  .degree-period { font-size: 0.7rem; color: var(--muted); padding-top: 0.35rem; letter-spacing: 0.04em; }
+
+  .degree-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.3vw, 1.9rem);
+    line-height: 1.08;
+  }
+
+  .degree-school { font-weight: 500; color: var(--ink-2); margin: 0.2rem 0 0.6rem; }
+  .degree-desc { color: var(--muted); max-width: 60ch; }
+
+  .honors-inline { margin-top: 0.75rem; font-size: 0.68rem; color: var(--accent); }
+
+  .honors { margin-top: 0.9rem; }
+
+  .honors summary {
+    display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-  }
-
-  .cert-icon {
-    display: flex;
-    align-items: center;
+    cursor: pointer;
+    font-size: 0.68rem;
     color: var(--accent);
+    list-style: none;
   }
 
-  .cert-list { list-style: none; }
+  .honors summary::-webkit-details-marker { display: none; }
 
-  .cert-item {
-    padding: 0.6rem 0;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
+  .honors summary::before {
+    content: '+';
+    display: inline-grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    line-height: 1;
+    transition: transform 0.3s var(--ease);
   }
 
-  .cert-item:last-child { border-bottom: none; }
+  .honors[open] summary::before { transform: rotate(45deg); }
 
-  .cert-title { font-size: 0.85rem; font-weight: 600; color: var(--text); }
-
-  .cert-meta {
-    font-size: 0.75rem;
-    color: var(--text-4);
-    font-family: var(--mono);
+  .honors ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.3rem 1.5rem;
+    margin-top: 0.9rem;
+    font-size: 0.92rem;
+    color: var(--ink-2);
   }
 
-  @media (max-width: 768px) {
-    .edu-grid { grid-template-columns: 1fr; }
-    .edu-head { flex-direction: column; gap: 0.25rem; }
+  .honors li { padding-left: 1rem; position: relative; }
+  .honors li::before { content: '✦'; position: absolute; left: 0; color: var(--accent); font-size: 0.6rem; top: 0.35em; }
+
+  .list-title {
+    color: var(--muted);
+    font-size: 0.7rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .certs { list-style: none; }
+
+  .cert {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 12rem 3.5rem;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .cert-title { font-weight: 500; }
+  .cert-issuer { color: var(--muted); font-size: 0.92rem; }
+  .cert-year { font-size: 0.7rem; color: var(--muted); text-align: right; }
+
+  @media (max-width: 640px) {
+    .degree { grid-template-columns: minmax(0, 1fr); gap: 0.6rem; }
+    .degree-period { padding-top: 0; }
+    .honors ul { grid-template-columns: minmax(0, 1fr); }
+    .cert { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.1rem; }
+    .cert-issuer { grid-row: 2; }
+    .cert-year { grid-row: 1 / span 2; grid-column: 2; align-self: center; }
   }
 </style>

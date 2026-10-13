@@ -1,225 +1,117 @@
 ---
 import { t, ids, type Lang } from '../i18n/translations';
+import SectionHead from './SectionHead.astro';
 
 interface Props { lang?: Lang; }
 const { lang = 'es' } = Astro.props;
 
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const i = t(lang);
 const id = ids(lang);
+const s = i.sections.about;
 ---
 
 <section class="section" id={id.about}>
-  <div class="container">
-    <div class="about-layout">
-      <div class="about-content">
-        <span class="section-eyebrow reveal">{i.about.eyebrow}</span>
-        <h2 class="section-heading reveal reveal-delay-1">{i.about.heading} <span class="gradient-text">{i.about.headingAccent}</span></h2>
-        <div class="about-body reveal reveal-delay-2">
-          {i.about.body.map(p => <p set:html={p} />)}
-        </div>
+  <div class="wrap section-grid">
+    <SectionHead n={s.n} title={s.title} desc={s.desc}>
+      <dl class="facts reveal" style="--d: 0.15s">
+        {i.about.facts.map((f) => (
+          <div>
+            <dt class="mono">{f.k}</dt>
+            <dd>{f.v}</dd>
+          </div>
+        ))}
+      </dl>
+    </SectionHead>
 
-        <div class="about-logos reveal reveal-delay-3">
-          <a href="https://thenextpangea.com" target="_blank" rel="noopener" class="logo-link">
-            <img src={`${base}images/logo-tnp.png`} alt="TheNextPangea" />
-          </a>
-          <span class="logo-divider"></span>
-          <a href="https://www.uniovi.es" target="_blank" rel="noopener" class="logo-link logo-link-uniovi">
-            <img src={`${base}images/logo-uniovi.jpg`} alt="Universidad de Oviedo" />
-          </a>
-        </div>
-
-        <div class="about-skills reveal reveal-delay-4">
-          {i.about.skills.map(s => <span class="tag">{s}</span>)}
-        </div>
-
-        <div class="about-meta reveal reveal-delay-5">
-          <span class="meta-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-            {i.about.location}
-          </span>
-          <span class="meta-divider">·</span>
-          {i.about.languages.map((l, idx) => (
-            <>
-              <span class="meta-item">
-                {idx === 0 && <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>}
-                {l}
-              </span>
-              {idx < i.about.languages.length - 1 && <span class="meta-divider">·</span>}
-            </>
-          ))}
-        </div>
+    <div class="section-body">
+      <p class="lead prose reveal" set:html={i.about.lead} />
+      <div class="body prose">
+        {i.about.body.map((p, idx) => <p class="reveal" style={`--d: ${0.05 * idx}s`} set:html={p} />)}
       </div>
 
-      <div class="about-side">
-        <div class="about-photo reveal reveal-delay-2">
-          <div class="photo-glow"></div>
-          <img src={`${base}images/foto1.webp`} alt="Antonio Payá González" width="686" height="911" loading="lazy" decoding="async" />
-        </div>
-
-        <div class="about-numbers reveal reveal-delay-3">
-          {i.about.stats.map(s => (
-            <div class="number-item glass">
-              <span class="number-val">{s.value}</span>
-              <span class="number-label">{s.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <h3 class="focus-title mono reveal">{i.about.focusTitle}</h3>
+      <ol class="focus">
+        {i.about.focus.map((f, idx) => (
+          <li class="focus-item reveal" style={`--d: ${idx * 0.06}s`}>
+            <span class="focus-n mono">{String(idx + 1).padStart(2, '0')}</span>
+            <h4 class="focus-h">{f.title}</h4>
+            <p class="focus-d">{f.desc}</p>
+          </li>
+        ))}
+      </ol>
     </div>
   </div>
 </section>
 
 <style>
-  .about-layout {
+  .facts {
+    margin-top: 2.25rem;
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 4rem;
-    align-items: start;
+    gap: 1rem;
   }
 
-  .about-body p {
-    color: var(--text-2);
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
-    line-height: 1.85;
-    text-align: justify;
+  .facts dt { font-size: 0.66rem; color: var(--muted); margin-bottom: 0.15rem; }
+  .facts dd { font-size: 0.95rem; color: var(--ink-2); }
+
+  .lead {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 2.8vw, 2.35rem);
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    margin-bottom: 2rem;
   }
 
-  :global(.about-body strong) { color: var(--text); font-weight: 600; }
-  :global(.about-body em) { font-style: italic; color: var(--accent); }
-
-  .about-skills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
+  .lead :global(strong) {
+    font-weight: 400;
+    font-style: italic;
+    color: var(--accent);
   }
 
-  .about-meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    font-size: 0.82rem;
-    color: var(--text-3);
+  .body {
+    columns: 2;
+    column-gap: 2.5rem;
+    color: var(--ink-2);
   }
 
-  .meta-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
+  .body p { break-inside: avoid; margin-bottom: 1.1rem; }
+
+  .focus-title {
+    color: var(--muted);
+    font-size: 0.7rem;
+    margin: 3rem 0 0;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--ink);
   }
 
-  .meta-item svg { color: var(--accent); flex-shrink: 0; }
-
-  .meta-divider { color: var(--text-4); }
-
-  .about-logos {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-top: 2rem;
-    padding: 1.25rem 1.5rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--r-lg);
-    backdrop-filter: blur(20px);
+  .focus {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .logo-link {
-    display: flex;
-    align-items: center;
-    transition: opacity 0.3s var(--ease);
-    opacity: 0.7;
-  }
-
-  .logo-link:hover { opacity: 1; }
-
-  .logo-link img {
-    height: 28px;
-    width: auto;
-    object-fit: contain;
-  }
-
-  .logo-link-uniovi img {
-    height: 36px;
-    border-radius: 4px;
-  }
-
-  .logo-divider {
-    width: 1px;
-    height: 32px;
-    background: var(--border-2);
-    flex-shrink: 0;
-  }
-
-  .about-photo {
+  .focus-item {
+    padding: 1.4rem 1.5rem 1.5rem 0;
+    border-bottom: 1px solid var(--rule);
     position: relative;
-    border-radius: var(--r-xl);
-    overflow: hidden;
-    margin-bottom: 1.5rem;
   }
 
-  .photo-glow {
-    position: absolute;
-    inset: -2px;
-    background: var(--gradient);
-    border-radius: var(--r-xl);
-    opacity: 0.5;
-    z-index: -1;
-    filter: blur(15px);
-    transition: opacity 0.4s var(--ease);
+  .focus-item:nth-child(even) { padding-left: 1.5rem; border-left: 1px solid var(--rule); }
+
+  .focus-n { font-size: 0.66rem; color: var(--accent); }
+
+  .focus-h {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.1;
+    margin: 0.35rem 0 0.4rem;
   }
 
-  .about-photo:hover .photo-glow { opacity: 0.8; }
+  .focus-d { color: var(--muted); font-size: 0.95rem; }
 
-  .about-photo img {
-    width: 100%;
-    aspect-ratio: 4/3;
-    object-fit: cover;
-    border-radius: var(--r-xl);
-    border: 1px solid var(--border-2);
-    transition: transform 0.5s var(--ease);
-  }
-
-  .about-photo:hover img { transform: scale(1.02); }
-
-  .about-numbers {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-  }
-
-  .number-item {
-    padding: 1.25rem;
-    text-align: center;
-    border-radius: var(--r-lg);
-  }
-
-  .number-val {
-    display: block;
-    font-size: 1.8rem;
-    font-weight: 800;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1.2;
-  }
-
-  .number-label {
-    font-size: 0.72rem;
-    color: var(--text-4);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  @media (max-width: 768px) {
-    .about-layout { grid-template-columns: 1fr; gap: 2rem; }
-    .about-side { order: -1; }
+  @media (max-width: 720px) {
+    .body { columns: 1; }
+    .focus { grid-template-columns: minmax(0, 1fr); }
+    .focus-item:nth-child(even) { padding-left: 0; border-left: 0; }
   }
 </style>

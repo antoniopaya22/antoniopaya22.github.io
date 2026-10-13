@@ -1,127 +1,42 @@
 ---
-import { t, ids, type Lang } from '../i18n/translations';
+import { t, type Lang } from '../i18n/translations';
 
 interface Props { lang?: Lang; }
 const { lang = 'es' } = Astro.props;
 
 const i = t(lang);
-const id = ids(lang);
-const year = new Date().getFullYear();
+const now = new Date();
+const updated = now.toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-GB', { month: 'long', year: 'numeric' });
 ---
 
-<footer class="footer">
-  <div class="container">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="footer-logo">
-          <span class="logo-bracket">&lt;</span>Antonio<span class="logo-accent">Payá</span><span class="logo-bracket"> /&gt;</span>
-        </span>
-        <p class="footer-copy">{i.footer.copy}</p>
-      </div>
-
-      <nav class="footer-nav">
-        {i.footer.links.map(l => (
-          <a href={l.href}>{l.label}</a>
-        ))}
-      </nav>
-
-      <div class="footer-divider"></div>
-
-      <p class="footer-bottom">
-        &copy; {year} Antonio Payá González
-      </p>
-    </div>
+<footer class="ftr">
+  <div class="wrap ftr-inner">
+    <p class="ftr-name"><span class="serif">Antonio Payá González</span> <span class="ftr-role">— {i.footer.role}</span></p>
+    <p class="mono ftr-meta">© {now.getFullYear()} · {i.footer.updated} {updated}</p>
+    <a href="#" class="mono ftr-top">{i.footer.top} ↑</a>
   </div>
 </footer>
 
 <style>
-  .footer {
-    border-top: 1px solid var(--border);
-    padding: 3rem 0 2rem;
-    background: var(--bg-2);
-    position: relative;
+  .ftr {
+    background: var(--ink);
+    color: color-mix(in srgb, var(--paper) 65%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
   }
 
-  .footer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200px;
-    height: 1px;
-    background: var(--gradient);
-  }
-
-  .footer-inner {
+  .ftr-inner {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.25rem;
-    text-align: center;
-  }
-
-  .footer-logo {
-    font-family: var(--mono);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .logo-bracket { color: var(--text-4); font-weight: 400; }
-  .logo-accent {
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .footer-copy {
-    font-size: 0.8rem;
-    color: var(--text-4);
-    margin-top: 0.2rem;
-  }
-
-  .footer-nav {
-    display: flex;
-    gap: 1.5rem;
     flex-wrap: wrap;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 
-  .footer-nav a {
-    font-size: 0.82rem;
-    color: var(--text-4);
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s var(--ease);
-    position: relative;
-  }
-
-  .footer-nav a::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--gradient);
-    transition: width 0.3s var(--ease);
-  }
-
-  .footer-nav a:hover { color: var(--accent); }
-  .footer-nav a:hover::after { width: 100%; }
-
-  .footer-divider {
-    width: 60px;
-    height: 1px;
-    background: var(--border-2);
-  }
-
-  .footer-bottom {
-    font-size: 0.75rem;
-    color: var(--text-4);
-  }
-
-
+  .ftr-name .serif { font-size: 1.15rem; color: var(--paper); }
+  .ftr-role { font-size: 0.88rem; }
+  .ftr-meta, .ftr-top { font-size: 0.64rem; }
+  .ftr-top { color: var(--paper); transition: color 0.2s; }
+  .ftr-top:hover { color: var(--accent); }
 </style>

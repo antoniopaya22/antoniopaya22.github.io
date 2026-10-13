@@ -1,5 +1,6 @@
 ---
 import { t, ids, type Lang } from '../i18n/translations';
+import SectionHead from './SectionHead.astro';
 
 interface Props { lang?: Lang; }
 const { lang = 'es' } = Astro.props;
@@ -7,173 +8,148 @@ const { lang = 'es' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const i = t(lang);
 const id = ids(lang);
-const jobs = i.experience.jobs;
+const s = i.sections.experience;
 ---
 
 <section class="section" id={id.experience}>
-  <div class="container">
-    <span class="section-eyebrow reveal">{i.experience.eyebrow}</span>
-    <h2 class="section-heading reveal reveal-delay-1">{i.experience.heading} <span class="gradient-text">{i.experience.headingAccent}</span></h2>
-    <p class="section-desc reveal reveal-delay-2">{i.experience.desc}</p>
+  <div class="wrap section-grid">
+    <SectionHead n={s.n} title={s.title} desc={s.desc} />
 
-    <div class="timeline">
-      {jobs.map((job, idx) => (
-        <div class={`tl-item reveal reveal-delay-${Math.min(idx + 1, 4)}`}>
-          <div class="tl-dot-col">
-            <div class={`tl-dot ${job.current ? 'tl-dot-active' : ''}`}></div>
-            {idx < jobs.length - 1 && <div class="tl-line"></div>}
+    <ol class="section-body jobs">
+      {i.experience.jobs.map((job) => (
+        <li class:list={['job reveal', { current: job.current }]}>
+          <div class="job-when">
+            <span class="mono job-period">{job.period}</span>
+            {job.current && <span class="mono job-now"><span class="now-dot" aria-hidden="true"></span>{i.experience.current}</span>}
           </div>
 
-          <div class="tl-card glass">
-            <div class="tl-top">
-              <div class="tl-top-text">
-                {job.logo && (
-                  <div class={`tl-logo ${job.logoDark ? 'tl-logo-dark' : ''}`}>
-                    <img src={`${base}images/${job.logo}`} alt={job.company} />
-                  </div>
-                )}
-                <div>
-                  <h3 class="tl-role">{job.role}</h3>
-                  <p class="tl-company">{job.company} <span class="tl-type">· {job.type}</span></p>
-                </div>
+          <div class="job-main">
+            <div class="job-head">
+              <div class:list={['job-logo', { 'on-dark': job.logoOnDark }]}>
+                <img src={`${base}images/${job.logo}`} alt="" width="72" height="48" loading="lazy" decoding="async" />
               </div>
-              <span class={`tl-period ${job.current ? 'tl-current' : ''}`}>
-                {job.current && <span class="dot-pulse"></span>}
-                {job.period}
-              </span>
+              <div>
+                <h3 class="job-role">{job.role}</h3>
+                <p class="job-company">{job.company} <span class="job-type">· {job.type}</span></p>
+              </div>
             </div>
-            <p class="tl-desc">{job.desc}</p>
-            <div class="tl-tags">
-              {job.tags.map(tag => <span class="tag">{tag}</span>)}
+
+            <ul class="job-points">
+              {job.points.map((p) => <li>{p}</li>)}
+            </ul>
+
+            <div class="job-tags">
+              {job.tags.map((tag) => <span class="tag">{tag}</span>)}
             </div>
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ol>
   </div>
 </section>
 
 <style>
-  .timeline { display: flex; flex-direction: column; }
+  .jobs { list-style: none; border-top: 1px solid var(--ink); }
 
-  .tl-item { display: flex; gap: 1.5rem; }
+  .job {
+    position: relative;
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
 
-  .tl-dot-col {
-    display: flex;
-    flex-direction: column;
+  .job::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -1px;
+    height: 2px;
+    width: 0;
+    background: var(--accent);
+    transition: width 0.6s var(--ease);
+  }
+
+  .job:hover::before { width: 100%; }
+
+  .job-when { display: flex; flex-direction: column; gap: 0.5rem; padding-top: 0.3rem; }
+
+  .job-period { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.04em; }
+
+  .job-now {
+    display: inline-flex;
     align-items: center;
-    padding-top: 1.5rem;
+    gap: 0.45rem;
+    font-size: 0.66rem;
+    color: var(--accent);
   }
 
-  .tl-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--bg-3);
-    border: 2px solid var(--text-4);
-    flex-shrink: 0;
-    transition: all 0.3s var(--ease);
-  }
+  .now-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 
-  .tl-dot-active {
-    background: var(--emerald);
-    border-color: var(--emerald);
-    box-shadow: 0 0 12px rgba(52, 211, 153, 0.5), 0 0 24px rgba(52, 211, 153, 0.2);
-    animation: pulse-glow 2s ease-in-out infinite;
-  }
+  .job-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
 
-  .tl-line {
-    width: 2px;
-    flex: 1;
-    background: linear-gradient(180deg, var(--border-2), transparent);
-  }
-
-  .tl-card {
-    flex: 1;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    border-radius: var(--r-lg);
-  }
-
-  .tl-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    gap: 1rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .tl-top-text {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .tl-logo {
-    width: 80px;
+  .job-logo {
+    width: 72px;
     height: 48px;
-    border-radius: var(--r-md);
-    border: 1px solid var(--border);
-    background: rgba(30, 30, 40, 0.85);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
-    padding: 8px 10px;
-    overflow: hidden;
+    display: grid;
+    place-items: center;
+    padding: 7px 9px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
   }
 
-  .tl-logo-dark {
-    background: rgba(255, 255, 255, 0.95);
-    border-color: rgba(200, 200, 200, 0.3);
-  }
-
-  .tl-logo img {
+  .job-logo img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    filter: grayscale(1);
+    transition: filter 0.4s var(--ease);
   }
 
-  .tl-role { font-size: 1rem; font-weight: 700; color: var(--text); }
+  .job:hover .job-logo img { filter: none; }
 
-  .tl-company { font-size: 0.85rem; color: var(--accent); margin-top: 0.2rem; }
+  .job-logo.on-dark { background: #141410; border-color: #141410; }
 
-  .tl-type { color: var(--text-4); }
-
-  .tl-period {
-    font-size: 0.75rem;
-    font-family: var(--mono);
-    color: var(--text-4);
-    white-space: nowrap;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+  .job-role {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.6rem, 2.4vw, 2rem);
+    line-height: 1.05;
   }
 
-  .tl-current { color: var(--accent); }
+  .job-company { font-size: 0.95rem; font-weight: 500; color: var(--ink-2); margin-top: 0.2rem; }
+  .job-type { color: var(--muted); font-weight: 400; }
 
-  .dot-pulse {
-    width: 7px;
-    height: 7px;
+  .job-points {
+    list-style: none;
+    color: var(--ink-2);
+    margin-bottom: 1.1rem;
+    max-width: 62ch;
+  }
+
+  .job-points li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .job-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 0.6rem;
+    height: 1px;
     background: var(--accent);
-    border-radius: 50%;
-    animation: pulse-glow 2s ease-in-out infinite;
-    box-shadow: 0 0 6px rgba(129, 140, 248, 0.5);
   }
 
-  .tl-desc {
-    font-size: 0.88rem;
-    color: var(--text-3);
-    line-height: 1.7;
-    margin-bottom: 0.75rem;
-  }
+  .job-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 
-  .tl-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-
-  @media (max-width: 768px) {
-    .tl-dot-col { display: none; }
-    .tl-top { flex-direction: column; gap: 0.25rem; }
-    .tl-card { border-left: 3px solid var(--accent); }
+  @media (max-width: 640px) {
+    .job { grid-template-columns: minmax(0, 1fr); gap: 0.9rem; }
+    .job-when { flex-direction: row; align-items: center; gap: 1rem; padding-top: 0; }
   }
 </style>

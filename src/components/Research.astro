@@ -1,0 +1,170 @@
+---
+import { t, ids, type Lang } from '../i18n/translations';
+import { publications, profiles } from '../data/site';
+import SectionHead from './SectionHead.astro';
+
+interface Props { lang?: Lang; }
+const { lang = 'es' } = Astro.props;
+
+const i = t(lang);
+const id = ids(lang);
+const s = i.sections.research;
+const academic = profiles.filter((p) => ['Google Scholar', 'ORCID', 'ResearchGate'].includes(p.label));
+---
+
+<section class="section" id={id.research}>
+  <div class="wrap section-grid">
+    <SectionHead n={s.n} title={s.title} desc={s.desc}>
+      <ul class="r-metrics reveal" style="--d: 0.15s">
+        {i.research.metrics.map((m) => (
+          <li>
+            <span class="r-v">{m.value}</span>
+            <span class="mono r-l">{m.label}</span>
+          </li>
+        ))}
+      </ul>
+      <ul class="r-profiles reveal" style="--d: 0.2s">
+        {academic.map((p) => (
+          <li><a class="link" href={p.href} target="_blank" rel="noopener noreferrer">{p.label}</a></li>
+        ))}
+      </ul>
+    </SectionHead>
+
+    <div class="section-body">
+      <blockquote class="thesis reveal">
+        <span class="mono thesis-l">{i.research.thesisLabel}</span>
+        <p>{i.research.thesis}</p>
+      </blockquote>
+
+      <h3 class="list-title mono reveal">{i.research.pubsTitle}</h3>
+      <ol class="pubs">
+        {publications.map((p, idx) => (
+          <li class="reveal" style={`--d: ${idx * 0.05}s`}>
+            <a class="pub" href={p.url} target="_blank" rel="noopener noreferrer">
+              <span class="pub-year mono">{p.year}</span>
+              <span class="pub-body">
+                <span class="pub-title">{p.title}</span>
+                <span class="pub-venue"><em>{p.journal}</em> · {p.publisher}</span>
+                <span class="pub-tags">{p.tags.map((tag) => <span class="tag">{tag}</span>)}</span>
+              </span>
+              <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+            </a>
+          </li>
+        ))}
+      </ol>
+
+      <h3 class="list-title mono reveal">{i.research.articlesTitle}</h3>
+      <ul class="arts">
+        {i.research.articles.map((a) => (
+          <li class="reveal">
+            <a class="art" href={a.url} target="_blank" rel="noopener noreferrer">
+              <span class="art-title">{a.title}</span>
+              <span class="art-meta mono">{a.venue} · {a.year}</span>
+              <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .r-metrics {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 2.25rem 0 1.5rem;
+  }
+
+  .r-metrics li { display: flex; flex-direction: column; gap: 0.2rem; }
+  .r-v { font-family: var(--serif); font-size: 2.75rem; line-height: 0.9; }
+  .r-l { font-size: 0.62rem; color: var(--muted); }
+
+  .r-profiles {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+    font-size: 0.92rem;
+  }
+
+  .thesis {
+    position: relative;
+    padding: 1.6rem 1.75rem;
+    background: var(--paper-2);
+    border-left: 2px solid var(--accent);
+    margin-bottom: 3rem;
+  }
+
+  .thesis-l { display: block; font-size: 0.66rem; color: var(--accent); margin-bottom: 0.6rem; }
+
+  .thesis p {
+    font-family: var(--serif);
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    line-height: 1.3;
+  }
+
+  .list-title {
+    color: var(--muted);
+    font-size: 0.7rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--ink);
+  }
+
+  .pubs { list-style: none; margin-bottom: 3rem; }
+
+  .pub {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr) auto;
+    gap: 1.25rem;
+    align-items: start;
+    padding: 1.5rem 0.25rem;
+    border-bottom: 1px solid var(--rule);
+    transition: background-color 0.35s var(--ease), padding 0.35s var(--ease);
+  }
+
+  .pub:hover { background: var(--accent-soft); padding-left: 1rem; padding-right: 1rem; }
+
+  .pub-year { font-size: 0.75rem; color: var(--accent); padding-top: 0.4rem; }
+
+  .pub-body { display: flex; flex-direction: column; gap: 0.45rem; }
+
+  .pub-title {
+    font-family: var(--serif);
+    font-size: clamp(1.25rem, 1.9vw, 1.5rem);
+    line-height: 1.2;
+  }
+
+  .pub-venue { font-size: 0.92rem; color: var(--muted); }
+  .pub-venue em { font-style: italic; color: var(--ink-2); }
+
+  .pub-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+
+  .pub .arrow, .art .arrow { color: var(--muted); margin-top: 0.35rem; }
+  .pub:hover .arrow, .art:hover .arrow { color: var(--accent); transform: translate(3px, -3px); }
+
+  .arts { list-style: none; }
+
+  .art {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .art-title { font-weight: 500; transition: color 0.2s; }
+  .art:hover .art-title { color: var(--accent); }
+  .art-meta { font-size: 0.66rem; color: var(--muted); white-space: nowrap; }
+  .art .arrow { margin-top: 0; align-self: center; }
+
+  @media (max-width: 640px) {
+    .pub { grid-template-columns: minmax(0, 1fr) auto; gap: 0.75rem; }
+    .pub-year { grid-column: 1 / -1; padding-top: 0; }
+    .art { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.2rem; }
+    .art-meta { grid-row: 2; }
+    .art .arrow { grid-row: 1 / span 2; grid-column: 2; }
+  }
+</style>

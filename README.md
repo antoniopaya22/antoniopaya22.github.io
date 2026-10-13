@@ -7,6 +7,7 @@ Personal website of **Antonio Payá González** — Software Architect at TheNex
 ## Stack
 
 - [Astro](https://astro.build) static site, bilingual (ES/EN) via `src/i18n/translations.ts`
+- Editorial design: Instrument Serif, Schibsted Grotesk and IBM Plex Mono; light/dark themes
 - SEO: JSON-LD (`Person`, `WebSite`), Open Graph, hreflang, sitemap
 - Deployed to GitHub Pages with GitHub Actions on every push to `master`
 
@@ -24,7 +25,8 @@ Requires Node.js 22.12+.
 
 ```
 src/
-├── components/   # page sections (Hero, About, Experience, Teaching, ...)
+├── components/   # page sections (Hero, About, Experience, Teaching, Research, ...)
+├── data/         # language-independent data (publications, profiles)
 ├── i18n/         # all copy in Spanish and English
 ├── layouts/      # base layout, meta tags and structured data
 └── pages/        # / (es) and /en/

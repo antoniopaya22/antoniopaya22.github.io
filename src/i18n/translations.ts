@@ -2,202 +2,207 @@ export type Lang = 'es' | 'en';
 
 export const translations = {
   es: {
-    // Layout
-    layout: {
+    meta: {
       title: 'Antonio Payá González — Arquitecto de Software, Profesor en UNIR & PhD',
-      description: 'Antonio Payá González — Software Architect & PhD',
+      description: 'Antonio Payá González — Arquitecto de Software en TheNextPangea, profesor en UNIR (Grado y Máster en Ciberseguridad) y Doctor en Ingeniería Informática por la Universidad de Oviedo. Especialista en ciberseguridad, Zero Trust, cloud e IA.',
+      skip: 'Saltar al contenido',
     },
 
-    // Header
     header: {
-      links: [
-        { href: '#sobre-mi', label: 'Sobre mí' },
-        { href: '#experiencia', label: 'Experiencia' },
-        { href: '#docencia', label: 'Docencia' },
-        { href: '#educacion', label: 'Educación' },
-        { href: '#skills', label: 'Skills' },
-        { href: '#publicaciones', label: 'Publicaciones' },
-        { href: '#premios', label: 'Premios' },
-        { href: '#contacto', label: 'Contacto' },
-      ],
+      home: 'Inicio',
+      menu: 'Menú',
+      close: 'Cerrar',
+      theme: 'Cambiar tema claro/oscuro',
+      switchLang: 'Read in English',
     },
 
-    // Hero
     hero: {
-      badge: 'Disponible para colaboraciones',
-      role: 'Software Architect · Profesor en UNIR · PhD en Ingeniería Informática',
-      intro: '<strong>Arquitecto de Software</strong> en TheNextPangea, <strong>profesor</strong> en la Universidad Internacional de La Rioja (UNIR) y <strong>PhD en Ingeniería Informática</strong> por la Universidad de Oviedo. Especializado en ciberseguridad, Zero Trust, arquitecturas cloud e inteligencia artificial.',
+      kicker: 'Arquitecto de Software · Profesor · Investigador',
+      status: 'Abierto a colaboraciones',
+      statement: 'Diseño software que <em>escala</em>, enseño a <em>protegerlo</em> e investigo cómo hacerlo más <em>seguro</em>.',
+      intro: 'Arquitecto de Software en TheNextPangea, profesor en la Universidad Internacional de La Rioja (UNIR) y Doctor en Ingeniería Informática por la Universidad de Oviedo.',
       ctaPrimary: 'Contactar',
-      ctaSecondary: 'Publicaciones',
-      scroll: 'Scroll',
-    },
-
-    // About
-    about: {
-      eyebrow: 'Sobre mí',
-      heading: 'Un poco sobre mi',
-      headingAccent: 'historia',
-      body: [
-        'Mi nombre es Antonio Payá González. Soy <strong>Arquitecto de Software</strong> en TheNextPangea S.L., <strong>profesor</strong> en la Universidad Internacional de La Rioja (UNIR) y <strong>PhD en Ingeniería Informática</strong> por la Universidad de Oviedo, con línea de investigación en Ingeniería del Software.',
-        'Desde septiembre de 2026 imparto docencia en UNIR en el <strong>Grado en Ciberseguridad</strong>, el <strong>Máster Universitario en Ciberseguridad</strong> y el <strong>Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas</strong>, trasladando a las aulas mi experiencia en la industria y en investigación.',
-        'En mi día a día profesional, me especializo en el diseño de soluciones de software escalables que integran <em>Inteligencia Artificial</em> en entornos de producción. Cuento con amplia experiencia en arquitecturas cloud multiplataforma (<strong>AWS, Azure y GCP</strong>) y en la automatización de despliegues mediante <em>Infraestructura como Código</em> (IaC) con Terraform.',
-        'En el ámbito investigador, mi tesis doctoral se centra en mejorar los <em>Software-Defined Perimeters</em> (SDP) integrando sistemas de detección de intrusiones y optimizando la gestión de identidades. Desarrollo configuraciones de seguridad automatizadas y mejoro la resiliencia de IDS frente a ataques de <em>Adversarial Machine Learning</em>.',
-        'También soy escritor y editor de <a href="https://medium.com/better-programming" target="_blank" rel="noopener" class="animated-link">Better Programming</a> y <a href="https://medium.com/coinmonks" target="_blank" rel="noopener" class="animated-link">Coinmonks</a> en Medium.',
+      ctaCv: 'Descargar CV',
+      figure: 'Fig. 01 — Antonio Payá González',
+      spec: [
+        { k: 'Actualmente', v: 'Arquitecto de Software', s: 'TheNextPangea' },
+        { k: 'Docencia', v: 'Profesor', s: 'UNIR — desde 2026' },
+        { k: 'Doctorado', v: 'PhD Ing. Informática', s: 'Universidad de Oviedo' },
+        { k: 'Investigación', v: 'SDP · Zero Trust', s: 'IDS · Adversarial ML' },
       ],
-      skills: ['Software Architecture', 'Ciberseguridad', 'Zero Trust', 'Cloud', 'IA / Machine Learning', 'Docencia universitaria'],
-      stats: [
-        { value: '5', label: 'Publicaciones' },
+      metrics: [
+        { value: '5', label: 'Publicaciones JCR' },
         { value: '200+', label: 'Citas' },
-        { value: '8', label: 'Matrículas Honor' },
+        { value: '8+', label: 'Años de experiencia' },
+        { value: '3', label: 'Titulaciones en UNIR' },
         { value: '2', label: 'Hackathons ganados' },
       ],
-      location: 'Gijón, Asturias, España',
-      languages: ['Español (Nativo)', 'Inglés (Profesional)'],
     },
 
-    // Experience
+    sections: {
+      about: { n: '01', title: 'Perfil', desc: 'Entre la industria, la universidad y la investigación.' },
+      experience: { n: '02', title: 'Experiencia', desc: 'Más de 8 años en arquitectura de software, investigación y docencia.' },
+      teaching: { n: '03', title: 'Docencia', desc: 'Profesor en UNIR desde septiembre de 2026, en titulaciones oficiales de grado y máster.' },
+      research: { n: '04', title: 'Investigación', desc: 'Publicaciones en revistas internacionales JCR (Q1 & Q2).' },
+      education: { n: '05', title: 'Formación', desc: 'Del grado al doctorado, con 8 matrículas de honor.' },
+      skills: { n: '06', title: 'Competencias', desc: 'Stack técnico con el que diseño, construyo y despliego.' },
+      awards: { n: '07', title: 'Premios', desc: 'Hackathons, competiciones y festivales internacionales.' },
+      contact: { n: '08', title: 'Contacto', desc: 'Investigación, arquitectura, charlas o docencia.' },
+    },
+
+    about: {
+      lead: 'Soy <strong>Arquitecto de Software</strong> en TheNextPangea, <strong>profesor</strong> en UNIR y <strong>PhD en Ingeniería Informática</strong> por la Universidad de Oviedo, con línea de investigación en Ingeniería del Software.',
+      body: [
+        'En la industria diseño soluciones escalables que llevan la <em>Inteligencia Artificial</em> a producción, sobre arquitecturas cloud en AWS, Azure y GCP y con la infraestructura automatizada mediante Terraform.',
+        'Mi tesis doctoral mejora los <em>Software-Defined Perimeters</em> integrando sistemas de detección de intrusiones y gestión de identidades, y refuerza los IDS frente a ataques de <em>Adversarial Machine Learning</em>.',
+        'Desde septiembre de 2026 imparto docencia en UNIR en el Grado en Ciberseguridad, el Máster Universitario en Ciberseguridad y el Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas. También escribo y edito en <a href="https://medium.com/better-programming" target="_blank" rel="noopener">Better Programming</a> y <a href="https://medium.com/coinmonks" target="_blank" rel="noopener">Coinmonks</a>.',
+      ],
+      focusTitle: 'Áreas de foco',
+      focus: [
+        { title: 'Arquitectura & Cloud', desc: 'Sistemas distribuidos en AWS, Azure y GCP. IaC con Terraform.' },
+        { title: 'Ciberseguridad & Zero Trust', desc: 'SDP, IDS y Security by Design.' },
+        { title: 'IA en producción', desc: 'MLOps, productivización de modelos y Adversarial ML.' },
+        { title: 'Docencia universitaria', desc: 'Ciberseguridad y transformación digital en UNIR.' },
+      ],
+      facts: [
+        { k: 'Ubicación', v: 'Gijón, Asturias, España' },
+        { k: 'Idiomas', v: 'Español (nativo) · Inglés (profesional)' },
+      ],
+    },
+
     experience: {
-      eyebrow: 'Experiencia',
-      heading: 'Trayectoria',
-      headingAccent: 'profesional',
-      desc: 'Más de 8 años de experiencia en arquitectura de software, investigación y docencia universitaria.',
+      current: 'Actual',
       jobs: [
         {
           role: 'Profesor',
           company: 'UNIR — Universidad Internacional de La Rioja',
           type: 'Docencia universitaria',
           period: 'Sept 2026 — Actualidad',
-          desc: 'Profesor en el Grado en Ciberseguridad, el Máster Universitario en Ciberseguridad y el Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas.',
-          tags: ['Docencia', 'Ciberseguridad', 'Transformación Digital', 'Tecnologías Disruptivas'],
+          points: [
+            'Grado en Ciberseguridad.',
+            'Máster Universitario en Ciberseguridad.',
+            'Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas.',
+          ],
+          tags: ['Docencia', 'Ciberseguridad', 'Transformación Digital'],
           current: true,
           logo: 'logo-unir.png',
-          logoDark: true,
+          logoOnDark: false,
         },
         {
           role: 'Arquitecto de Software',
           company: 'TheNextPangea S.L.',
           type: 'Jornada completa',
           period: 'Sept 2021 — Actualidad',
-          desc: 'Definición de metodologías de desarrollo (SDLC) y stacks tecnológicos. Diseño de arquitecturas cloud escalables en AWS, Azure y GCP. Productivización de modelos de IA en entornos de producción. Automatización de infraestructura con Terraform (IaC). Aplicación de Security by Design.',
+          points: [
+            'Definición de metodologías de desarrollo (SDLC) y stacks tecnológicos.',
+            'Diseño de arquitecturas cloud escalables en AWS, Azure y GCP.',
+            'Productivización de modelos de IA en entornos de producción.',
+            'Automatización de infraestructura con Terraform (IaC) y Security by Design.',
+          ],
           tags: ['Architecture', 'Cloud', 'AI/ML', 'Terraform', 'Security'],
           current: true,
           logo: 'logo-tnp.png',
-          logoDark: false,
+          logoOnDark: true,
         },
         {
           role: 'Ingeniero I+D de Software',
           company: 'Icube SL',
           type: 'Jornada completa',
           period: 'Oct 2019 — Sept 2021',
-          desc: 'Técnico en investigación y desarrollo en técnicas de additive manufacturing. Colaboración con ArcelorMittal R&D.',
+          points: ['Investigación y desarrollo en técnicas de additive manufacturing en colaboración con ArcelorMittal R&D.'],
           tags: ['R&D', 'Additive Manufacturing'],
           current: false,
-          logo: 'logo-icube.webp',
-          logoDark: true,
+          logo: 'logo-icube-trim.webp',
+          logoOnDark: false,
         },
         {
           role: 'Investigador en Blockchain',
           company: 'Fundación Universidad de Oviedo',
           type: 'Beca',
           period: 'Abr 2018 — Ago 2019',
-          desc: 'Investigación en tecnologías Blockchain y su impacto en el mercado, centradas en Hyperledger Fabric.',
+          points: ['Investigación en tecnologías blockchain y su impacto en el mercado, centrada en Hyperledger Fabric.'],
           tags: ['Blockchain', 'Hyperledger', 'Research'],
           current: false,
-          logo: 'logo-uniovi.jpg',
-          logoDark: false,
+          logo: 'logo-uniovi-crest.webp',
+          logoOnDark: false,
         },
         {
           role: 'Junior Software Developer',
           company: 'ArcelorMittal',
           type: 'Prácticas',
           period: 'Ene 2019 — Mar 2019',
-          desc: 'Despliegue de Blockchain en entorno industrial real. Smart contracts y tecnologías DLT.',
+          points: ['Despliegue de blockchain en un entorno industrial real: smart contracts y tecnologías DLT.'],
           tags: ['DLT', 'Smart Contracts', 'Hyperledger Fabric'],
           current: false,
-          logo: 'logo-arcelormittal.png',
-          logoDark: true,
+          logo: 'logo-arcelormittal-trim.png',
+          logoOnDark: false,
         },
       ],
     },
 
-    // Teaching
     teaching: {
-      eyebrow: 'Docencia',
-      heading: 'Docencia',
-      headingAccent: 'universitaria',
-      desc: 'Profesor en la Universidad Internacional de La Rioja (UNIR) desde septiembre de 2026, en titulaciones oficiales de grado y máster.',
       institution: 'UNIR — Universidad Internacional de La Rioja',
+      since: 'Desde septiembre de 2026',
       linkLabel: 'Ver titulación',
       programs: [
-        {
-          level: 'Grado',
-          title: 'Grado en Ciberseguridad',
-          meta: 'Titulación oficial · 240 ECTS',
-          url: 'https://www.unir.net/ingenieria/grado-ciberseguridad/',
-          icon: 'shield',
-        },
-        {
-          level: 'Máster',
-          title: 'Máster Universitario en Ciberseguridad',
-          meta: 'Titulación oficial · 60 ECTS',
-          url: 'https://www.unir.net/ingenieria/master-seguridad-informatica/',
-          icon: 'lock',
-        },
-        {
-          level: 'Máster',
-          title: 'Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas',
-          meta: 'Titulación oficial · 60 ECTS',
-          url: 'https://www.unir.net/ingenieria/master-transformacion-digital-tecnologias-disruptivas/',
-          icon: 'cpu',
-        },
+        { level: 'Grado', title: 'Grado en Ciberseguridad', meta: 'Oficial · 240 ECTS', url: 'https://www.unir.net/ingenieria/grado-ciberseguridad/' },
+        { level: 'Máster', title: 'Máster Universitario en Ciberseguridad', meta: 'Oficial · 60 ECTS', url: 'https://www.unir.net/ingenieria/master-seguridad-informatica/' },
+        { level: 'Máster', title: 'Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas', meta: 'Oficial · 60 ECTS', url: 'https://www.unir.net/ingenieria/master-transformacion-digital-tecnologias-disruptivas/' },
       ],
       note: 'Abierto a charlas, seminarios y colaboraciones académicas en ciberseguridad, Zero Trust, arquitectura cloud e IA.',
     },
 
-    // Education
+    research: {
+      thesisLabel: 'Tesis doctoral',
+      thesis: 'Mejora de los Software-Defined Perimeters mediante la integración de sistemas de detección de intrusiones, gestión de identidades y defensa frente a Adversarial Machine Learning.',
+      metrics: [
+        { value: '5', label: 'Artículos JCR' },
+        { value: '200+', label: 'Citas' },
+        { value: '4', label: 'Índice h' },
+      ],
+      pubsTitle: 'Artículos en revistas',
+      articlesTitle: 'Divulgación técnica',
+      articles: [
+        { title: 'Creando una API Rest lista para producción con Go', venue: 'Medium', year: 2020, url: 'https://medium.com/@antonioalfa22/creando-una-api-rest-lista-para-producci%C3%B3n-con-go-d4ae6af08a1f' },
+        { title: 'How to Develop Safer Applications in Node.js', venue: 'Better Programming', year: 2020, url: 'https://medium.com/better-programming/developing-safer-applications-in-nodejs-f645788f9c65' },
+        { title: 'Blockchain Frameworks (serie de 4 partes)', venue: 'Coinmonks', year: 2020, url: 'https://medium.com/coinmonks/blockchain-frameworks-part-1-introduction-307846125c71' },
+        { title: 'Creando una API Rest con Hyperledger Fabric', venue: 'Medium', year: 2018, url: 'https://medium.com/@antonioalfa22/creando-una-api-rest-con-hyperledger-fabric-e22675f97e98' },
+      ],
+    },
+
     education: {
-      eyebrow: 'Educación',
-      heading: 'Formación',
-      headingAccent: 'académica',
-      desc: 'Desde el grado hasta el doctorado, con 8 matrículas de honor en el camino.',
       honorsLabel: 'Matrículas de Honor',
-      certsHeading: 'Certificaciones',
+      certsTitle: 'Certificaciones',
       degrees: [
         {
-          title: 'Doctorado (PhD) en Ingeniería Informática',
+          title: 'Doctorado en Ingeniería Informática',
           school: 'Universidad de Oviedo',
           period: '2021 — 2025',
-          desc: 'Tesis centrada en Software-Defined Perimeter, Intrusion Detection Systems y Adversarial Machine Learning.',
+          desc: 'Tesis sobre Software-Defined Perimeter, Intrusion Detection Systems y Adversarial Machine Learning.',
           honors: [] as string[],
-          current: false,
-          logo: 'logo-uniovi.jpg',
         },
         {
           title: 'Máster en Ingeniería Web',
           school: 'Universidad de Oviedo',
           period: '2019 — 2021',
-          desc: 'Especialización en desarrollo web avanzado y arquitecturas modernas.',
-          honors: ['Trabajo Fin de Máster — Matrícula de Honor'],
-          current: false,
-          logo: 'logo-uniovi.jpg',
+          desc: 'Desarrollo web avanzado y arquitecturas modernas.',
+          honors: ['Trabajo Fin de Máster'],
         },
         {
           title: 'Grado en Ingeniería del Software',
           school: 'Universidad de Oviedo',
           period: '2015 — 2019',
-          desc: 'Formación sólida en ingeniería del software, algoritmos, bases de datos y sistemas distribuidos.',
+          desc: 'Ingeniería del software, algoritmos, bases de datos y sistemas distribuidos. Proyecto Fin de Grado: 10/10.',
           honors: [
             'Administración de SO y Redes',
             'Computabilidad',
-            'Proyecto Fin de Grado — 10 sobre 10',
+            'Proyecto Fin de Grado',
             'Prácticas en Empresa',
             'Sistemas Distribuidos e Internet',
             'Sistemas Operativos',
             'Software para Robots',
             'Tecnología y Paradigmas de la Programación',
           ],
-          current: false,
-          logo: 'logo-uniovi.jpg',
         },
       ],
       certs: [
@@ -210,280 +215,247 @@ export const translations = {
       ],
     },
 
-    // Skills
     skills: {
-      eyebrow: 'Skills',
-      heading: 'Competencias',
-      headingAccent: 'técnicas',
-      desc: 'Cloud, arquitectura, desarrollo full stack y ciberseguridad.',
       groups: [
-        { label: 'Cloud & DevOps', icon: 'cloud', techs: ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform', 'Ansible', 'CI/CD', 'MLOps'] },
-        { label: 'Arquitectura de Software', icon: 'blocks', techs: ['Microservices', 'DDD', 'Event-Driven', 'REST', 'GraphQL', 'gRPC'] },
-        { label: 'Frontend', icon: 'monitor', techs: ['Astro', 'Angular', 'React', 'TypeScript', 'Tailwind', 'Vue'] },
-        { label: 'Backend', icon: 'zap', techs: ['.NET Core', 'Python', 'Go', 'Rust', 'Node.js', 'Spring'] },
-        { label: 'Aplicaciones de Escritorio', icon: 'laptop', techs: ['Tauri', 'Electron'] },
-        { label: 'Machine Learning / IA', icon: 'brain', techs: ['Scikit-learn', 'TensorFlow', 'PyTorch', 'Adversarial ML', 'MLOps'] },
-        { label: 'Blockchain', icon: 'link', techs: ['Hyperledger Fabric', 'Solidity', 'Smart Contracts', 'DLT'] },
-        { label: 'Ciberseguridad', icon: 'shield', techs: ['SDP', 'Zero Trust', 'IDS / IPS', 'Pentesting'] },
-      ],
-      toolsHeading: 'Herramientas & Plataformas',
-      tools: ['Git', 'PostgreSQL', 'MongoDB', 'Redis', 'Linux', 'Nginx', 'RabbitMQ', 'Kafka', 'Figma'],
-    },
-
-    // Publications
-    publications: {
-      eyebrow: 'Publicaciones',
-      heading: 'Artículos en revistas',
-      headingAccent: 'JCR',
-      desc: 'Investigación publicada en revistas internacionales de alto impacto (Q1 & Q2).',
-      stats: [
-        { value: '5', label: 'Publicaciones', icon: 'file-text' },
-        { value: '200+', label: 'Citas', icon: 'bar-chart' },
-        { value: '1.1K+', label: 'Lecturas', icon: 'eye' },
+        { label: 'Cloud & DevOps', items: ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform', 'Ansible', 'CI/CD'] },
+        { label: 'Arquitectura', items: ['Microservicios', 'DDD', 'Event-Driven', 'REST', 'GraphQL', 'gRPC'] },
+        { label: 'Ciberseguridad', items: ['Zero Trust', 'SDP', 'IDS / IPS', 'Hardening', 'Pentesting'] },
+        { label: 'IA / ML', items: ['scikit-learn', 'TensorFlow', 'PyTorch', 'Adversarial ML', 'MLOps'] },
+        { label: 'Backend', items: ['.NET', 'Python', 'Go', 'Rust', 'Node.js', 'Spring'] },
+        { label: 'Frontend & Desktop', items: ['TypeScript', 'Astro', 'Angular', 'React', 'Vue', 'Tauri'] },
+        { label: 'Datos & Mensajería', items: ['PostgreSQL', 'MongoDB', 'Redis', 'Kafka', 'RabbitMQ'] },
+        { label: 'Blockchain', items: ['Hyperledger Fabric', 'Solidity', 'Smart Contracts'] },
       ],
     },
 
-    // Awards
     awards: {
-      eyebrow: 'Premios',
-      headingAccent: 'Reconocimientos',
-      desc: 'Hackathons, competiciones de ciberseguridad y festivales internacionales de cine.',
       items: [
-        { title: 'Finalista INNCYBER', org: 'INCIBE', year: 'Oct 2020', desc: 'Finalista en la competición nacional de ciberseguridad e innovación.', icon: 'trophy', color: 'var(--violet)' },
-        { title: 'Ganador HP Hackathon', org: 'HP Inc.', year: 'Nov 2019', desc: 'Primer premio en el hackathon organizado por HP España.', icon: 'medal', color: 'var(--accent)' },
-        { title: 'Ganador Salesforce Hackathon', org: 'Salesforce', year: 'Abr 2019', desc: 'Primer premio desarrollando soluciones innovadoras con tecnologías cloud.', icon: 'medal', color: 'var(--cyan)' },
-        { title: '2º Puesto Capgemini', org: 'Capgemini', year: '2018', desc: 'Segunda posición en el desafío tecnológico Capgemini España.', icon: 'award', color: 'var(--emerald)' },
-        { title: 'Jurado Ajyal Film Festival', org: 'Doha Film Institute', year: 'Dic 2014', desc: 'Seleccionado como miembro del jurado joven en el festival de Doha, Qatar.', icon: 'film', color: 'var(--rose)' },
-        { title: 'Jurado Giffoni Film Festival', org: 'Giffoni Experience', year: 'Jul 2014', desc: 'Miembro del jurado juvenil en el festival de cine de Giffoni, Italia.', icon: 'film', color: 'var(--rose)' },
+        { title: 'Finalista INNCYBER', org: 'INCIBE', year: '2020', desc: 'Competición nacional de ciberseguridad e innovación.' },
+        { title: 'Ganador HP Hackathon', org: 'HP Inc.', year: '2019', desc: 'Primer premio en el hackathon de HP España.' },
+        { title: 'Ganador Salesforce Hackathon', org: 'Salesforce', year: '2019', desc: 'Primer premio con soluciones sobre tecnologías cloud.' },
+        { title: '2º puesto Capgemini Challenge', org: 'Capgemini', year: '2018', desc: 'Desafío tecnológico de Capgemini España.' },
+        { title: 'Jurado Ajyal Film Festival', org: 'Doha Film Institute', year: '2014', desc: 'Jurado joven del festival de Doha, Qatar.' },
+        { title: 'Jurado Giffoni Film Festival', org: 'Giffoni Experience', year: '2014', desc: 'Jurado juvenil del festival de Giffoni, Italia.' },
       ],
     },
 
-    // Contact
     contact: {
-      eyebrow: 'Contacto',
-      heading: '¿',
-      headingAccent: 'Hablamos',
-      headingSuffix: '?',
-      text: 'Siempre abierto a colaboraciones de investigación, proyectos de arquitectura y ciberseguridad, charlas y actividades docentes, o simplemente una buena conversación sobre tecnología.',
-      terminalFile: 'contact.sh',
-      terminalLines: [
-        { prompt: '$', cmd: 'echo', arg: '"¡Hablemos!"' },
-        { prompt: '$', cmd: 'mail', arg: '-s "Colaboración" antoniopaya@outlook.com' },
-      ],
-      cta: 'Enviar email',
+      heading: '¿Hablamos?',
+      text: 'Colaboraciones de investigación, proyectos de arquitectura y ciberseguridad, charlas o actividades docentes. Escríbeme y te respondo.',
+      copy: 'Copiar',
+      copied: 'Copiado',
+      elsewhere: 'En otros sitios',
     },
 
-    // Footer
     footer: {
-      copy: 'Software Architect · Profesor en UNIR · PhD',
-      links: [
-        { href: '#sobre-mi', label: 'Sobre mí' },
-        { href: '#experiencia', label: 'Experiencia' },
-        { href: '#publicaciones', label: 'Publicaciones' },
-        { href: '#contacto', label: 'Contacto' },
-      ],
-      designed: 'Diseñado con',
-      using: 'usando',
+      role: 'Arquitecto de Software · Profesor en UNIR · PhD',
+      updated: 'Actualizado',
+      top: 'Volver arriba',
     },
   },
 
   en: {
-    // Layout
-    layout: {
+    meta: {
       title: 'Antonio Payá González — Software Architect, Professor at UNIR & PhD',
-      description: 'Antonio Payá González — Software Architect & PhD',
+      description: 'Antonio Payá González — Software Architect at TheNextPangea, professor at UNIR (Cybersecurity BSc & MSc) and PhD in Computer Engineering from the University of Oviedo. Specialist in cybersecurity, Zero Trust, cloud and AI.',
+      skip: 'Skip to content',
     },
 
-    // Header
     header: {
-      links: [
-        { href: '#about', label: 'About' },
-        { href: '#experience', label: 'Experience' },
-        { href: '#teaching', label: 'Teaching' },
-        { href: '#education', label: 'Education' },
-        { href: '#skills', label: 'Skills' },
-        { href: '#publications', label: 'Publications' },
-        { href: '#awards', label: 'Awards' },
-        { href: '#contact', label: 'Contact' },
-      ],
+      home: 'Home',
+      menu: 'Menu',
+      close: 'Close',
+      theme: 'Toggle light/dark theme',
+      switchLang: 'Leer en español',
     },
 
-    // Hero
     hero: {
-      badge: 'Open to collaborations',
-      role: 'Software Architect · Professor at UNIR · PhD in Computer Engineering',
-      intro: '<strong>Software Architect</strong> at TheNextPangea, <strong>professor</strong> at the International University of La Rioja (UNIR) and <strong>PhD in Computer Engineering</strong> from the University of Oviedo. Specialised in cybersecurity, Zero Trust, cloud architecture and artificial intelligence.',
-      ctaPrimary: 'Get in Touch',
-      ctaSecondary: 'Publications',
-      scroll: 'Scroll',
-    },
-
-    // About
-    about: {
-      eyebrow: 'About me',
-      heading: 'A bit about my',
-      headingAccent: 'story',
-      body: [
-        'My name is <strong>Antonio Payá González</strong>. I\'m a Software Architect at <strong>TheNextPangea S.L.</strong>, a professor at the <strong>International University of La Rioja (UNIR)</strong>, and hold a PhD in Computer Engineering from the <strong>University of Oviedo</strong>, with a research focus on Intelligent Systems.',
-        'Since September 2026 I teach at UNIR in the <strong>Bachelor\'s Degree in Cybersecurity</strong>, the <strong>Master\'s Degree in Cybersecurity</strong> and the <strong>Master\'s Degree in Digital Transformation through Disruptive Technologies</strong>, bringing my industry and research experience into the classroom.',
-        'In my day-to-day work, I specialize in designing scalable software solutions that integrate <em>Artificial Intelligence</em> into production environments. I have extensive experience in multi-cloud architectures (<strong>AWS, Azure, and GCP</strong>) and automating deployments through <em>Infrastructure as Code</em> (IaC) with Terraform.',
-        'On the research side, my doctoral thesis focuses on improving <em>Software-Defined Perimeters</em> (SDP) by integrating intrusion detection systems and optimizing identity management. I develop automated security configurations and improve IDS resilience against <em>Adversarial Machine Learning</em> attacks.',
-        'I\'m also a writer and editor at <a href="https://medium.com/better-programming" target="_blank" rel="noopener" class="animated-link">Better Programming</a> and <a href="https://medium.com/coinmonks" target="_blank" rel="noopener" class="animated-link">Coinmonks</a> on Medium.',
+      kicker: 'Software Architect · Professor · Researcher',
+      status: 'Open to collaborations',
+      statement: 'I design software that <em>scales</em>, teach how to <em>protect</em> it, and research how to make it more <em>secure</em>.',
+      intro: 'Software Architect at TheNextPangea, professor at the International University of La Rioja (UNIR) and PhD in Computer Engineering from the University of Oviedo.',
+      ctaPrimary: 'Get in touch',
+      ctaCv: 'Download CV',
+      figure: 'Fig. 01 — Antonio Payá González',
+      spec: [
+        { k: 'Currently', v: 'Software Architect', s: 'TheNextPangea' },
+        { k: 'Teaching', v: 'Professor', s: 'UNIR — since 2026' },
+        { k: 'Doctorate', v: 'PhD Computer Eng.', s: 'University of Oviedo' },
+        { k: 'Research', v: 'SDP · Zero Trust', s: 'IDS · Adversarial ML' },
       ],
-      skills: ['Software Architecture', 'Cybersecurity', 'Zero Trust', 'Cloud', 'AI / Machine Learning', 'University Teaching'],
-      stats: [
-        { value: '5', label: 'Publications' },
+      metrics: [
+        { value: '5', label: 'JCR publications' },
         { value: '200+', label: 'Citations' },
-        { value: '8', label: 'Honours' },
-        { value: '2', label: 'Hackathons Won' },
+        { value: '8+', label: 'Years of experience' },
+        { value: '3', label: 'UNIR programmes' },
+        { value: '2', label: 'Hackathons won' },
       ],
-      location: 'Gijón, Asturias, Spain',
-      languages: ['Spanish (Native)', 'English (Professional)'],
     },
 
-    // Experience
+    sections: {
+      about: { n: '01', title: 'Profile', desc: 'Between industry, academia and research.' },
+      experience: { n: '02', title: 'Experience', desc: 'Over 8 years in software architecture, research and teaching.' },
+      teaching: { n: '03', title: 'Teaching', desc: "Professor at UNIR since September 2026, in official bachelor's and master's degrees." },
+      research: { n: '04', title: 'Research', desc: 'Published in international JCR journals (Q1 & Q2).' },
+      education: { n: '05', title: 'Education', desc: "From bachelor's to PhD, with 8 distinctions." },
+      skills: { n: '06', title: 'Skills', desc: 'The stack I design, build and ship with.' },
+      awards: { n: '07', title: 'Awards', desc: 'Hackathons, competitions and international festivals.' },
+      contact: { n: '08', title: 'Contact', desc: 'Research, architecture, talks or teaching.' },
+    },
+
+    about: {
+      lead: "I'm a <strong>Software Architect</strong> at TheNextPangea, a <strong>professor</strong> at UNIR and hold a <strong>PhD in Computer Engineering</strong> from the University of Oviedo, with a research focus on Software Engineering.",
+      body: [
+        'In industry I design scalable solutions that bring <em>Artificial Intelligence</em> into production, on cloud architectures across AWS, Azure and GCP, with infrastructure automated through Terraform.',
+        'My doctoral thesis improves <em>Software-Defined Perimeters</em> by integrating intrusion detection and identity management, and hardens IDS against <em>Adversarial Machine Learning</em> attacks.',
+        "Since September 2026 I teach at UNIR in the Bachelor's Degree in Cybersecurity, the Master's Degree in Cybersecurity and the Master's Degree in Digital Transformation through Disruptive Technologies. I also write and edit for <a href=\"https://medium.com/better-programming\" target=\"_blank\" rel=\"noopener\">Better Programming</a> and <a href=\"https://medium.com/coinmonks\" target=\"_blank\" rel=\"noopener\">Coinmonks</a>.",
+      ],
+      focusTitle: 'Focus areas',
+      focus: [
+        { title: 'Architecture & Cloud', desc: 'Distributed systems on AWS, Azure and GCP. IaC with Terraform.' },
+        { title: 'Cybersecurity & Zero Trust', desc: 'SDP, IDS and Security by Design.' },
+        { title: 'AI in production', desc: 'MLOps, model productization and Adversarial ML.' },
+        { title: 'University teaching', desc: 'Cybersecurity and digital transformation at UNIR.' },
+      ],
+      facts: [
+        { k: 'Location', v: 'Gijón, Asturias, Spain' },
+        { k: 'Languages', v: 'Spanish (native) · English (professional)' },
+      ],
+    },
+
     experience: {
-      eyebrow: 'Experience',
-      heading: 'Professional',
-      headingAccent: 'career',
-      desc: 'Over 8 years of experience in software architecture, research, and university teaching.',
+      current: 'Current',
       jobs: [
         {
           role: 'Professor',
           company: 'UNIR — International University of La Rioja',
           type: 'University teaching',
           period: 'Sept 2026 — Present',
-          desc: 'Professor in the Bachelor\'s Degree in Cybersecurity, the Master\'s Degree in Cybersecurity, and the Master\'s Degree in Digital Transformation through Disruptive Technologies.',
-          tags: ['Teaching', 'Cybersecurity', 'Digital Transformation', 'Disruptive Technologies'],
+          points: [
+            "Bachelor's Degree in Cybersecurity.",
+            "Master's Degree in Cybersecurity.",
+            "Master's Degree in Digital Transformation through Disruptive Technologies.",
+          ],
+          tags: ['Teaching', 'Cybersecurity', 'Digital Transformation'],
           current: true,
           logo: 'logo-unir.png',
-          logoDark: true,
+          logoOnDark: false,
         },
         {
           role: 'Software Architect',
           company: 'TheNextPangea S.L.',
           type: 'Full-time',
           period: 'Sept 2021 — Present',
-          desc: 'Defining software development methodologies (SDLC) and technology stacks. Designing scalable cloud architectures on AWS, Azure, and GCP. Productionizing AI models in high-availability environments. Automating infrastructure with Terraform (IaC). Applying Security by Design principles.',
+          points: [
+            'Defining software development methodologies (SDLC) and technology stacks.',
+            'Designing scalable cloud architectures on AWS, Azure and GCP.',
+            'Productionizing AI models in production environments.',
+            'Infrastructure automation with Terraform (IaC) and Security by Design.',
+          ],
           tags: ['Architecture', 'Cloud', 'AI/ML', 'Terraform', 'Security'],
           current: true,
           logo: 'logo-tnp.png',
-          logoDark: false,
+          logoOnDark: true,
         },
         {
           role: 'R&D Software Engineer',
           company: 'Icube SL',
           type: 'Full-time',
           period: 'Oct 2019 — Sept 2021',
-          desc: 'Research and development in additive manufacturing techniques. Collaboration with ArcelorMittal R&D.',
+          points: ['Research and development in additive manufacturing techniques in collaboration with ArcelorMittal R&D.'],
           tags: ['R&D', 'Additive Manufacturing'],
           current: false,
-          logo: 'logo-icube.webp',
-          logoDark: true,
+          logo: 'logo-icube-trim.webp',
+          logoOnDark: false,
         },
         {
           role: 'Blockchain Researcher',
           company: 'University of Oviedo Foundation',
           type: 'Scholarship',
           period: 'Apr 2018 — Aug 2019',
-          desc: 'Research in Blockchain technologies and their market impact, focused on Hyperledger Fabric.',
+          points: ['Research on blockchain technologies and their market impact, focused on Hyperledger Fabric.'],
           tags: ['Blockchain', 'Hyperledger', 'Research'],
           current: false,
-          logo: 'logo-uniovi.jpg',
-          logoDark: false,
+          logo: 'logo-uniovi-crest.webp',
+          logoOnDark: false,
         },
         {
           role: 'Junior Software Developer',
           company: 'ArcelorMittal',
           type: 'Internship',
           period: 'Jan 2019 — Mar 2019',
-          desc: 'Blockchain deployment in a real industrial environment. Smart contracts and DLT technologies.',
+          points: ['Blockchain deployment in a real industrial environment: smart contracts and DLT.'],
           tags: ['DLT', 'Smart Contracts', 'Hyperledger Fabric'],
           current: false,
-          logo: 'logo-arcelormittal.png',
-          logoDark: true,
+          logo: 'logo-arcelormittal-trim.png',
+          logoOnDark: false,
         },
       ],
     },
 
-    // Teaching
     teaching: {
-      eyebrow: 'Teaching',
-      heading: 'University',
-      headingAccent: 'teaching',
-      desc: 'Professor at the International University of La Rioja (UNIR) since September 2026, in official bachelor\'s and master\'s degrees.',
       institution: 'UNIR — International University of La Rioja',
+      since: 'Since September 2026',
       linkLabel: 'View programme',
       programs: [
-        {
-          level: 'Bachelor\'s',
-          title: 'Bachelor\'s Degree in Cybersecurity',
-          meta: 'Official degree · 240 ECTS',
-          url: 'https://www.unir.net/ingenieria/grado-ciberseguridad/',
-          icon: 'shield',
-        },
-        {
-          level: 'Master\'s',
-          title: 'Master\'s Degree in Cybersecurity',
-          meta: 'Official degree · 60 ECTS',
-          url: 'https://www.unir.net/ingenieria/master-seguridad-informatica/',
-          icon: 'lock',
-        },
-        {
-          level: 'Master\'s',
-          title: 'Master\'s Degree in Digital Transformation through Disruptive Technologies',
-          meta: 'Official degree · 60 ECTS',
-          url: 'https://www.unir.net/ingenieria/master-transformacion-digital-tecnologias-disruptivas/',
-          icon: 'cpu',
-        },
+        { level: "Bachelor's", title: "Bachelor's Degree in Cybersecurity", meta: 'Official · 240 ECTS', url: 'https://www.unir.net/ingenieria/grado-ciberseguridad/' },
+        { level: "Master's", title: "Master's Degree in Cybersecurity", meta: 'Official · 60 ECTS', url: 'https://www.unir.net/ingenieria/master-seguridad-informatica/' },
+        { level: "Master's", title: "Master's Degree in Digital Transformation through Disruptive Technologies", meta: 'Official · 60 ECTS', url: 'https://www.unir.net/ingenieria/master-transformacion-digital-tecnologias-disruptivas/' },
       ],
       note: 'Open to talks, seminars and academic collaborations on cybersecurity, Zero Trust, cloud architecture and AI.',
     },
 
-    // Education
+    research: {
+      thesisLabel: 'Doctoral thesis',
+      thesis: 'Improving Software-Defined Perimeters through integrated intrusion detection, identity management and defences against Adversarial Machine Learning.',
+      metrics: [
+        { value: '5', label: 'JCR articles' },
+        { value: '200+', label: 'Citations' },
+        { value: '4', label: 'h-index' },
+      ],
+      pubsTitle: 'Journal articles',
+      articlesTitle: 'Technical writing',
+      articles: [
+        { title: 'Creating a Production-Ready REST API With Go', venue: 'The Startup', year: 2020, url: 'https://medium.com/swlh/creating-a-production-ready-rest-api-with-go-6d91c5b09add' },
+        { title: 'How to Develop Safer Applications in Node.js', venue: 'Better Programming', year: 2020, url: 'https://medium.com/better-programming/developing-safer-applications-in-nodejs-f645788f9c65' },
+        { title: 'Blockchain Frameworks (4-part series)', venue: 'Coinmonks', year: 2020, url: 'https://medium.com/coinmonks/blockchain-frameworks-part-1-introduction-307846125c71' },
+        { title: 'Creando una API Rest con Hyperledger Fabric (ES)', venue: 'Medium', year: 2018, url: 'https://medium.com/@antonioalfa22/creando-una-api-rest-con-hyperledger-fabric-e22675f97e98' },
+      ],
+    },
+
     education: {
-      eyebrow: 'Education',
-      heading: 'Academic',
-      headingAccent: 'background',
-      desc: 'From bachelor\'s to PhD, with 8 distinctions along the way.',
       honorsLabel: 'Distinctions',
-      certsHeading: 'Certifications',
+      certsTitle: 'Certifications',
       degrees: [
         {
           title: 'PhD in Computer Engineering',
           school: 'University of Oviedo',
           period: '2021 — 2025',
-          desc: 'Thesis focused on Software-Defined Perimeter, Intrusion Detection Systems, and Adversarial Machine Learning.',
+          desc: 'Thesis on Software-Defined Perimeter, Intrusion Detection Systems and Adversarial Machine Learning.',
           honors: [] as string[],
-          current: false,
-          logo: 'logo-uniovi.jpg',
         },
         {
-          title: 'Master\'s in Web Engineering',
+          title: "Master's in Web Engineering",
           school: 'University of Oviedo',
           period: '2019 — 2021',
-          desc: 'Specialisation in advanced web development and modern architectures.',
-          honors: ['Master\'s Thesis — Distinction'],
-          current: false,
-          logo: 'logo-uniovi.jpg',
+          desc: 'Advanced web development and modern architectures.',
+          honors: ["Master's Thesis"],
         },
         {
           title: 'BSc in Software Engineering',
           school: 'University of Oviedo',
           period: '2015 — 2019',
-          desc: 'Strong foundation in software engineering, algorithms, databases, and distributed systems.',
+          desc: 'Software engineering, algorithms, databases and distributed systems. Final year project: 10/10.',
           honors: [
             'OS & Network Administration',
             'Computability',
-            'Final Year Project — 10/10',
+            'Final Year Project',
             'Industrial Placement',
             'Distributed Systems & Internet',
             'Operating Systems',
             'Robotics Software',
             'Programming Technology & Paradigms',
           ],
-          current: false,
-          logo: 'logo-uniovi.jpg',
         },
       ],
       certs: [
@@ -496,107 +468,74 @@ export const translations = {
       ],
     },
 
-    // Skills
     skills: {
-      eyebrow: 'Skills',
-      heading: 'Technical',
-      headingAccent: 'competencies',
-      desc: 'Cloud, architecture, full stack development, and cybersecurity.',
       groups: [
-        { label: 'Cloud & DevOps', icon: 'cloud', techs: ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform', 'Ansible', 'CI/CD', 'MLOps'] },
-        { label: 'Software Architecture', icon: 'blocks', techs: ['Microservices', 'DDD', 'Event-Driven', 'REST', 'GraphQL', 'gRPC'] },
-        { label: 'Frontend', icon: 'monitor', techs: ['Astro', 'Angular', 'React', 'TypeScript', 'Tailwind', 'Vue'] },
-        { label: 'Backend', icon: 'zap', techs: ['.NET Core', 'Python', 'Go', 'Rust', 'Node.js', 'Spring'] },
-        { label: 'Desktop Apps', icon: 'laptop', techs: ['Tauri', 'Electron'] },
-        { label: 'Machine Learning / AI', icon: 'brain', techs: ['Scikit-learn', 'TensorFlow', 'PyTorch', 'Adversarial ML', 'MLOps'] },
-        { label: 'Blockchain', icon: 'link', techs: ['Hyperledger Fabric', 'Solidity', 'Smart Contracts', 'DLT'] },
-        { label: 'Cybersecurity', icon: 'shield', techs: ['SDP', 'Zero Trust', 'IDS / IPS', 'Pentesting'] },
-      ],
-      toolsHeading: 'Tools & Platforms',
-      tools: ['Git', 'PostgreSQL', 'MongoDB', 'Redis', 'Linux', 'Nginx', 'RabbitMQ', 'Kafka', 'Figma'],
-    },
-
-    // Publications
-    publications: {
-      eyebrow: 'Publications',
-      heading: 'Articles in',
-      headingAccent: 'JCR journals',
-      desc: 'Research published in high-impact international journals (Q1 & Q2).',
-      stats: [
-        { value: '5', label: 'Publications', icon: 'file-text' },
-        { value: '200+', label: 'Citations', icon: 'bar-chart' },
-        { value: '1.1K+', label: 'Reads', icon: 'eye' },
+        { label: 'Cloud & DevOps', items: ['AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes', 'Terraform', 'Ansible', 'CI/CD'] },
+        { label: 'Architecture', items: ['Microservices', 'DDD', 'Event-Driven', 'REST', 'GraphQL', 'gRPC'] },
+        { label: 'Cybersecurity', items: ['Zero Trust', 'SDP', 'IDS / IPS', 'Hardening', 'Pentesting'] },
+        { label: 'AI / ML', items: ['scikit-learn', 'TensorFlow', 'PyTorch', 'Adversarial ML', 'MLOps'] },
+        { label: 'Backend', items: ['.NET', 'Python', 'Go', 'Rust', 'Node.js', 'Spring'] },
+        { label: 'Frontend & Desktop', items: ['TypeScript', 'Astro', 'Angular', 'React', 'Vue', 'Tauri'] },
+        { label: 'Data & Messaging', items: ['PostgreSQL', 'MongoDB', 'Redis', 'Kafka', 'RabbitMQ'] },
+        { label: 'Blockchain', items: ['Hyperledger Fabric', 'Solidity', 'Smart Contracts'] },
       ],
     },
 
-    // Awards
     awards: {
-      eyebrow: 'Awards',
-      headingAccent: 'Recognitions',
-      desc: 'Hackathons, cybersecurity competitions, and international film festivals.',
       items: [
-        { title: 'INNCYBER Finalist', org: 'INCIBE', year: 'Oct 2020', desc: 'Finalist in the national cybersecurity and innovation competition.', icon: 'trophy', color: 'var(--violet)' },
-        { title: 'HP Hackathon Winner', org: 'HP Inc.', year: 'Nov 2019', desc: 'First prize at the hackathon organised by HP Spain.', icon: 'medal', color: 'var(--accent)' },
-        { title: 'Salesforce Hackathon Winner', org: 'Salesforce', year: 'Apr 2019', desc: 'First prize developing innovative solutions with cloud technologies.', icon: 'medal', color: 'var(--cyan)' },
-        { title: '2nd Place Capgemini', org: 'Capgemini', year: '2018', desc: 'Runner-up in the Capgemini Spain technology challenge.', icon: 'award', color: 'var(--emerald)' },
-        { title: 'Ajyal Film Festival Juror', org: 'Doha Film Institute', year: 'Dec 2014', desc: 'Selected as a member of the youth jury at the Doha festival, Qatar.', icon: 'film', color: 'var(--rose)' },
-        { title: 'Giffoni Film Festival Juror', org: 'Giffoni Experience', year: 'Jul 2014', desc: 'Member of the youth jury at the Giffoni film festival, Italy.', icon: 'film', color: 'var(--rose)' },
+        { title: 'INNCYBER Finalist', org: 'INCIBE', year: '2020', desc: 'National cybersecurity and innovation competition.' },
+        { title: 'HP Hackathon Winner', org: 'HP Inc.', year: '2019', desc: 'First prize at the HP Spain hackathon.' },
+        { title: 'Salesforce Hackathon Winner', org: 'Salesforce', year: '2019', desc: 'First prize with cloud-based solutions.' },
+        { title: '2nd place, Capgemini Challenge', org: 'Capgemini', year: '2018', desc: 'Capgemini Spain technology challenge.' },
+        { title: 'Ajyal Film Festival Juror', org: 'Doha Film Institute', year: '2014', desc: 'Youth jury at the Doha festival, Qatar.' },
+        { title: 'Giffoni Film Festival Juror', org: 'Giffoni Experience', year: '2014', desc: 'Youth jury at the Giffoni festival, Italy.' },
       ],
     },
 
-    // Contact
     contact: {
-      eyebrow: 'Contact',
-      heading: '',
-      headingAccent: 'Let\'s Talk',
-      headingSuffix: '?',
-      text: 'Always open to research collaborations, architecture and cybersecurity projects, talks and teaching activities, or just a great conversation about technology.',
-      terminalFile: 'contact.sh',
-      terminalLines: [
-        { prompt: '$', cmd: 'echo', arg: '"Let\'s talk!"' },
-        { prompt: '$', cmd: 'mail', arg: '-s "Collaboration" antoniopaya@outlook.com' },
-      ],
-      cta: 'Send email',
+      heading: "Let's talk.",
+      text: "Research collaborations, architecture and cybersecurity projects, talks or teaching. Drop me a line and I'll get back to you.",
+      copy: 'Copy',
+      copied: 'Copied',
+      elsewhere: 'Elsewhere',
     },
 
-    // Footer
     footer: {
-      copy: 'Software Architect · Professor at UNIR · PhD',
-      links: [
-        { href: '#about', label: 'About' },
-        { href: '#experience', label: 'Experience' },
-        { href: '#publications', label: 'Publications' },
-        { href: '#contact', label: 'Contact' },
-      ],
-      designed: 'Designed with',
-      using: 'using',
+      role: 'Software Architect · Professor at UNIR · PhD',
+      updated: 'Updated',
+      top: 'Back to top',
     },
   },
 } as const;
 
-/** Section IDs per language */
+/** Section anchors per language */
 export const sectionIds = {
   es: {
-    about: 'sobre-mi',
+    about: 'perfil',
     experience: 'experiencia',
     teaching: 'docencia',
-    education: 'educacion',
-    skills: 'skills',
-    publications: 'publicaciones',
+    research: 'investigacion',
+    education: 'formacion',
+    skills: 'competencias',
     awards: 'premios',
     contact: 'contacto',
   },
   en: {
-    about: 'about',
+    about: 'profile',
     experience: 'experience',
     teaching: 'teaching',
+    research: 'research',
     education: 'education',
     skills: 'skills',
-    publications: 'publications',
     awards: 'awards',
     contact: 'contact',
   },
 } as const;
+
+export type SectionKey = keyof typeof sectionIds.es;
+
+/** Sections shown in the main navigation, in order */
+export const navSections: SectionKey[] = ['about', 'experience', 'teaching', 'research', 'education', 'skills', 'contact'];
 
 export function t(lang: Lang) {
   return translations[lang];

@@ -1,5 +1,6 @@
 ---
 import { t, ids, type Lang } from '../i18n/translations';
+import SectionHead from './SectionHead.astro';
 
 interface Props { lang?: Lang; }
 const { lang = 'es' } = Astro.props;
@@ -7,149 +8,130 @@ const { lang = 'es' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const i = t(lang);
 const id = ids(lang);
-const programs = i.teaching.programs;
+const s = i.sections.teaching;
 ---
 
-<section class="section" id={id.teaching}>
-  <div class="container">
-    <span class="section-eyebrow reveal">{i.teaching.eyebrow}</span>
-    <h2 class="section-heading reveal reveal-delay-1">{i.teaching.heading} <span class="gradient-text">{i.teaching.headingAccent}</span></h2>
-    <p class="section-desc reveal reveal-delay-2">{i.teaching.desc}</p>
+<section class="section teaching" id={id.teaching}>
+  <div class="wrap section-grid">
+    <SectionHead n={s.n} title={s.title} desc={s.desc} />
 
-    <div class="teach-institution reveal reveal-delay-2">
-      <div class="teach-logo">
-        <img src={`${base}images/logo-unir.png`} alt="UNIR" width="240" height="107" loading="lazy" decoding="async" />
+    <div class="section-body">
+      <div class="inst reveal">
+        <div class="inst-logo">
+          <img src={`${base}images/logo-unir.png`} alt="UNIR" width="240" height="107" loading="lazy" decoding="async" />
+        </div>
+        <div>
+          <p class="inst-name">{i.teaching.institution}</p>
+          <p class="mono inst-since">{i.teaching.since}</p>
+        </div>
       </div>
-      <span class="teach-institution-name">{i.teaching.institution}</span>
-    </div>
 
-    <div class="teach-grid">
-      {programs.map((p, idx) => (
-        <a class={`teach-card glass reveal reveal-delay-${Math.min(idx + 1, 3)}`} href={p.url} target="_blank" rel="noopener noreferrer">
-          <div class="teach-top">
-            <div class="teach-icon" aria-hidden="true">
-              {p.icon === 'shield' && <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>}
-              {p.icon === 'lock' && <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>}
-              {p.icon === 'cpu' && <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg>}
-            </div>
-            <span class="teach-level">{p.level}</span>
-          </div>
-          <h3 class="teach-title">{p.title}</h3>
-          <p class="teach-meta">{p.meta}</p>
-          <span class="teach-link">
-            {i.teaching.linkLabel}
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
-          </span>
-        </a>
-      ))}
-    </div>
+      <ol class="programs">
+        {i.teaching.programs.map((p, idx) => (
+          <li class="reveal" style={`--d: ${idx * 0.07}s`}>
+            <a class="program" href={p.url} target="_blank" rel="noopener noreferrer">
+              <span class="program-n serif">{String(idx + 1).padStart(2, '0')}</span>
+              <span class="program-body">
+                <span class="mono program-level">{p.level} · {p.meta}</span>
+                <span class="program-title">{p.title}</span>
+              </span>
+              <span class="program-cta mono">
+                <span class="program-cta-label">{i.teaching.linkLabel}</span>
+                <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
 
-    <p class="teach-note reveal reveal-delay-3">{i.teaching.note}</p>
+      <p class="note reveal">{i.teaching.note}</p>
+    </div>
   </div>
 </section>
 
 <style>
-  .teach-institution {
+  .inst {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 1.1rem;
+    margin-bottom: 2rem;
   }
 
-  .teach-logo {
-    width: 80px;
-    height: 48px;
-    border-radius: var(--r-md);
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid rgba(200, 200, 200, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 10px;
-    flex-shrink: 0;
-  }
-
-  .teach-logo img { width: 100%; height: 100%; object-fit: contain; }
-
-  .teach-institution-name { font-size: 0.9rem; font-weight: 600; color: var(--text-2); }
-
-  .teach-grid {
+  .inst-logo {
+    width: 88px;
+    height: 52px;
+    padding: 9px 12px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    place-items: center;
   }
 
-  .teach-card {
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem;
-    border-radius: var(--r-lg);
-    text-decoration: none;
-    color: inherit;
-  }
+  .inst-logo img { width: 100%; height: 100%; object-fit: contain; }
 
-  .teach-card:hover { color: inherit; }
+  .inst-name { font-weight: 600; }
+  .inst-since { font-size: 0.66rem; color: var(--muted); margin-top: 0.15rem; }
 
-  .teach-top {
-    display: flex;
+  .programs { list-style: none; border-top: 1px solid var(--ink); }
+
+  .program {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+    gap: 1.5rem;
+    padding: 1.75rem 0.25rem;
+    border-bottom: 1px solid var(--rule);
+    transition: background-color 0.35s var(--ease), padding 0.35s var(--ease);
   }
 
-  .teach-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: var(--r-md);
-    background: rgba(129, 140, 248, 0.08);
-    border: 1px solid rgba(129, 140, 248, 0.12);
-    color: var(--accent);
+  .program:hover {
+    background: var(--accent-soft);
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
-  .teach-level {
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--cyan);
+  .program-n {
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--muted);
+    transition: color 0.3s;
   }
 
-  .teach-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.4;
-    margin-bottom: 0.4rem;
+  .program:hover .program-n { color: var(--accent); }
+
+  .program-body { display: flex; flex-direction: column; gap: 0.35rem; }
+
+  .program-level { font-size: 0.66rem; color: var(--muted); }
+
+  .program-title {
+    font-family: var(--serif);
+    font-size: clamp(1.45rem, 2.3vw, 1.9rem);
+    line-height: 1.12;
   }
 
-  .teach-meta {
-    font-size: 0.78rem;
-    font-family: var(--mono);
-    color: var(--text-4);
-    margin-bottom: 1rem;
-  }
-
-  .teach-link {
-    margin-top: auto;
+  .program-cta {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--accent);
-    transition: gap 0.3s var(--ease);
+    gap: 0.5rem;
+    font-size: 0.66rem;
+    color: var(--muted);
+    transition: color 0.2s;
   }
 
-  .teach-card:hover .teach-link { gap: 0.6rem; color: var(--cyan); }
+  .program:hover .program-cta { color: var(--accent); }
+  .program:hover .arrow { transform: translate(3px, -3px); }
 
-  .teach-note {
-    margin-top: 1.5rem;
-    font-size: 0.88rem;
-    color: var(--text-3);
+  .note {
+    margin-top: 1.75rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 60ch;
   }
 
-  @media (max-width: 900px) { .teach-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) {
+    .program { grid-template-columns: 2.75rem minmax(0, 1fr) auto; gap: 1rem; }
+    .program-n { font-size: 2rem; }
+    .program-cta-label { display: none; }
+  }
 </style>

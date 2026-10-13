@@ -1,0 +1,58 @@
+---
+interface Props {
+  n: string;
+  title: string;
+  desc?: string;
+}
+const { n, title, desc } = Astro.props;
+---
+
+<header class="sh">
+  <div class="sh-inner">
+    <span class="sh-n mono reveal">§ {n}</span>
+    <h2 class="sh-title reveal" style="--d: 0.05s">{title}</h2>
+    {desc && <p class="sh-desc reveal" style="--d: 0.1s">{desc}</p>}
+    <slot />
+  </div>
+</header>
+
+<style>
+  .sh-inner {
+    position: sticky;
+    top: 104px;
+  }
+
+  .sh-n {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .sh-n::after {
+    content: '';
+    width: 2.5rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .sh-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2.75rem, 4.8vw, 4.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+  }
+
+  .sh-desc {
+    color: var(--muted);
+    max-width: 30ch;
+    font-size: 1rem;
+  }
+
+  @media (max-width: 900px) {
+    .sh-inner { position: static; }
+  }
+</style>
