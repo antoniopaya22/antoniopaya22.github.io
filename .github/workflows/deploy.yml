@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [master]
+  schedule:
+    # weekly rebuild to refresh GitHub stars and Crossref citations
+    - cron: '0 6 * * 1'
   workflow_dispatch:
 
 permissions:
@@ -32,6 +35,8 @@ jobs:
 
       - name: Build Astro site
         run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4

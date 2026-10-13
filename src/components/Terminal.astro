@@ -1,6 +1,7 @@
 ---
 import { t, ids, type Lang } from '../i18n/translations';
-import { site, profiles, publications } from '../data/site';
+import { site, profiles } from '../data/site';
+import { getPublications } from '../data/scholarly';
 import { getFeaturedRepos } from '../data/github';
 
 interface Props { lang?: Lang; }
@@ -11,6 +12,7 @@ const i = t(lang);
 const id = ids(lang);
 
 const repos = await getFeaturedRepos();
+const publications = await getPublications();
 
 const data = {
   lang,

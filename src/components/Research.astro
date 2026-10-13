@@ -1,6 +1,7 @@
 ---
 import { t, ids, type Lang } from '../i18n/translations';
-import { publications, profiles } from '../data/site';
+import { profiles, site } from '../data/site';
+import { getPublications } from '../data/scholarly';
 import SectionHead from './SectionHead.astro';
 
 interface Props { lang?: Lang; }
@@ -9,6 +10,18 @@ const { lang = 'es' } = Astro.props;
 const i = t(lang);
 const id = ids(lang);
 const s = i.sections.research;
+const publications = await getPublications();
+const cites = (n: number) => (lang === 'es' ? (n === 1 ? 'cita' : 'citas') : n === 1 ? 'citation' : 'citations');
+const scholarlyLd = publications.map((p) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: p.title,
+  datePublished: String(p.year),
+  url: p.url,
+  sameAs: p.url,
+  isPartOf: { '@type': 'Periodical', name: p.journal },
+  author: { '@type': 'Person', name: site.name, url: site.url },
+}));
 const academic = profiles.filter((p) => ['Google Scholar', 'ORCID', 'ResearchGate'].includes(p.label));
 ---
 
@@ -43,9 +56,9 @@ const academic = profiles.filter((p) => ['Google Scholar', 'ORCID', 'ResearchGat
           <a class="pub card" href={p.url} target="_blank" rel="noopener noreferrer">
             <span class="pub-year" aria-hidden="true">{p.year}</span>
             <span class="pub-body">
-              <span class="pub-key mono">@article<span class="dim">{'{'}</span>paya{p.year}{p.title.split(/[\s:]/)[0].toLowerCase().replace(/[^a-z]/g, '')}<span class="dim">,</span></span>
+              <span class="pub-key mono">@{p.type === 'preprint' ? 'misc' : 'article'}<span class="dim">{'{'}</span>paya{p.year}{p.title.split(/[\s:]/)[0].toLowerCase().replace(/[^a-z]/g, '')}<span class="dim">,</span></span>
               <span class="pub-title">{p.title}</span>
-              <span class="pub-venue"><span class="p mono">journal</span> {p.journal} <span class="pub-pub mono">{p.publisher}</span></span>
+              <span class="pub-venue"><span class="p mono">{p.type === 'preprint' ? 'preprint' : 'journal'}</span> {p.journal} <span class:list={['pub-pub mono', { 'is-preprint': p.type === 'preprint' }]}>{p.publisher}</span> {p.citations > 0 && <span class="pub-cites mono">❝ {p.citations} {cites(p.citations)}</span>}</span>
               <span class="pub-tags">{p.tags.map((tag) => <span class="chip">{tag}</span>)}</span>
             </span>
             <svg class="arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
@@ -53,6 +66,8 @@ const academic = profiles.filter((p) => ['Google Scholar', 'ORCID', 'ResearchGat
         </li>
       ))}
     </ol>
+
+    <script type="application/ld+json" set:html={JSON.stringify(scholarlyLd)} />
 
     <h3 class="list-title mono reveal"><span class="accent">#</span> {i.research.articlesTitle}</h3>
     <ul class="arts">
@@ -148,6 +163,8 @@ const academic = profiles.filter((p) => ['Google Scholar', 'ORCID', 'ResearchGat
   .pub-venue { font-size: 0.92rem; color: var(--text-2); display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
   .pub-venue .p { font-size: 0.72rem; }
   .pub-pub { font-size: 0.68rem; color: var(--muted); padding: 0.05rem 0.4rem; border: 1px solid var(--line); border-radius: 4px; }
+  .pub-pub.is-preprint { color: var(--syn-num); border-color: color-mix(in srgb, var(--syn-num) 40%, transparent); }
+  .pub-cites { font-size: 0.7rem; color: var(--accent); }
   .pub-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.2rem; }
 
   .pub .arrow, .art .arrow { color: var(--muted); transition: transform 0.3s var(--ease), color 0.2s; }
