@@ -1,0 +1,237 @@
+---
+import { t, ids, type Lang } from '../i18n/translations';
+import { site, profiles, publications } from '../data/site';
+
+interface Props { lang?: Lang; }
+const { lang = 'es' } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const i = t(lang);
+const id = ids(lang);
+
+const data = {
+  lang,
+  cv: `${base}${site.cv}`,
+  email: site.email,
+  term: i.term,
+  focus: i.about.focus.map((f) => f.title),
+  jobs: i.experience.jobs.map((j) => ({ period: j.period, role: j.role, company: j.company })),
+  programs: i.teaching.programs.map((p) => ({ level: p.level, title: p.title })),
+  pubs: publications.map((p) => ({ year: p.year, title: p.title, journal: p.journal, url: p.url })),
+  skills: i.skills.groups.map((g) => ({ label: g.label, items: g.items })),
+  profiles: profiles.map((p) => ({ label: p.label, href: p.href })),
+  files: Object.values(i.sections).map((s) => s.file),
+  anchors: id,
+};
+---
+
+<div class="win term" id="term">
+  <div class="win-bar">
+    <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="term-title">antonio@paya: ~</span>
+    <span class="term-badge">zsh</span>
+  </div>
+  <div class="term-body" id="term-body" tabindex="-1">
+    <div class="term-out" id="term-out" aria-live="polite"></div>
+    <form class="term-line" id="term-form" autocomplete="off">
+      <label class="prompt" for="term-input"><span class="pr-user">antonio</span><span class="pr-at">@</span><span class="pr-host">paya</span> <span class="pr-dir">~</span> <span class="pr-sym">❯</span></label>
+      <input id="term-input" class="term-input" type="text" spellcheck="false" autocapitalize="off" placeholder={i.term.placeholder} aria-label={i.term.placeholder} />
+    </form>
+  </div>
+  <script type="application/json" id="term-data" set:html={JSON.stringify(data)} />
+</div>
+
+<style>
+  .term { display: flex; flex-direction: column; height: 100%; min-height: 380px; }
+
+  .term-title { flex: 1; }
+
+  .term-badge {
+    font-size: 0.62rem;
+    padding: 0.1rem 0.45rem;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+  }
+
+  .term-body {
+    flex: 1;
+    padding: 1rem 1.1rem 1.1rem;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    line-height: 1.7;
+    overflow-y: auto;
+    max-height: 430px;
+    cursor: text;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+
+  .term-out :global(.row) { white-space: pre-wrap; word-break: break-word; }
+  .term-out :global(.cmd) { color: var(--text); }
+  .term-out :global(.dim) { color: var(--muted); }
+  .term-out :global(.ok) { color: var(--accent); }
+  .term-out :global(.err) { color: var(--syn-key); }
+  .term-out :global(.hl) { color: var(--accent-2); }
+  .term-out :global(a) { color: var(--accent-2); text-decoration: underline; text-underline-offset: 3px; }
+  .term-out :global(b) { color: var(--accent); font-weight: 500; }
+  .term-out :global(.grid) { display: grid; grid-template-columns: max-content 1fr; column-gap: 1.25rem; }
+
+  .term-line { display: flex; align-items: center; gap: 0.6rem; flex-wrap: nowrap; }
+
+  .prompt { white-space: nowrap; flex-shrink: 0; }
+  .term-out :global(.prompt) { white-space: nowrap; }
+  .pr-user, .term-out :global(.pr-user) { color: var(--accent); }
+  .pr-at, .term-out :global(.pr-at) { color: var(--muted); }
+  .pr-host, .term-out :global(.pr-host) { color: var(--accent-2); }
+  .pr-dir, .term-out :global(.pr-dir) { color: var(--syn-num); }
+  .pr-sym, .term-out :global(.pr-sym) { color: var(--syn-key); }
+
+  .term-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: var(--text);
+    font: inherit;
+    caret-color: var(--accent);
+  }
+
+  .term-input::placeholder { color: var(--muted); opacity: 0.6; }
+
+  @media (max-width: 520px) {
+    .term-body { font-size: 0.72rem; max-height: 360px; }
+    .pr-user, .pr-at, .pr-host { display: none; }
+  }
+</style>
+
+<script>
+  type Data = any;
+  const raw = document.getElementById('term-data')?.textContent;
+  const D: Data = raw ? JSON.parse(raw) : null;
+  const out = document.getElementById('term-out')!;
+  const body = document.getElementById('term-body')!;
+  const form = document.getElementById('term-form') as HTMLFormElement;
+  const input = document.getElementById('term-input') as HTMLInputElement;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
+  const PROMPT = '<span class="prompt"><span class="pr-user">antonio</span><span class="pr-at">@</span><span class="pr-host">paya</span> <span class="pr-dir">~</span> <span class="pr-sym">❯</span></span>';
+
+  const print = (html: string, cls = '') => {
+    const div = document.createElement('div');
+    div.className = `row ${cls}`;
+    div.innerHTML = html;
+    out.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  };
+
+  const echo = (cmd: string) => print(`${PROMPT} <span class="cmd">${esc(cmd)}</span>`);
+
+  const json = (obj: Record<string, unknown>) => {
+    const lines = Object.entries(obj).map(([k, v]) => {
+      const val = Array.isArray(v)
+        ? `[${v.map((x) => `<span class="s">"${esc(String(x))}"</span>`).join(', ')}]`
+        : typeof v === 'number' ? `<span class="n">${v}</span>` : `<span class="s">"${esc(String(v))}"</span>`;
+      return `  <span class="p">"${k}"</span>: ${val}`;
+    });
+    return `{\n${lines.join(',\n')}\n}`;
+  };
+
+  const commands: Record<string, () => void> = {
+    help: () => print(`<div class="grid">${D.term.help.map(([c, d]: string[]) => `<b>${c}</b><span class="dim">${esc(d)}</span>`).join('')}</div>`),
+    whoami: () => print(esc(D.term.whoami)),
+    ls: () => print(D.files.map((f: string) => `<span class="hl">${esc(f)}</span>`).join('   ')),
+    'cat focus.json': () => print(json({ name: 'Antonio Payá González', focus: D.focus, location: 'Gijón, ES', openTo: D.lang === 'es' ? 'colaboraciones' : 'collaborations' })),
+    experience: () => print(`<div class="grid">${D.jobs.map((j: any) => `<span class="dim">${esc(j.period)}</span><span><b>${esc(j.role)}</b> @ ${esc(j.company)}</span>`).join('')}</div>`),
+    teaching: () => print(`<div class="grid">${D.programs.map((p: any) => `<span class="hl">${esc(p.level)}</span><span>${esc(p.title)}</span>`).join('')}</div>`),
+    publications: () => print(`<div class="grid">${D.pubs.map((p: any) => `<span class="n">${p.year}</span><span><a href="${p.url}" target="_blank" rel="noopener">${esc(p.title)}</a> <span class="dim">— ${esc(p.journal)}</span></span>`).join('')}</div>`),
+    skills: () => print(`<div class="grid">${D.skills.map((g: any) => `<span class="p">${esc(g.label)}</span><span>${g.items.map(esc).join(' · ')}</span>`).join('')}</div>`),
+    contact: () => print(`<div class="grid"><span class="p">email</span><a href="mailto:${D.email}">${D.email}</a>${D.profiles.map((p: any) => `<span class="p">${esc(p.label.toLowerCase())}</span><a href="${p.href}" target="_blank" rel="noopener">${esc(p.href.replace(/^https?:\/\/(www\.)?/, ''))}</a>`).join('')}</div>`),
+    cv: () => {
+      print(`<span class="ok">${esc(D.term.cv)}</span>`);
+      const a = document.createElement('a');
+      a.href = D.cv; a.download = ''; document.body.appendChild(a); a.click(); a.remove();
+    },
+    theme: () => { (window as any).__toggleTheme?.(); print(`<span class="ok">${esc(D.term.theme)}</span>`); },
+    clear: () => { out.innerHTML = ''; },
+    date: () => print(new Date().toString()),
+    pwd: () => print('/home/antonio'),
+    echo: () => print(''),
+    exit: () => print('<span class="dim">logout… just kidding 😉</span>'),
+  };
+
+  const aliases: Record<string, string> = { about: 'whoami', jobs: 'experience', papers: 'publications', stack: 'skills', email: 'contact', '?': 'help', cls: 'clear' };
+
+  const run = (rawCmd: string) => {
+    const cmd = rawCmd.trim();
+    echo(cmd);
+    if (!cmd) return;
+    const lower = cmd.toLowerCase();
+    if (lower.startsWith('sudo')) return print(`<span class="err">${esc(D.term.sudo)}</span>`);
+    if (lower.startsWith('rm ')) return print('<span class="err">permission denied: nice try 🙂</span>');
+    if (lower.startsWith('echo ')) return print(esc(cmd.slice(5)));
+    if (lower.startsWith('cd ')) {
+      const target = lower.slice(3).replace(/^\.?\/?/, '').replace(/\/$/, '').split('.')[0];
+      const anchor = Object.values(D.anchors).find((a) => a === target);
+      if (anchor) { document.getElementById(anchor as string)?.scrollIntoView({ behavior: 'smooth' }); return; }
+    }
+    const key = commands[lower] ? lower : aliases[lower];
+    if (key && commands[key]) commands[key]();
+    else print(`<span class="err">${esc(D.term.notFound)}</span> ${esc(cmd)}`);
+  };
+
+  const history: string[] = [];
+  let hIdx = -1;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = input.value;
+    if (v.trim()) history.unshift(v);
+    hIdx = -1;
+    input.value = '';
+    run(v);
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowUp') { if (hIdx < history.length - 1) input.value = history[++hIdx]; e.preventDefault(); }
+    else if (e.key === 'ArrowDown') { hIdx = Math.max(-1, hIdx - 1); input.value = hIdx >= 0 ? history[hIdx] : ''; e.preventDefault(); }
+    else if (e.key === 'Tab') {
+      const v = input.value.toLowerCase();
+      if (!v) return;
+      const match = Object.keys(commands).find((c) => c.startsWith(v));
+      if (match) { input.value = match; e.preventDefault(); }
+    } else if (e.key === 'l' && e.ctrlKey) { out.innerHTML = ''; e.preventDefault(); }
+  });
+
+  body.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) return;
+    if (!window.getSelection()?.toString()) input.focus({ preventScroll: true });
+  });
+
+  // autoplay intro: types a couple of commands without stealing focus
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const typeCmd = async (cmd: string) => {
+    if (reduced) { run(cmd); return; }
+    for (let k = 1; k <= cmd.length; k++) {
+      input.value = cmd.slice(0, k);
+      await sleep(45 + Math.random() * 55);
+    }
+    await sleep(250);
+    input.value = '';
+    run(cmd);
+  };
+
+  (async () => {
+    print(D.term.welcome, 'dim');
+    await sleep(reduced ? 0 : 1100);
+    let interrupted = false;
+    const stop = () => (interrupted = true);
+    input.addEventListener('focus', stop, { once: true });
+    for (const c of ['whoami', 'cat focus.json']) {
+      if (interrupted) break;
+      await typeCmd(c);
+      await sleep(reduced ? 0 : 700);
+    }
+  })();
+</script>

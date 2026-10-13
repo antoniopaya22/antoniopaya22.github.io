@@ -10,155 +10,125 @@ const id = ids(lang);
 const s = i.sections.contact;
 ---
 
-<section class="contact" id={id.contact}>
+<section class="contact section" id={id.contact}>
+  <div class="glow" aria-hidden="true"></div>
   <div class="wrap">
-    <span class="mono c-n reveal">§ {s.n} — {s.title}</span>
-    <h2 class="c-heading reveal" style="--d: 0.05s">{i.contact.heading}</h2>
+    <p class="c-meta mono reveal"><span class="accent">// {s.n}</span> <span class="c-file">{s.file}</span></p>
+    <h2 class="c-heading" data-scramble>{i.contact.heading}</h2>
+    <p class="c-text reveal">{i.contact.text}</p>
 
     <div class="c-grid">
-      <div class="c-main">
-        <p class="c-text reveal" style="--d: 0.1s">{i.contact.text}</p>
-        <div class="c-mail reveal" style="--d: 0.15s">
-          <a href={`mailto:${site.email}`} class="c-mail-link">
-            {site.email}
-            <svg class="arrow" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </a>
-          <button type="button" class="c-copy mono" data-copy={site.email} data-label={i.contact.copy} data-done={i.contact.copied}>{i.contact.copy}</button>
+      <div class="c-mail win reveal">
+        <div class="win-bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>{s.file}</span>
+        </div>
+        <div class="c-mail-body mono">
+          <p class="c-line"><span class="accent">$</span> <span class="k">echo</span> <span class="p">$EMAIL</span></p>
+          <a class="c-mail-link" href={`mailto:${site.email}`}>{site.email}</a>
+          <div class="c-actions">
+            <a class="btn btn-primary" href={`mailto:${site.email}`} data-magnetic>
+              {lang === 'es' ? 'Enviar email' : 'Send email'}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <button type="button" class="btn btn-ghost" data-copy={site.email} data-done={i.ui.toastCopied}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+              {i.contact.copy}
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="c-side reveal" style="--d: 0.2s">
-        <h3 class="mono c-side-title">{i.contact.elsewhere}</h3>
-        <ul class="c-links">
-          {profiles.map((p) => (
-            <li>
-              <a href={p.href} target="_blank" rel="noopener noreferrer" class="c-link">
-                <span class="c-link-label">{p.label}</span>
-                <span class="mono c-link-handle">{p.handle}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul class="c-links reveal" style="--d: 0.1s">
+        {profiles.map((p) => (
+          <li>
+            <a href={p.href} target="_blank" rel="noopener noreferrer" class="c-link card">
+              <span class="c-link-label">{p.label}</span>
+              <span class="c-link-handle mono">{p.handle}</span>
+              <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+            </a>
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
 </section>
 
 <style>
-  .contact {
-    background: var(--ink);
-    color: var(--paper);
-    padding: clamp(5rem, 11vw, 9rem) 0 clamp(4rem, 8vw, 6rem);
-    position: relative;
-    overflow: hidden;
-  }
+  .contact { overflow: hidden; border-top: 1px solid var(--line); }
 
-  .contact::before {
-    content: '';
+  .glow {
     position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(color-mix(in srgb, var(--paper) 6%, transparent) 1px, transparent 1px),
-      linear-gradient(90deg, color-mix(in srgb, var(--paper) 6%, transparent) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse 70% 80% at 85% 20%, #000 20%, transparent 70%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 80% at 85% 20%, #000 20%, transparent 70%);
+    left: 50%;
+    top: 0;
+    width: 900px;
+    height: 500px;
+    transform: translate(-50%, -40%);
+    background: radial-gradient(ellipse, var(--accent-glow), transparent 65%);
     pointer-events: none;
   }
 
   .contact .wrap { position: relative; }
 
-  .c-n {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--accent);
-  }
-
-  .c-n::after { content: ''; width: 2.5rem; height: 1px; background: var(--accent); }
+  .c-meta { font-size: 0.78rem; display: flex; gap: 0.9rem; align-items: center; }
+  .c-file { padding: 0.2rem 0.6rem; border: 1px solid var(--line); border-radius: 6px; color: var(--muted); background: var(--surface); }
 
   .c-heading {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-style: italic;
-    font-size: clamp(4rem, 13vw, 11rem);
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(3.5rem, 11vw, 9.5rem);
+    letter-spacing: -0.055em;
     line-height: 0.9;
-    letter-spacing: -0.03em;
-    margin: 1.25rem 0 clamp(2.5rem, 5vw, 4rem);
+    margin: 1.25rem 0 1.5rem;
+    background: linear-gradient(100deg, var(--text) 30%, var(--accent) 70%, var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    padding-bottom: 0.06em;
   }
 
-  .c-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
-    gap: clamp(2.5rem, 6vw, 6rem);
-    align-items: start;
-  }
+  .c-text { max-width: 52ch; color: var(--text-2); font-size: 1.1rem; margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
 
-  .c-text {
-    font-size: 1.15rem;
-    max-width: 46ch;
-    color: color-mix(in srgb, var(--paper) 72%, transparent);
-    margin-bottom: 2rem;
-  }
+  .c-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: 1rem; align-items: start; }
 
-  .c-mail { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.25rem; }
+  .c-mail-body { padding: 1.4rem 1.5rem 1.6rem; }
+  .c-line { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.6rem; }
 
   .c-mail-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--serif);
-    font-size: clamp(1.7rem, 4vw, 3rem);
-    line-height: 1.1;
-    border-bottom: 1px solid color-mix(in srgb, var(--paper) 35%, transparent);
-    padding-bottom: 0.3rem;
-    transition: color 0.25s, border-color 0.25s;
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 3.6vw, 2.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
     overflow-wrap: anywhere;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
   }
 
-  .c-mail-link:hover { color: var(--accent); border-color: var(--accent); }
-  .c-mail-link:hover .arrow { transform: translate(4px, -4px); }
+  .c-mail-link:hover { color: var(--accent); }
 
-  .c-copy {
-    font-size: 0.68rem;
-    padding: 0.5rem 0.9rem;
-    background: transparent;
-    color: var(--paper);
-    border: 1px solid color-mix(in srgb, var(--paper) 30%, transparent);
-    border-radius: 999px;
-    cursor: pointer;
-    transition: border-color 0.2s, color 0.2s;
-  }
+  .c-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
 
-  .c-copy:hover { border-color: var(--paper); }
-  .c-copy.done { color: var(--accent); border-color: var(--accent); }
-
-  .c-side-title {
-    font-size: 0.66rem;
-    color: color-mix(in srgb, var(--paper) 55%, transparent);
-    padding-bottom: 0.8rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--paper) 40%, transparent);
-  }
-
-  .c-links { list-style: none; }
+  .c-links { list-style: none; display: grid; gap: 0.5rem; }
 
   .c-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
     gap: 1rem;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
-    transition: padding 0.3s var(--ease), color 0.2s;
+    padding: 0.85rem 1.1rem;
+    border-radius: 11px;
   }
 
-  .c-link:hover { color: var(--accent); padding-left: 0.5rem; }
   .c-link-label { font-weight: 500; }
-  .c-link-handle { font-size: 0.64rem; color: color-mix(in srgb, var(--paper) 50%, transparent); text-transform: none; letter-spacing: 0.02em; }
+  .c-link-handle { font-size: 0.7rem; color: var(--muted); }
+  .c-link .arrow { color: var(--muted); transition: transform 0.3s var(--ease), color 0.2s; }
+  .c-link:hover .arrow { color: var(--accent); transform: translate(3px, -3px); }
+  .c-link:hover .c-link-label { color: var(--accent); }
 
-  @media (max-width: 900px) {
-    .c-grid { grid-template-columns: minmax(0, 1fr); }
-  }
+  @media (max-width: 900px) { .c-grid { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 420px) { .c-link-handle { display: none; } }
 </style>
 
 <script>
@@ -166,12 +136,7 @@ const s = i.sections.contact;
     btn.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(btn.dataset.copy || '');
-        btn.textContent = btn.dataset.done || 'OK';
-        btn.classList.add('done');
-        setTimeout(() => {
-          btn.textContent = btn.dataset.label || '';
-          btn.classList.remove('done');
-        }, 1800);
+        (window as any).__toast?.(btn.dataset.done);
       } catch (e) {
         window.location.href = `mailto:${btn.dataset.copy}`;
       }

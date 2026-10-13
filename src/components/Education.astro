@@ -5,173 +5,142 @@ import SectionHead from './SectionHead.astro';
 interface Props { lang?: Lang; }
 const { lang = 'es' } = Astro.props;
 
-const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const i = t(lang);
 const id = ids(lang);
 const s = i.sections.education;
+const levels = ['PhD', 'MSc', 'BSc'];
 ---
 
 <section class="section" id={id.education}>
-  <div class="wrap section-grid">
-    <SectionHead n={s.n} title={s.title} desc={s.desc}>
-      <figure class="edu-fig reveal" style="--d: 0.15s">
-        <img src={`${base}images/foto3.webp`} alt="Antonio Payá González" width="1210" height="911" loading="lazy" decoding="async" />
-      </figure>
-    </SectionHead>
+  <div class="wrap">
+    <SectionHead n={s.n} file={s.file} title={s.title} desc={s.desc} />
 
-    <div class="section-body">
-      <ol class="degrees">
-        {i.education.degrees.map((d) => (
-          <li class="degree reveal">
-            <span class="mono degree-period">{d.period}</span>
-            <div>
-              <h3 class="degree-title">{d.title}</h3>
-              <p class="degree-school">{d.school}</p>
-              <p class="degree-desc">{d.desc}</p>
-              {d.honors.length > 0 && (
-                d.honors.length > 2 ? (
-                  <details class="honors">
-                    <summary class="mono">{d.honors.length} {i.education.honorsLabel}</summary>
-                    <ul>{d.honors.map((h) => <li>{h}</li>)}</ul>
-                  </details>
-                ) : (
-                  <p class="honors-inline mono">{i.education.honorsLabel}: {d.honors.join(', ')}</p>
-                )
-              )}
-            </div>
-          </li>
-        ))}
-      </ol>
+    <ol class="degrees">
+      {i.education.degrees.map((d, idx) => (
+        <li class="degree card reveal" style={`--d: ${idx * 0.08}s`}>
+          <div class="d-top mono">
+            <span class="d-level">{levels[idx]}</span>
+            <span class="d-period">{d.period}</span>
+          </div>
+          <h3 class="d-title">{d.title}</h3>
+          <p class="d-school">{d.school}</p>
+          <p class="d-desc">{d.desc}</p>
+          {d.honors.length > 0 && (
+            d.honors.length > 2 ? (
+              <details class="honors">
+                <summary class="mono">★ {d.honors.length} {i.education.honorsLabel}</summary>
+                <ul>{d.honors.map((h) => <li>{h}</li>)}</ul>
+              </details>
+            ) : (
+              <p class="honors-inline mono">★ {i.education.honorsLabel}: {d.honors.join(', ')}</p>
+            )
+          )}
+        </li>
+      ))}
+    </ol>
 
-      <h3 class="list-title mono reveal">{i.education.certsTitle}</h3>
-      <ul class="certs">
-        {i.education.certs.map((c) => (
-          <li class="cert reveal">
-            <span class="cert-title">{c.title}</span>
-            <span class="cert-issuer">{c.issuer}</span>
-            <span class="mono cert-year">{c.year}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <h3 class="list-title mono reveal"><span class="accent">#</span> {i.education.certsTitle}</h3>
+    <ul class="certs">
+      {i.education.certs.map((c, idx) => (
+        <li class="cert reveal" style={`--d: ${(idx % 3) * 0.05}s`}>
+          <span class="cert-check mono" aria-hidden="true">✓</span>
+          <span class="cert-title">{c.title}</span>
+          <span class="cert-issuer mono">{c.issuer}</span>
+          <span class="cert-year mono">{c.year}</span>
+        </li>
+      ))}
+    </ul>
   </div>
 </section>
 
 <style>
-  .edu-fig {
-    margin-top: 2.25rem;
-    max-width: 320px;
-    aspect-ratio: 4 / 3;
-    overflow: hidden;
-    border: 1px solid var(--rule);
-    padding: 8px;
-    background: var(--paper-3);
-  }
-
-  .edu-fig img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(1) contrast(1.05);
-    transition: filter 0.8s var(--ease);
-  }
-
-  .edu-fig:hover img { filter: none; }
-
-  .degrees { list-style: none; border-top: 1px solid var(--ink); margin-bottom: 3rem; }
-
-  .degree {
+  .degrees {
+    list-style: none;
     display: grid;
-    grid-template-columns: 11rem minmax(0, 1fr);
-    gap: 2rem;
-    padding: 1.75rem 0;
-    border-bottom: 1px solid var(--rule);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: clamp(3rem, 6vw, 4rem);
+    align-items: start;
   }
 
-  .degree-period { font-size: 0.7rem; color: var(--muted); padding-top: 0.35rem; letter-spacing: 0.04em; }
+  .degree { padding: 1.4rem 1.4rem 1.5rem; }
 
-  .degree-title {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(1.5rem, 2.3vw, 1.9rem);
-    line-height: 1.08;
+  .d-top { display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; margin-bottom: 1.1rem; }
+
+  .d-level {
+    padding: 0.15rem 0.55rem;
+    border-radius: 6px;
+    background: var(--accent-glow);
+    color: var(--accent);
+    font-weight: 700;
   }
 
-  .degree-school { font-weight: 500; color: var(--ink-2); margin: 0.2rem 0 0.6rem; }
-  .degree-desc { color: var(--muted); max-width: 60ch; }
+  .d-period { color: var(--muted); }
 
-  .honors-inline { margin-top: 0.75rem; font-size: 0.68rem; color: var(--accent); }
+  .d-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+
+  .d-school { color: var(--accent-2); font-size: 0.9rem; margin: 0.25rem 0 0.7rem; }
+  .d-desc { color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
+
+  .honors-inline { margin-top: 0.9rem; font-size: 0.72rem; color: var(--syn-num); }
 
   .honors { margin-top: 0.9rem; }
 
   .honors summary {
+    cursor: pointer;
+    font-size: 0.72rem;
+    color: var(--syn-num);
+    list-style: none;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    font-size: 0.68rem;
-    color: var(--accent);
-    list-style: none;
+    gap: 0.4rem;
   }
 
   .honors summary::-webkit-details-marker { display: none; }
+  .honors summary::after { content: '▸'; transition: transform 0.25s var(--ease); }
+  .honors[open] summary::after { transform: rotate(90deg); }
 
-  .honors summary::before {
-    content: '+';
-    display: inline-grid;
-    place-items: center;
-    width: 18px;
-    height: 18px;
-    border: 1px solid currentColor;
-    border-radius: 50%;
-    font-size: 0.8rem;
-    line-height: 1;
-    transition: transform 0.3s var(--ease);
-  }
+  .honors ul { list-style: none; margin-top: 0.7rem; font-size: 0.85rem; color: var(--text-2); display: grid; gap: 0.2rem; }
+  .honors li::before { content: '› '; color: var(--syn-num); font-family: var(--mono); }
 
-  .honors[open] summary::before { transform: rotate(45deg); }
+  .list-title { font-size: 0.85rem; color: var(--text-2); font-weight: 500; margin-bottom: 1rem; }
 
-  .honors ul {
+  .certs {
     list-style: none;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.3rem 1.5rem;
-    margin-top: 0.9rem;
-    font-size: 0.92rem;
-    color: var(--ink-2);
+    column-gap: 2rem;
+    border-top: 1px solid var(--line);
   }
-
-  .honors li { padding-left: 1rem; position: relative; }
-  .honors li::before { content: '✦'; position: absolute; left: 0; color: var(--accent); font-size: 0.6rem; top: 0.35em; }
-
-  .list-title {
-    color: var(--muted);
-    font-size: 0.7rem;
-    padding-bottom: 0.9rem;
-    border-bottom: 1px solid var(--ink);
-  }
-
-  .certs { list-style: none; }
 
   .cert {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 12rem 3.5rem;
-    gap: 1rem;
+    grid-template-columns: 1.4rem minmax(0, 1fr) auto 3rem;
+    gap: 0.75rem;
     align-items: baseline;
     padding: 0.85rem 0;
-    border-bottom: 1px solid var(--rule);
+    border-bottom: 1px solid var(--line);
   }
 
-  .cert-title { font-weight: 500; }
-  .cert-issuer { color: var(--muted); font-size: 0.92rem; }
-  .cert-year { font-size: 0.7rem; color: var(--muted); text-align: right; }
+  .cert-check { color: #28C840; font-size: 0.8rem; }
+  .cert-title { font-weight: 500; font-size: 0.95rem; }
+  .cert-issuer { font-size: 0.72rem; color: var(--muted); }
+  .cert-year { font-size: 0.72rem; color: var(--syn-num); text-align: right; }
 
-  @media (max-width: 640px) {
-    .degree { grid-template-columns: minmax(0, 1fr); gap: 0.6rem; }
-    .degree-period { padding-top: 0; }
-    .honors ul { grid-template-columns: minmax(0, 1fr); }
-    .cert { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.1rem; }
-    .cert-issuer { grid-row: 2; }
-    .cert-year { grid-row: 1 / span 2; grid-column: 2; align-self: center; }
+  @media (max-width: 960px) {
+    .degrees { grid-template-columns: minmax(0, 1fr); }
+    .certs { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @media (max-width: 520px) {
+    .cert { grid-template-columns: 1.4rem minmax(0, 1fr) 3rem; }
+    .cert-issuer { grid-column: 2; grid-row: 2; }
+    .cert-year { grid-row: 1; grid-column: 3; }
   }
 </style>

@@ -6,37 +6,68 @@ const { lang = 'es' } = Astro.props;
 
 const i = t(lang);
 const now = new Date();
-const updated = now.toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-GB', { month: 'long', year: 'numeric' });
+const built = now.toISOString().slice(0, 10);
 ---
 
 <footer class="ftr">
-  <div class="wrap ftr-inner">
-    <p class="ftr-name"><span class="serif">Antonio Payá González</span> <span class="ftr-role">— {i.footer.role}</span></p>
-    <p class="mono ftr-meta">© {now.getFullYear()} · {i.footer.updated} {updated}</p>
-    <a href="#" class="mono ftr-top">{i.footer.top} ↑</a>
+  <div class="ftr-main wrap">
+    <p class="ftr-name"><span class="ftr-brand mono"><span class="accent">❯</span> antonio-paya</span> <span class="ftr-role">{i.footer.role}</span></p>
+    <p class="ftr-copy mono">© {now.getFullYear()} Antonio Payá González</p>
+  </div>
+  <div class="status mono">
+    <div class="status-inner">
+      <span class="st st-branch">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="8" r="2.5"/><path d="M6 8.5v7M18 10.5c0 4-6 3-11.2 5.6"/></svg>
+        main
+      </span>
+      <span class="st"><span class="ok-dot" aria-hidden="true"></span>{i.ui.status.ok}</span>
+      <span class="st st-hide">{i.ui.status.built}: {built}</span>
+      <span class="st-spacer"></span>
+      <span class="st st-hide">Astro</span>
+      <span class="st st-hide">UTF-8</span>
+      <span class="st">{lang.toUpperCase()}</span>
+      <a href="#" class="st st-top">{i.footer.top} ↑</a>
+    </div>
   </div>
 </footer>
 
 <style>
-  .ftr {
-    background: var(--ink);
-    color: color-mix(in srgb, var(--paper) 65%, transparent);
-    border-top: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
-  }
+  .ftr { border-top: 1px solid var(--line); }
 
-  .ftr-inner {
+  .ftr-main {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     gap: 0.75rem 2rem;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    padding-top: 1.75rem;
+    padding-bottom: 1.75rem;
   }
 
-  .ftr-name .serif { font-size: 1.15rem; color: var(--paper); }
-  .ftr-role { font-size: 0.88rem; }
-  .ftr-meta, .ftr-top { font-size: 0.64rem; }
-  .ftr-top { color: var(--paper); transition: color 0.2s; }
-  .ftr-top:hover { color: var(--accent); }
+  .ftr-brand { font-weight: 500; margin-right: 0.75rem; }
+  .ftr-role { color: var(--muted); font-size: 0.92rem; }
+  .ftr-copy { font-size: 0.72rem; color: var(--muted); }
+
+  .status { background: var(--accent); color: var(--on-accent); font-size: 0.7rem; }
+
+  .status-inner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 0 calc(var(--gutter) - 0.6rem);
+    min-height: 26px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .st { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.6rem; }
+  .st-spacer { flex: 1; }
+  .st-top { transition: background-color 0.2s; }
+  .st-top:hover { background: rgba(0, 0, 0, 0.15); }
+
+  .ok-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  @media (max-width: 640px) { .st-hide { display: none; } }
 </style>

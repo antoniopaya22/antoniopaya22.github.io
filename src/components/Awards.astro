@@ -8,62 +8,64 @@ const { lang = 'es' } = Astro.props;
 const i = t(lang);
 const id = ids(lang);
 const s = i.sections.awards;
+
+const icon = (title: string) =>
+  /jurad|juror/i.test(title)
+    ? '<rect x="2" y="6" width="20" height="14" rx="2"/><path d="m7 2 3 4M17 2l-3 4M2 11h20"/>'
+    : /finalist|2º|2nd/i.test(title)
+      ? '<circle cx="12" cy="9" r="6"/><path d="m8.5 14.5-1.5 7.5 5-3 5 3-1.5-7.5"/>'
+      : '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/>';
 ---
 
 <section class="section" id={id.awards}>
-  <div class="wrap section-grid">
-    <SectionHead n={s.n} title={s.title} desc={s.desc} />
+  <div class="wrap">
+    <SectionHead n={s.n} file={s.file} title={s.title} desc={s.desc} />
 
-    <ol class="section-body awards">
-      {i.awards.items.map((a) => (
-        <li class="award reveal">
-          <span class="mono award-year">{a.year}</span>
-          <h3 class="award-title">{a.title}</h3>
-          <span class="award-org">{a.org}</span>
-          <p class="award-desc">{a.desc}</p>
+    <ul class="awards">
+      {i.awards.items.map((a, idx) => (
+        <li class="award card reveal" style={`--d: ${(idx % 3) * 0.07}s`}>
+          <div class="a-top">
+            <span class="a-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={icon(a.title)} />
+            </span>
+            <span class="a-year mono">{a.year}</span>
+          </div>
+          <h3 class="a-title">{a.title}</h3>
+          <p class="a-org mono">{a.org}</p>
+          <p class="a-desc">{a.desc}</p>
         </li>
       ))}
-    </ol>
+    </ul>
   </div>
 </section>
 
 <style>
-  .awards { list-style: none; border-top: 1px solid var(--ink); }
+  .awards { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
 
-  .award {
+  .award { padding: 1.35rem 1.35rem 1.45rem; }
+  .award:hover { transform: translateY(-4px); }
+
+  .a-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+
+  .a-icon {
     display: grid;
-    grid-template-columns: 5rem minmax(0, 1.3fr) minmax(0, 1fr);
-    grid-template-areas:
-      'year title org'
-      'year desc desc';
-    column-gap: 1.5rem;
-    row-gap: 0.25rem;
-    padding: 1.35rem 0;
-    border-bottom: 1px solid var(--rule);
-    transition: background-color 0.3s var(--ease);
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--syn-num) 14%, transparent);
+    color: var(--syn-num);
+    transition: transform 0.4s var(--ease);
   }
 
-  .award-year { grid-area: year; font-size: 0.75rem; color: var(--accent); padding-top: 0.35rem; }
+  .award:hover .a-icon { transform: rotate(-8deg) scale(1.08); }
 
-  .award-title {
-    grid-area: title;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: 1.5rem;
-    line-height: 1.15;
-  }
+  .a-year { font-size: 0.75rem; color: var(--muted); }
 
-  .award-org { grid-area: org; color: var(--ink-2); font-weight: 500; padding-top: 0.25rem; text-align: right; }
-  .award-desc { grid-area: desc; color: var(--muted); font-size: 0.95rem; }
+  .a-title { font-family: var(--display); font-weight: 700; font-size: 1.2rem; letter-spacing: -0.02em; line-height: 1.2; }
+  .a-org { font-size: 0.75rem; color: var(--accent-2); margin: 0.3rem 0 0.6rem; }
+  .a-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.55; }
 
-  @media (max-width: 640px) {
-    .award {
-      grid-template-columns: 3.5rem minmax(0, 1fr);
-      grid-template-areas:
-        'year title'
-        'year org'
-        'year desc';
-    }
-    .award-org { text-align: left; padding-top: 0; font-size: 0.92rem; }
-  }
+  @media (max-width: 900px) { .awards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 560px) { .awards { grid-template-columns: minmax(0, 1fr); } }
 </style>

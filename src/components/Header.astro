@@ -14,30 +14,33 @@ const links = navSections.map((key) => ({ href: `#${id[key]}`, label: i.sections
 
 <header class="hdr" id="hdr">
   <div class="hdr-inner wrap">
-    <a href={langPath(lang, base)} class="brand" aria-label={i.header.home}>
-      <span class="brand-mark" aria-hidden="true">Ap</span>
-      <span class="brand-name">Antonio Payá <span class="brand-sub">González</span></span>
+    <a href={langPath(lang, base)} class="brand mono" aria-label={i.header.home}>
+      <span class="brand-icon" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7 5 5-5 5M13 18h7"/></svg>
+      </span>
+      <span class="brand-path"><span class="brand-tilde">~/</span>antonio-paya</span>
     </a>
 
     <nav class="nav" aria-label="Main">
-      <ul class="nav-list" id="nav-list">
+      <ul class="nav-list">
         {links.map((l) => (
-          <li><a href={l.href} class="nav-link" data-nav><span class="nav-n mono">{l.n}</span>{l.label}</a></li>
+          <li><a href={l.href} class="nav-link mono" data-nav><span class="nav-dot">./</span>{l.label.toLowerCase()}</a></li>
         ))}
       </ul>
     </nav>
 
     <div class="hdr-tools">
-      <a href={otherPath} class="tool tool-lang mono" hreflang={other} lang={other} title={i.header.switchLang}>
-        {other.toUpperCase()}
-      </a>
-      <button class="tool tool-theme" id="theme-toggle" type="button" aria-label={i.header.theme} title={i.header.theme}>
-        <svg class="i-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        <svg class="i-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      <button class="tool tool-k mono" type="button" data-palette-open aria-label={i.ui.paletteOpen}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <span class="kbd" data-kbd>Ctrl K</span>
       </button>
-      <button class="tool tool-menu" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
-        <span class="mono" data-open>{i.header.menu}</span>
-        <span class="mono" data-close hidden>{i.header.close}</span>
+      <a href={otherPath} class="tool mono" hreflang={other} lang={other} title={i.header.switchLang}>{other.toUpperCase()}</a>
+      <button class="tool" type="button" data-theme-toggle aria-label={i.header.theme} title={i.header.theme}>
+        <svg class="i-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="i-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+      </button>
+      <button class="tool tool-menu" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label={i.header.menu}>
+        <span class="burger" aria-hidden="true"><i></i><i></i></span>
       </button>
     </div>
   </div>
@@ -58,181 +61,126 @@ const links = navSections.map((key) => ({ href: `#${id[key]}`, label: i.sections
     left: 0;
     right: 0;
     z-index: 50;
-    transition: background-color 0.35s var(--ease), border-color 0.35s, backdrop-filter 0.35s;
     border-bottom: 1px solid transparent;
+    transition: background-color 0.35s var(--ease), border-color 0.35s;
   }
 
-  .hdr.is-scrolled {
-    background: color-mix(in srgb, var(--paper) 82%, transparent);
-    backdrop-filter: blur(14px) saturate(1.2);
-    -webkit-backdrop-filter: blur(14px) saturate(1.2);
-    border-bottom-color: var(--rule);
+  .hdr.is-scrolled, .hdr.menu-open {
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: blur(16px) saturate(1.3);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    border-bottom-color: var(--line);
   }
 
-  .hdr-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-    height: 72px;
-  }
+  .hdr-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; height: 68px; }
 
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
-    flex-shrink: 0;
-  }
+  .brand { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; font-weight: 500; flex-shrink: 0; }
 
-  .brand-mark {
+  .brand-icon {
     display: grid;
     place-items: center;
-    width: 34px;
-    height: 34px;
+    width: 28px;
+    height: 28px;
     border-radius: 7px;
     background: var(--accent);
-    color: var(--paper);
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 1.2rem;
-    line-height: 1;
+    color: var(--on-accent);
     transition: transform 0.4s var(--ease);
   }
 
-  .brand:hover .brand-mark { transform: rotate(-8deg); }
+  .brand:hover .brand-icon { transform: rotate(-10deg) scale(1.05); }
+  .brand-tilde { color: var(--muted); }
 
-  .brand-name {
-    font-family: var(--serif);
-    font-size: 1.3rem;
-    line-height: 1;
-    letter-spacing: -0.005em;
-  }
-
-  .brand-sub { color: var(--muted); }
-
-  .nav-list {
-    display: flex;
-    list-style: none;
-    gap: 0.25rem;
-  }
+  .nav-list { display: flex; list-style: none; gap: 0.1rem; }
 
   .nav-link {
-    position: relative;
     display: inline-flex;
-    align-items: baseline;
-    gap: 0.35rem;
-    padding: 0.45rem 0.6rem;
-    font-size: 0.88rem;
-    font-weight: 500;
-    color: var(--ink-2);
-    border-radius: 6px;
-    transition: color 0.2s;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    border-radius: 7px;
+    transition: color 0.2s, background-color 0.2s;
   }
 
-  .nav-n { font-size: 0.62rem; color: var(--muted); transition: color 0.2s; }
-
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    left: 0.6rem;
-    right: 0.6rem;
-    bottom: 0.2rem;
-    height: 1px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.35s var(--ease);
-  }
-
-  .nav-link:hover, .nav-link.is-active { color: var(--ink); }
-  .nav-link:hover::after, .nav-link.is-active::after { transform: scaleX(1); }
-  .nav-link.is-active .nav-n { color: var(--accent); }
+  .nav-dot { color: transparent; transition: color 0.2s; margin-right: 1px; }
+  .nav-link:hover { color: var(--text); background: var(--surface-2); }
+  .nav-link.is-active { color: var(--accent); }
+  .nav-link:hover .nav-dot, .nav-link.is-active .nav-dot { color: var(--accent); }
 
   .hdr-tools { display: flex; align-items: center; gap: 0.4rem; }
 
   .tool {
-    display: inline-grid;
-    place-items: center;
-    height: 36px;
-    min-width: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 34px;
+    min-width: 34px;
     padding: 0 0.6rem;
-    border: 1px solid var(--rule);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--ink);
+    font-size: 0.72rem;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--surface);
     cursor: pointer;
-    font: inherit;
-    transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+    transition: border-color 0.2s, color 0.2s;
   }
 
-  .tool:hover { border-color: var(--ink); }
-  .tool-lang { font-size: 0.7rem; }
+  .tool:hover { border-color: var(--accent); color: var(--accent); }
+  .tool-k { color: var(--muted); }
 
-  .i-moon { display: none; }
-  :global(:root[data-theme="dark"]) .i-sun { display: none; }
-  :global(:root[data-theme="dark"]) .i-moon { display: block; }
-  @media (prefers-color-scheme: dark) {
-    :global(:root:not([data-theme="light"])) .i-sun { display: none; }
-    :global(:root:not([data-theme="light"])) .i-moon { display: block; }
-  }
+  .i-sun { display: none; }
+  :global(:root[data-theme="light"]) .i-sun { display: block; }
+  :global(:root[data-theme="light"]) .i-moon { display: none; }
 
-  .tool-menu { display: none; padding: 0 0.9rem; }
-  .tool-menu .mono { font-size: 0.68rem; }
+  .tool-menu { display: none; }
 
-  .mobile-menu {
-    border-top: 1px solid var(--rule);
-    background: var(--paper);
-    height: calc(100dvh - 72px);
-    overflow-y: auto;
-  }
+  .burger { display: grid; gap: 5px; width: 16px; }
+  .burger i { display: block; height: 1.5px; background: currentColor; transition: transform 0.3s var(--ease); }
+  .menu-open .burger i:first-child { transform: translateY(3.25px) rotate(45deg); }
+  .menu-open .burger i:last-child { transform: translateY(-3.25px) rotate(-45deg); }
 
-  .mobile-menu ul { list-style: none; padding-top: 1.5rem; padding-bottom: 2rem; }
+  .mobile-menu { height: calc(100dvh - 68px); overflow-y: auto; border-top: 1px solid var(--line); }
+  .mobile-menu ul { list-style: none; padding-top: 1.25rem; padding-bottom: 2rem; }
 
   .m-link {
     display: flex;
     align-items: baseline;
     gap: 1rem;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid var(--rule);
-    font-family: var(--serif);
-    font-size: 2.2rem;
-    line-height: 1.1;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: -0.03em;
   }
 
-  .m-link .mono { color: var(--accent); font-size: 0.7rem; }
+  .m-link .mono { font-size: 0.72rem; color: var(--accent); font-weight: 400; letter-spacing: 0; }
 
-  @media (max-width: 1180px) {
-    .nav-n { display: none; }
-  }
-
-  @media (max-width: 1020px) {
+  @media (max-width: 1100px) {
     .nav { display: none; }
-    .tool-menu { display: inline-grid; }
-    .hdr.menu-open { background: var(--paper); border-bottom-color: var(--rule); }
+    .tool-menu { display: inline-flex; }
   }
 
-  @media (max-width: 420px) {
-    .brand-sub { display: none; }
+  @media (max-width: 480px) {
+    .tool-k .kbd { display: none; }
+    .brand-tilde { display: none; }
   }
 </style>
 
 <script>
   const hdr = document.getElementById('hdr');
-  const onScroll = () => hdr?.classList.toggle('is-scrolled', window.scrollY > 12);
+  const onScroll = () => hdr?.classList.toggle('is-scrolled', window.scrollY > 10);
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // theme
-  const root = document.documentElement;
-  document.getElementById('theme-toggle')?.addEventListener('click', () => {
-    const current = root.getAttribute('data-theme')
-      || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    const next = current === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch (e) {}
-  });
+  // platform-aware shortcut label
+  if (/Mac|iPhone|iPad/.test(navigator.platform)) {
+    document.querySelectorAll('[data-kbd]').forEach((k) => (k.textContent = '⌘ K'));
+  }
 
-  // mobile menu
+  document.querySelectorAll('[data-theme-toggle]').forEach((b) =>
+    b.addEventListener('click', () => (window as any).__toggleTheme())
+  );
+
   const btn = document.getElementById('menu-toggle');
   const menu = document.getElementById('mobile-menu');
   const setMenu = (open: boolean) => {
@@ -241,22 +189,16 @@ const links = navSections.map((key) => ({ href: `#${id[key]}`, label: i.sections
     menu.hidden = !open;
     hdr?.classList.toggle('menu-open', open);
     document.body.style.overflow = open ? 'hidden' : '';
-    btn.querySelector<HTMLElement>('[data-open]')!.hidden = open;
-    btn.querySelector<HTMLElement>('[data-close]')!.hidden = !open;
   };
   btn?.addEventListener('click', () => setMenu(btn.getAttribute('aria-expanded') !== 'true'));
   menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
 
-  // active section
   const links = document.querySelectorAll<HTMLAnchorElement>('[data-nav]');
   const spy = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        links.forEach((l) => l.classList.toggle('is-active', l.getAttribute('href') === `#${e.target.id}`));
-      });
-    },
+    (entries) => entries.forEach((e) => {
+      if (e.isIntersecting) links.forEach((l) => l.classList.toggle('is-active', l.getAttribute('href') === `#${e.target.id}`));
+    }),
     { rootMargin: '-45% 0px -50% 0px' }
   );
   document.querySelectorAll('main section[id]').forEach((s) => spy.observe(s));

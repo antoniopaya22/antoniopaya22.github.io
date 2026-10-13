@@ -8,75 +8,216 @@ const { lang = 'es' } = Astro.props;
 const i = t(lang);
 const id = ids(lang);
 const s = i.sections.skills;
+
+const files = ['cloud.yaml', 'architecture.md', 'security.ts', 'ai_ml.py', 'backend.go', 'frontend.tsx', 'data.sql', 'chain.sol'];
+const langColor: Record<string, string> = { yaml: '#CB171E', md: '#7D8794', ts: '#3178C6', py: '#FFD43B', go: '#00ADD8', tsx: '#61DAFB', sql: '#E38C00', sol: '#9CA3AF' };
+
+const q = (v: string) => `<span class="s">"${v}"</span>`;
+const sq = (v: string) => `<span class="s">'${v}'</span>`;
+
+// one code listing per group, each "written" in the language of its file extension
+const render = (ext: string, label: string, items: readonly string[]): string[] => {
+  const name = label.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]+/g, '_').replace(/^_|_$/g, '');
+  switch (ext) {
+    case 'yaml':
+      return [`<span class="c"># ${label}</span>`, `<span class="p">${name}</span>:`, ...items.map((x) => `  - ${q(x)}`)];
+    case 'md':
+      return [`<span class="k"># ${label}</span>`, '', ...items.map((x) => `<span class="n">-</span> ${x}`)];
+    case 'ts':
+      return [`<span class="c">// ${label}</span>`, `<span class="k">export const</span> ${name} <span class="k">=</span> [`, ...items.map((x) => `  ${sq(x)},`), `] <span class="k">as const</span>;`];
+    case 'py':
+      return [`<span class="c"># ${label}</span>`, `${name} <span class="k">=</span> [`, ...items.map((x) => `    ${q(x)},`), ']'];
+    case 'go':
+      return [`<span class="k">package</span> stack`, '', `<span class="c">// ${label}</span>`, `<span class="k">var</span> ${name} <span class="k">=</span> []<span class="p">string</span>{`, ...items.map((x) => `\t${q(x)},`), '}'];
+    case 'tsx':
+      return [`<span class="c">{/* ${label} */}</span>`, `<span class="k">export const</span> <span class="p">Stack</span> <span class="k">=</span> () <span class="k">=></span> (`, '  &lt;<span class="p">ul</span>&gt;', ...items.map((x) => `    &lt;<span class="p">li</span>&gt;${x}&lt;/<span class="p">li</span>&gt;`), '  &lt;/<span class="p">ul</span>&gt;', ');'];
+    case 'sql':
+      return [`<span class="c">-- ${label}</span>`, `<span class="k">INSERT INTO</span> stack (name) <span class="k">VALUES</span>`, ...items.map((x, k) => `  (${sq(x)})${k === items.length - 1 ? ';' : ','}`)];
+    case 'sol':
+      return [`<span class="c">// ${label}</span>`, `<span class="k">pragma solidity</span> <span class="n">^0.8.0</span>;`, '', `<span class="k">contract</span> <span class="p">Stack</span> {`, `  <span class="k">string[] public</span> items <span class="k">=</span> [`, ...items.map((x) => `    ${q(x)},`), '  ];', '}'];
+    default:
+      return [...items];
+  }
+};
+
+const tabs = i.skills.groups.map((g, k) => {
+  const file = files[k] ?? `group${k}.txt`;
+  const ext = file.split('.').pop()!;
+  return { file, ext, label: g.label, items: g.items, lines: render(ext, g.label, g.items) };
+});
 ---
 
 <section class="section" id={id.skills}>
-  <div class="wrap section-grid">
-    <SectionHead n={s.n} title={s.title} desc={s.desc} />
+  <div class="wrap">
+    <SectionHead n={s.n} file={s.file} title={s.title} desc={s.desc} />
 
-    <div class="section-body skills">
-      {i.skills.groups.map((g, idx) => (
-        <div class="group reveal" style={`--d: ${(idx % 2) * 0.06}s`}>
-          <h3 class="group-label">
-            <span class="mono group-n">{String(idx + 1).padStart(2, '0')}</span>
-            {g.label}
-          </h3>
-          <ul class="group-items">
-            {g.items.map((it) => <li>{it}</li>)}
-          </ul>
+    <div class="ide win reveal">
+      <div class="win-bar">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="ide-title">~/antonio-paya/stack — {lang === 'es' ? 'editor' : 'editor'}</span>
+      </div>
+
+      <div class="ide-body">
+        <aside class="explorer mono">
+          <p class="ex-head">EXPLORER</p>
+          <p class="ex-folder"><span aria-hidden="true">▾</span> stack</p>
+          <div role="tablist" aria-orientation="vertical" aria-label={s.title} class="ex-files">
+            {tabs.map((tab, k) => (
+              <button
+                type="button"
+                role="tab"
+                class="ex-file"
+                id={`tab-${tab.ext}`}
+                aria-selected={k === 0 ? 'true' : 'false'}
+                aria-controls={`panel-${tab.ext}`}
+                tabindex={k === 0 ? 0 : -1}
+              >
+                <span class="ex-dot" style={`background:${langColor[tab.ext]}`} aria-hidden="true"></span>
+                {tab.file}
+              </button>
+            ))}
+          </div>
+        </aside>
+
+        <div class="editor">
+          {tabs.map((tab, k) => (
+            <div class="panel" role="tabpanel" id={`panel-${tab.ext}`} aria-labelledby={`tab-${tab.ext}`} hidden={k !== 0}>
+              <div class="ed-tabs mono">
+                <span class="ed-tab"><span class="ex-dot" style={`background:${langColor[tab.ext]}`} aria-hidden="true"></span>{tab.file}</span>
+                <span class="ed-count">{tab.items.length} items</span>
+              </div>
+              <pre class="ed-code mono"><code>{tab.lines.map((line, n) => (
+                <span class="ed-line" style={`--l: ${n}`}><span class="ln">{n + 1}</span><span set:html={line || ' '} /></span>
+              ))}</code></pre>
+              <ul class="sr-only">{tab.items.map((it) => <li>{it}</li>)}</ul>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .skills {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    border-top: 1px solid var(--ink);
+  .ide-title { flex: 1; text-align: center; }
+
+  .ide-body { display: grid; grid-template-columns: 230px minmax(0, 1fr); min-height: 440px; }
+
+  .explorer {
+    border-right: 1px solid var(--line);
+    background: color-mix(in srgb, var(--surface-2) 60%, transparent);
+    padding: 0.9rem 0.5rem;
+    font-size: 0.8rem;
   }
 
-  .group {
-    padding: 1.5rem 1.5rem 1.6rem 0;
-    border-bottom: 1px solid var(--rule);
-  }
+  .ex-head { font-size: 0.64rem; letter-spacing: 0.1em; color: var(--muted); padding: 0 0.6rem 0.7rem; }
+  .ex-folder { padding: 0.3rem 0.6rem; color: var(--text-2); }
+  .ex-files { display: flex; flex-direction: column; }
 
-  .group:nth-child(even) { padding-left: 1.5rem; padding-right: 0; border-left: 1px solid var(--rule); }
-
-  .group-label {
+  .ex-file {
     display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: 1.55rem;
-    line-height: 1.1;
-    margin-bottom: 0.85rem;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.38rem 0.6rem 0.38rem 1.6rem;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    text-align: left;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
   }
 
-  .group-n { font-size: 0.62rem; color: var(--accent); }
+  .ex-file:hover { color: var(--text); background: var(--surface-2); }
+  .ex-file[aria-selected='true'] { color: var(--text); background: var(--accent-glow); box-shadow: inset 2px 0 0 var(--accent); }
 
-  .group-items {
-    list-style: none;
+  .ex-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+  .editor { min-width: 0; display: flex; }
+  .panel { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  .panel[hidden] { display: none; }
+
+  .ed-tabs {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.75rem;
+    padding-right: 1rem;
   }
 
-  .group-items li {
-    font-size: 0.88rem;
-    padding: 0.25rem 0.7rem;
-    border: 1px solid var(--rule);
-    border-radius: 999px;
-    color: var(--ink-2);
-    transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+  .ed-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-right: 1px solid var(--line);
+    border-top: 2px solid var(--accent);
+    background: var(--surface);
+    color: var(--text);
   }
 
-  .group-items li:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .ed-count { color: var(--muted); font-size: 0.68rem; }
 
-  @media (max-width: 720px) {
-    .skills { grid-template-columns: minmax(0, 1fr); }
-    .group:nth-child(even) { padding-left: 0; border-left: 0; }
+  .ed-code {
+    flex: 1;
+    padding: 1rem 1rem 1.25rem 0.4rem;
+    font-size: 0.86rem;
+    line-height: 1.9;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .ed-line { display: block; white-space: pre; }
+
+  .panel:not([hidden]) .ed-line { animation: line-in 0.45s var(--ease) both; animation-delay: calc(var(--l) * 35ms); }
+
+  @keyframes line-in {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .ln {
+    display: inline-block;
+    width: 2.6rem;
+    padding-right: 1rem;
+    text-align: right;
+    color: var(--syn-com);
+    opacity: 0.55;
+    user-select: none;
+  }
+
+  @media (max-width: 760px) {
+    .ide-body { grid-template-columns: minmax(0, 1fr); }
+    .explorer { border-right: 0; border-bottom: 1px solid var(--line); padding: 0.6rem; overflow-x: auto; }
+    .ex-head, .ex-folder { display: none; }
+    .ex-files { flex-direction: row; gap: 0.25rem; }
+    .ex-file { padding: 0.4rem 0.6rem; white-space: nowrap; }
+    .ed-code { font-size: 0.76rem; }
   }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.ide').forEach((ide) => {
+    const tabs = Array.from(ide.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const select = (tab: HTMLButtonElement, focus = false) => {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        const panel = document.getElementById(t.getAttribute('aria-controls')!);
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) tab.focus();
+    };
+    tabs.forEach((tab, k) => {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', (e) => {
+        const dir = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+        if (dir) { e.preventDefault(); select(tabs[(k + dir + tabs.length) % tabs.length], true); }
+      });
+    });
+  });
+</script>

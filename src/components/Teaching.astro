@@ -9,129 +9,129 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const i = t(lang);
 const id = ids(lang);
 const s = i.sections.teaching;
+const k = lang === 'es' ? { level: 'nivel', credits: 'créditos', type: 'tipo', official: 'oficial' } : { level: 'level', credits: 'credits', type: 'type', official: 'official' };
 ---
 
 <section class="section teaching" id={id.teaching}>
-  <div class="wrap section-grid">
-    <SectionHead n={s.n} title={s.title} desc={s.desc} />
+  <div class="wrap">
+    <SectionHead n={s.n} file={s.file} title={s.title} desc={s.desc} />
 
-    <div class="section-body">
-      <div class="inst reveal">
-        <div class="inst-logo">
-          <img src={`${base}images/logo-unir.png`} alt="UNIR" width="240" height="107" loading="lazy" decoding="async" />
-        </div>
-        <div>
-          <p class="inst-name">{i.teaching.institution}</p>
-          <p class="mono inst-since">{i.teaching.since}</p>
-        </div>
+    <div class="inst reveal">
+      <div class="inst-logo">
+        <img src={`${base}images/logo-unir.png`} alt="UNIR" width="240" height="107" loading="lazy" decoding="async" />
       </div>
-
-      <ol class="programs">
-        {i.teaching.programs.map((p, idx) => (
-          <li class="reveal" style={`--d: ${idx * 0.07}s`}>
-            <a class="program" href={p.url} target="_blank" rel="noopener noreferrer">
-              <span class="program-n serif">{String(idx + 1).padStart(2, '0')}</span>
-              <span class="program-body">
-                <span class="mono program-level">{p.level} · {p.meta}</span>
-                <span class="program-title">{p.title}</span>
-              </span>
-              <span class="program-cta mono">
-                <span class="program-cta-label">{i.teaching.linkLabel}</span>
-                <svg class="arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-              </span>
-            </a>
-          </li>
-        ))}
-      </ol>
-
-      <p class="note reveal">{i.teaching.note}</p>
+      <div>
+        <p class="inst-name">{i.teaching.institution}</p>
+        <p class="mono inst-since"><span class="accent">●</span> {i.teaching.since}</p>
+      </div>
     </div>
+
+    <ul class="programs">
+      {i.teaching.programs.map((p, idx) => (
+        <li class="reveal" style={`--d: ${idx * 0.08}s`}>
+          <a class="program card" href={p.url} target="_blank" rel="noopener noreferrer">
+            <span class="p-num" aria-hidden="true">0{idx + 1}</span>
+            <dl class="p-meta mono">
+              <div><dt>{k.level}:</dt><dd class="s">{p.level}</dd></div>
+              <div><dt>{k.credits}:</dt><dd class="n">{p.meta.split('·')[1]?.trim()}</dd></div>
+              <div><dt>{k.type}:</dt><dd class="s">{k.official}</dd></div>
+            </dl>
+            <h3 class="p-title">{p.title}</h3>
+            <span class="p-cta mono">
+              {i.teaching.linkLabel}
+              <svg class="arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <p class="note mono reveal"><span class="c">// {i.teaching.note}</span></p>
   </div>
 </section>
 
 <style>
-  .inst {
-    display: flex;
-    align-items: center;
-    gap: 1.1rem;
-    margin-bottom: 2rem;
-  }
+  .inst { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.75rem; }
 
   .inst-logo {
-    width: 88px;
-    height: 52px;
-    padding: 9px 12px;
+    width: 84px;
+    height: 50px;
+    padding: 8px 11px;
     background: #fff;
-    border: 1px solid var(--rule);
     border-radius: 10px;
     display: grid;
     place-items: center;
   }
 
   .inst-logo img { width: 100%; height: 100%; object-fit: contain; }
-
   .inst-name { font-weight: 600; }
-  .inst-since { font-size: 0.66rem; color: var(--muted); margin-top: 0.15rem; }
+  .inst-since { font-size: 0.72rem; color: var(--muted); }
 
-  .programs { list-style: none; border-top: 1px solid var(--ink); }
+  .programs {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .programs li { display: flex; }
 
   .program {
-    display: grid;
-    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.75rem 0.25rem;
-    border-bottom: 1px solid var(--rule);
-    transition: background-color 0.35s var(--ease), padding 0.35s var(--ease);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1.5rem 1.4rem 1.4rem;
+    min-height: 300px;
   }
 
-  .program:hover {
-    background: var(--accent-soft);
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
+  .program:hover { transform: translateY(-5px); }
 
-  .program-n {
-    font-size: 3rem;
+  .p-num {
+    position: absolute;
+    right: 1rem;
+    top: 0.2rem;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 5.5rem;
     line-height: 1;
-    color: var(--muted);
-    transition: color 0.3s;
+    letter-spacing: -0.06em;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--line-strong);
+    transition: -webkit-text-stroke-color 0.3s;
   }
 
-  .program:hover .program-n { color: var(--accent); }
+  .program:hover .p-num { -webkit-text-stroke-color: var(--accent); }
 
-  .program-body { display: flex; flex-direction: column; gap: 0.35rem; }
+  .p-meta { font-size: 0.75rem; margin-bottom: 1.4rem; display: grid; gap: 0.1rem; }
+  .p-meta div { display: flex; gap: 0.5rem; }
+  .p-meta dt { color: var(--syn-prop); }
 
-  .program-level { font-size: 0.66rem; color: var(--muted); }
-
-  .program-title {
-    font-family: var(--serif);
-    font-size: clamp(1.45rem, 2.3vw, 1.9rem);
-    line-height: 1.12;
+  .p-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(1.3rem, 2vw, 1.55rem);
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
   }
 
-  .program-cta {
+  .p-cta {
+    margin-top: auto;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.66rem;
+    gap: 0.4rem;
+    font-size: 0.78rem;
     color: var(--muted);
     transition: color 0.2s;
   }
 
-  .program:hover .program-cta { color: var(--accent); }
+  .program:hover .p-cta { color: var(--accent); }
   .program:hover .arrow { transform: translate(3px, -3px); }
 
-  .note {
-    margin-top: 1.75rem;
-    color: var(--muted);
-    font-size: 0.95rem;
-    max-width: 60ch;
-  }
+  .note { margin-top: 1.75rem; font-size: 0.8rem; }
 
-  @media (max-width: 640px) {
-    .program { grid-template-columns: 2.75rem minmax(0, 1fr) auto; gap: 1rem; }
-    .program-n { font-size: 2rem; }
-    .program-cta-label { display: none; }
+  @media (max-width: 900px) {
+    .programs { grid-template-columns: minmax(0, 1fr); }
+    .program { min-height: 0; }
   }
 </style>

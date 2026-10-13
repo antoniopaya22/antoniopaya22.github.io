@@ -2,6 +2,39 @@ export type Lang = 'es' | 'en';
 
 export const translations = {
   es: {
+    ui: {
+      roles: ['Arquitecto de Software', 'Profesor en UNIR', 'PhD · Investigador en Ciberseguridad', 'Zero Trust & Cloud'],
+      paletteHint: 'Buscar o ejecutar…',
+      paletteOpen: 'Abrir paleta de comandos',
+      paletteEmpty: 'Sin resultados',
+      paletteGroups: { nav: 'Ir a', actions: 'Acciones', links: 'Enlaces' },
+      paletteActions: { theme: 'Cambiar tema claro/oscuro', lang: 'Read in English', email: 'Copiar email', cv: 'Descargar CV', top: 'Volver arriba' },
+      toastCopied: 'Email copiado al portapapeles',
+      status: { ok: 'Todos los sistemas operativos', built: 'Build' },
+      marquee: ['Zero Trust', 'Software-Defined Perimeter', 'Cloud Architecture', 'Terraform', 'Adversarial ML', 'Intrusion Detection', 'Kubernetes', 'MLOps', 'Security by Design', 'Docencia'],
+    },
+
+    term: {
+      welcome: 'Bienvenido. Escribe <b>help</b> para ver los comandos.',
+      placeholder: 'escribe un comando…',
+      notFound: 'comando no encontrado:',
+      help: [
+        ['whoami', 'quién soy'],
+        ['experience', 'trayectoria profesional'],
+        ['teaching', 'docencia en UNIR'],
+        ['publications', 'artículos JCR'],
+        ['skills', 'stack técnico'],
+        ['contact', 'cómo contactarme'],
+        ['cv', 'descargar CV'],
+        ['theme', 'cambiar tema'],
+        ['clear', 'limpiar terminal'],
+      ],
+      whoami: 'Antonio Payá González — Arquitecto de Software @ TheNextPangea · Profesor @ UNIR · PhD en Ingeniería Informática (Universidad de Oviedo).',
+      sudo: 'Buen intento. Este incidente será reportado. 🔒',
+      cv: 'Descargando CV…',
+      theme: 'Tema cambiado.',
+    },
+
     meta: {
       title: 'Antonio Payá González — Arquitecto de Software, Profesor en UNIR & PhD',
       description: 'Antonio Payá González — Arquitecto de Software en TheNextPangea, profesor en UNIR (Grado y Máster en Ciberseguridad) y Doctor en Ingeniería Informática por la Universidad de Oviedo. Especialista en ciberseguridad, Zero Trust, cloud e IA.',
@@ -40,14 +73,14 @@ export const translations = {
     },
 
     sections: {
-      about: { n: '01', title: 'Perfil', desc: 'Entre la industria, la universidad y la investigación.' },
-      experience: { n: '02', title: 'Experiencia', desc: 'Más de 8 años en arquitectura de software, investigación y docencia.' },
-      teaching: { n: '03', title: 'Docencia', desc: 'Profesor en UNIR desde septiembre de 2026, en titulaciones oficiales de grado y máster.' },
-      research: { n: '04', title: 'Investigación', desc: 'Publicaciones en revistas internacionales JCR (Q1 & Q2).' },
-      education: { n: '05', title: 'Formación', desc: 'Del grado al doctorado, con 8 matrículas de honor.' },
-      skills: { n: '06', title: 'Competencias', desc: 'Stack técnico con el que diseño, construyo y despliego.' },
-      awards: { n: '07', title: 'Premios', desc: 'Hackathons, competiciones y festivales internacionales.' },
-      contact: { n: '08', title: 'Contacto', desc: 'Investigación, arquitectura, charlas o docencia.' },
+      about: { n: '01', file: 'perfil.md', title: 'Perfil', desc: 'Entre la industria, la universidad y la investigación.' },
+      experience: { n: '02', file: 'git log --graph', title: 'Experiencia', desc: 'Más de 8 años en arquitectura de software, investigación y docencia.' },
+      teaching: { n: '03', file: 'docencia.yaml', title: 'Docencia', desc: 'Profesor en UNIR desde septiembre de 2026, en titulaciones oficiales de grado y máster.' },
+      research: { n: '04', file: 'publicaciones.bib', title: 'Investigación', desc: 'Publicaciones en revistas internacionales JCR (Q1 & Q2).' },
+      education: { n: '05', file: 'formacion.json', title: 'Formación', desc: 'Del grado al doctorado, con 8 matrículas de honor.' },
+      skills: { n: '06', file: 'stack/', title: 'Competencias', desc: 'Stack técnico con el que diseño, construyo y despliego.' },
+      awards: { n: '07', file: 'premios.txt', title: 'Premios', desc: 'Hackathons, competiciones y festivales internacionales.' },
+      contact: { n: '08', file: 'contacto.sh', title: 'Contacto', desc: 'Investigación, arquitectura, charlas o docencia.' },
     },
 
     about: {
@@ -55,7 +88,7 @@ export const translations = {
       body: [
         'En la industria diseño soluciones escalables que llevan la <em>Inteligencia Artificial</em> a producción, sobre arquitecturas cloud en AWS, Azure y GCP y con la infraestructura automatizada mediante Terraform.',
         'Mi tesis doctoral mejora los <em>Software-Defined Perimeters</em> integrando sistemas de detección de intrusiones y gestión de identidades, y refuerza los IDS frente a ataques de <em>Adversarial Machine Learning</em>.',
-        'Desde septiembre de 2026 imparto docencia en UNIR en el Grado en Ciberseguridad, el Máster Universitario en Ciberseguridad y el Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas. También escribo y edito en <a href="https://medium.com/better-programming" target="_blank" rel="noopener">Better Programming</a> y <a href="https://medium.com/coinmonks" target="_blank" rel="noopener">Coinmonks</a>.',
+        'Desde septiembre de 2026 imparto docencia en UNIR en el Grado en Ciberseguridad, el Máster Universitario en Ciberseguridad y el Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas. También escribo y edito en Better Programming y Coinmonks.',
       ],
       focusTitle: 'Áreas de foco',
       focus: [
@@ -255,6 +288,39 @@ export const translations = {
   },
 
   en: {
+    ui: {
+      roles: ['Software Architect', 'Professor at UNIR', 'PhD · Security Researcher', 'Zero Trust & Cloud'],
+      paletteHint: 'Search or run…',
+      paletteOpen: 'Open command palette',
+      paletteEmpty: 'No results',
+      paletteGroups: { nav: 'Go to', actions: 'Actions', links: 'Links' },
+      paletteActions: { theme: 'Toggle light/dark theme', lang: 'Leer en español', email: 'Copy email', cv: 'Download CV', top: 'Back to top' },
+      toastCopied: 'Email copied to clipboard',
+      status: { ok: 'All systems operational', built: 'Build' },
+      marquee: ['Zero Trust', 'Software-Defined Perimeter', 'Cloud Architecture', 'Terraform', 'Adversarial ML', 'Intrusion Detection', 'Kubernetes', 'MLOps', 'Security by Design', 'Teaching'],
+    },
+
+    term: {
+      welcome: 'Welcome. Type <b>help</b> to list the commands.',
+      placeholder: 'type a command…',
+      notFound: 'command not found:',
+      help: [
+        ['whoami', 'who I am'],
+        ['experience', 'professional career'],
+        ['teaching', 'teaching at UNIR'],
+        ['publications', 'JCR articles'],
+        ['skills', 'tech stack'],
+        ['contact', 'how to reach me'],
+        ['cv', 'download CV'],
+        ['theme', 'toggle theme'],
+        ['clear', 'clear terminal'],
+      ],
+      whoami: 'Antonio Payá González — Software Architect @ TheNextPangea · Professor @ UNIR · PhD in Computer Engineering (University of Oviedo).',
+      sudo: 'Nice try. This incident will be reported. 🔒',
+      cv: 'Downloading CV…',
+      theme: 'Theme switched.',
+    },
+
     meta: {
       title: 'Antonio Payá González — Software Architect, Professor at UNIR & PhD',
       description: 'Antonio Payá González — Software Architect at TheNextPangea, professor at UNIR (Cybersecurity BSc & MSc) and PhD in Computer Engineering from the University of Oviedo. Specialist in cybersecurity, Zero Trust, cloud and AI.',
@@ -293,14 +359,14 @@ export const translations = {
     },
 
     sections: {
-      about: { n: '01', title: 'Profile', desc: 'Between industry, academia and research.' },
-      experience: { n: '02', title: 'Experience', desc: 'Over 8 years in software architecture, research and teaching.' },
-      teaching: { n: '03', title: 'Teaching', desc: "Professor at UNIR since September 2026, in official bachelor's and master's degrees." },
-      research: { n: '04', title: 'Research', desc: 'Published in international JCR journals (Q1 & Q2).' },
-      education: { n: '05', title: 'Education', desc: "From bachelor's to PhD, with 8 distinctions." },
-      skills: { n: '06', title: 'Skills', desc: 'The stack I design, build and ship with.' },
-      awards: { n: '07', title: 'Awards', desc: 'Hackathons, competitions and international festivals.' },
-      contact: { n: '08', title: 'Contact', desc: 'Research, architecture, talks or teaching.' },
+      about: { n: '01', file: 'profile.md', title: 'Profile', desc: 'Between industry, academia and research.' },
+      experience: { n: '02', file: 'git log --graph', title: 'Experience', desc: 'Over 8 years in software architecture, research and teaching.' },
+      teaching: { n: '03', file: 'teaching.yaml', title: 'Teaching', desc: "Professor at UNIR since September 2026, in official bachelor's and master's degrees." },
+      research: { n: '04', file: 'publications.bib', title: 'Research', desc: 'Published in international JCR journals (Q1 & Q2).' },
+      education: { n: '05', file: 'education.json', title: 'Education', desc: "From bachelor's to PhD, with 8 distinctions." },
+      skills: { n: '06', file: 'stack/', title: 'Skills', desc: 'The stack I design, build and ship with.' },
+      awards: { n: '07', file: 'awards.txt', title: 'Awards', desc: 'Hackathons, competitions and international festivals.' },
+      contact: { n: '08', file: 'contact.sh', title: 'Contact', desc: 'Research, architecture, talks or teaching.' },
     },
 
     about: {
@@ -308,7 +374,7 @@ export const translations = {
       body: [
         'In industry I design scalable solutions that bring <em>Artificial Intelligence</em> into production, on cloud architectures across AWS, Azure and GCP, with infrastructure automated through Terraform.',
         'My doctoral thesis improves <em>Software-Defined Perimeters</em> by integrating intrusion detection and identity management, and hardens IDS against <em>Adversarial Machine Learning</em> attacks.',
-        "Since September 2026 I teach at UNIR in the Bachelor's Degree in Cybersecurity, the Master's Degree in Cybersecurity and the Master's Degree in Digital Transformation through Disruptive Technologies. I also write and edit for <a href=\"https://medium.com/better-programming\" target=\"_blank\" rel=\"noopener\">Better Programming</a> and <a href=\"https://medium.com/coinmonks\" target=\"_blank\" rel=\"noopener\">Coinmonks</a>.",
+        "Since September 2026 I teach at UNIR in the Bachelor's Degree in Cybersecurity, the Master's Degree in Cybersecurity and the Master's Degree in Digital Transformation through Disruptive Technologies. I also write and edit for Better Programming and Coinmonks.",
       ],
       focusTitle: 'Focus areas',
       focus: [

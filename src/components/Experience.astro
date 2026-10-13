@@ -9,147 +9,210 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const i = t(lang);
 const id = ids(lang);
 const s = i.sections.experience;
+
+// decorative short "commit hash", stable per entry
+const hash = (str: string) => {
+  let h = 2166136261;
+  for (let k = 0; k < str.length; k++) h = Math.imul(h ^ str.charCodeAt(k), 16777619);
+  return (h >>> 0).toString(16).padStart(8, '0').slice(0, 7);
+};
+
+const lanes = { ind: lang === 'es' ? 'industria' : 'industry', acad: lang === 'es' ? 'academia' : 'academia' };
+
+const jobs = i.experience.jobs.map((j) => ({
+  ...j,
+  lane: /UNIR|Universi|Fundación|Foundation/.test(j.company) ? 'acad' : 'ind',
+  sha: hash(j.company + j.period),
+}));
 ---
 
 <section class="section" id={id.experience}>
-  <div class="wrap section-grid">
-    <SectionHead n={s.n} title={s.title} desc={s.desc} />
+  <div class="wrap">
+    <SectionHead n={s.n} file={s.file} title={s.title} desc={s.desc} />
 
-    <ol class="section-body jobs">
-      {i.experience.jobs.map((job) => (
-        <li class:list={['job reveal', { current: job.current }]}>
-          <div class="job-when">
-            <span class="mono job-period">{job.period}</span>
-            {job.current && <span class="mono job-now"><span class="now-dot" aria-hidden="true"></span>{i.experience.current}</span>}
-          </div>
+    <div class="legend mono reveal">
+      <span><i class="lg lg-ind"></i>{lanes.ind}</span>
+      <span><i class="lg lg-acad"></i>{lanes.acad}</span>
+    </div>
 
-          <div class="job-main">
-            <div class="job-head">
-              <div class:list={['job-logo', { 'on-dark': job.logoOnDark }]}>
+    <ol class="log">
+      {jobs.map((job) => (
+        <li class:list={['commit reveal', `lane-${job.lane}`, { current: job.current }]}>
+          <div class="graph" aria-hidden="true"><span class="node"></span></div>
+
+          <article class="c-card card">
+            <header class="c-top mono">
+              <span class="sha">{job.sha}</span>
+              {job.current && <span class="ref">HEAD → {lanes[job.lane as 'ind' | 'acad']}</span>}
+              <span class="period">{job.period}</span>
+            </header>
+
+            <div class="c-head">
+              <div class:list={['c-logo', { 'on-dark': job.logoOnDark }]}>
                 <img src={`${base}images/${job.logo}`} alt="" width="72" height="48" loading="lazy" decoding="async" />
               </div>
               <div>
-                <h3 class="job-role">{job.role}</h3>
-                <p class="job-company">{job.company} <span class="job-type">· {job.type}</span></p>
+                <h3 class="c-role">{job.role}</h3>
+                <p class="c-company">{job.company} <span class="c-type">· {job.type}</span></p>
               </div>
             </div>
 
-            <ul class="job-points">
-              {job.points.map((p) => <li>{p}</li>)}
+            <ul class="c-points">
+              {job.points.map((p) => <li><span class="plus mono" aria-hidden="true">+</span>{p}</li>)}
             </ul>
 
-            <div class="job-tags">
-              {job.tags.map((tag) => <span class="tag">{tag}</span>)}
+            <div class="c-tags">
+              {job.tags.map((tag) => <span class="chip">{tag}</span>)}
             </div>
-          </div>
+          </article>
         </li>
       ))}
+      <li class="commit init reveal lane-acad">
+        <div class="graph" aria-hidden="true"><span class="node"></span></div>
+        <p class="init-msg mono"><span class="sha">0000001</span> git init <span class="dim">— {lang === 'es' ? 'Grado en Ingeniería del Software, Universidad de Oviedo · 2015' : 'BSc in Software Engineering, University of Oviedo · 2015'}</span></p>
+      </li>
     </ol>
   </div>
 </section>
 
 <style>
-  .jobs { list-style: none; border-top: 1px solid var(--ink); }
-
-  .job {
-    position: relative;
-    display: grid;
-    grid-template-columns: 11rem minmax(0, 1fr);
-    gap: 2rem;
-    padding: 2rem 0;
-    border-bottom: 1px solid var(--rule);
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
   }
 
-  .job::before {
+  .legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .lg { width: 18px; height: 2px; border-radius: 2px; }
+  .lg-ind { background: var(--accent); }
+  .lg-acad { background: var(--accent-2); }
+
+  .log { list-style: none; position: relative; }
+
+  /* two continuous lanes */
+  .log::before, .log::after {
     content: '';
     position: absolute;
-    left: 0;
-    top: -1px;
-    height: 2px;
-    width: 0;
-    background: var(--accent);
-    transition: width 0.6s var(--ease);
+    top: 0;
+    bottom: 1.2rem;
+    width: 2px;
+    border-radius: 2px;
   }
 
-  .job:hover::before { width: 100%; }
+  .log::before { left: 15px; background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 25%, transparent)); }
+  .log::after { left: 41px; background: linear-gradient(180deg, var(--accent-2), color-mix(in srgb, var(--accent-2) 25%, transparent)); }
 
-  .job-when { display: flex; flex-direction: column; gap: 0.5rem; padding-top: 0.3rem; }
+  .commit {
+    position: relative;
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    padding-bottom: 1rem;
+  }
 
-  .job-period { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.04em; }
+  .graph { position: relative; }
 
-  .job-now {
-    display: inline-flex;
+  .node {
+    position: absolute;
+    top: 1.35rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    z-index: 1;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s;
+  }
+
+  .lane-ind .node { left: 9px; }
+  .lane-acad .node { left: 35px; border-color: var(--accent-2); }
+
+  .current .node { background: var(--accent); box-shadow: 0 0 0 5px var(--accent-glow); }
+  .current.lane-acad .node { background: var(--accent-2); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent-2) 18%, transparent); }
+
+  .commit:hover .node { transform: scale(1.25); }
+
+  /* branch connector from node to card */
+  .graph::after {
+    content: '';
+    position: absolute;
+    top: calc(1.35rem + 6px);
+    right: 0;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .lane-ind .graph::after { left: 23px; }
+  .lane-acad .graph::after { left: 49px; }
+
+  .c-card { padding: 1.1rem 1.4rem 1.35rem; }
+
+  .c-top {
+    display: flex;
     align-items: center;
-    gap: 0.45rem;
-    font-size: 0.66rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-size: 0.72rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .sha { color: var(--syn-num); }
+
+  .ref {
+    padding: 0.1rem 0.5rem;
+    border-radius: 5px;
+    background: var(--accent-glow);
     color: var(--accent);
   }
 
-  .now-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .lane-acad .ref { background: color-mix(in srgb, var(--accent-2) 14%, transparent); color: var(--accent-2); }
 
-  .job-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+  .period { margin-left: auto; color: var(--muted); }
 
-  .job-logo {
-    width: 72px;
-    height: 48px;
+  .c-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.9rem; }
+
+  .c-logo {
+    width: 64px;
+    height: 44px;
     flex-shrink: 0;
     display: grid;
     place-items: center;
-    padding: 7px 9px;
+    padding: 6px 8px;
     background: #fff;
-    border: 1px solid var(--rule);
-    border-radius: 10px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
   }
 
-  .job-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: grayscale(1);
-    transition: filter 0.4s var(--ease);
+  .c-logo.on-dark { background: #000; }
+  .c-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+  .c-role {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(1.3rem, 2.2vw, 1.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
   }
 
-  .job:hover .job-logo img { filter: none; }
+  .c-company { color: var(--text-2); font-size: 0.95rem; }
+  .c-type { color: var(--muted); }
 
-  .job-logo.on-dark { background: #141410; border-color: #141410; }
+  .c-points { list-style: none; color: var(--text-2); margin-bottom: 1rem; max-width: 72ch; }
+  .c-points li { display: flex; gap: 0.7rem; margin-bottom: 0.25rem; font-size: 0.97rem; }
+  .plus { color: #28C840; flex-shrink: 0; }
 
-  .job-role {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(1.6rem, 2.4vw, 2rem);
-    line-height: 1.05;
-  }
+  .c-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
 
-  .job-company { font-size: 0.95rem; font-weight: 500; color: var(--ink-2); margin-top: 0.2rem; }
-  .job-type { color: var(--muted); font-weight: 400; }
+  .init { padding-bottom: 0; }
+  .init .node { top: 0.35rem; border-style: dashed; }
+  .init .graph::after { top: calc(0.35rem + 6px); }
+  .init-msg { font-size: 0.78rem; padding-top: 0.15rem; color: var(--text-2); }
+  .dim { color: var(--muted); }
 
-  .job-points {
-    list-style: none;
-    color: var(--ink-2);
-    margin-bottom: 1.1rem;
-    max-width: 62ch;
-  }
-
-  .job-points li {
-    position: relative;
-    padding-left: 1.25rem;
-    margin-bottom: 0.3rem;
-  }
-
-  .job-points li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.8em;
-    width: 0.6rem;
-    height: 1px;
-    background: var(--accent);
-  }
-
-  .job-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-
-  @media (max-width: 640px) {
-    .job { grid-template-columns: minmax(0, 1fr); gap: 0.9rem; }
-    .job-when { flex-direction: row; align-items: center; gap: 1rem; padding-top: 0; }
+  @media (max-width: 600px) {
+    .commit { grid-template-columns: 58px minmax(0, 1fr); }
+    .period { margin-left: 0; width: 100%; }
+    .c-card { padding: 1rem 1.05rem 1.15rem; }
   }
 </style>

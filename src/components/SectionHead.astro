@@ -3,56 +3,66 @@ interface Props {
   n: string;
   title: string;
   desc?: string;
+  file: string;
 }
-const { n, title, desc } = Astro.props;
+const { n, title, desc, file } = Astro.props;
 ---
 
 <header class="sh">
-  <div class="sh-inner">
-    <span class="sh-n mono reveal">§ {n}</span>
-    <h2 class="sh-title reveal" style="--d: 0.05s">{title}</h2>
+  <div class="sh-meta mono reveal">
+    <span class="sh-n">// {n}</span>
+    <span class="sh-file">{file}</span>
+    <span class="sh-line" aria-hidden="true"></span>
+  </div>
+  <div class="sh-row">
+    <h2 class="sh-title" data-scramble>{title}</h2>
     {desc && <p class="sh-desc reveal" style="--d: 0.1s">{desc}</p>}
-    <slot />
   </div>
 </header>
 
 <style>
-  .sh-inner {
-    position: sticky;
-    top: 104px;
-  }
+  .sh { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
 
-  .sh-n {
-    display: inline-flex;
+  .sh-meta {
+    display: flex;
     align-items: center;
-    gap: 0.75rem;
-    color: var(--accent);
+    gap: 0.9rem;
+    font-size: 0.78rem;
     margin-bottom: 1rem;
   }
 
-  .sh-n::after {
-    content: '';
-    width: 2.5rem;
-    height: 1px;
-    background: var(--accent);
+  .sh-n { color: var(--accent); }
+
+  .sh-file {
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--muted);
+  }
+
+  .sh-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--line-strong), transparent); }
+
+  .sh-row {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem 3rem;
+    flex-wrap: wrap;
   }
 
   .sh-title {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(2.75rem, 4.8vw, 4.25rem);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2.6rem, 6vw, 5rem);
     line-height: 0.95;
-    letter-spacing: -0.01em;
-    margin-bottom: 1rem;
+    letter-spacing: -0.035em;
+    min-height: 0.95em;
   }
 
   .sh-desc {
     color: var(--muted);
-    max-width: 30ch;
+    max-width: 38ch;
     font-size: 1rem;
-  }
-
-  @media (max-width: 900px) {
-    .sh-inner { position: static; }
   }
 </style>

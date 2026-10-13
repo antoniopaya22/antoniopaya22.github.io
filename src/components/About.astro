@@ -8,110 +8,158 @@ const { lang = 'es' } = Astro.props;
 const i = t(lang);
 const id = ids(lang);
 const s = i.sections.about;
+
+const icons = [
+  '<path d="M4 7h16M4 12h16M4 17h10"/><rect x="2" y="3" width="20" height="18" rx="3"/>',
+  '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/>',
+  '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+  '<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/>',
+];
+
+const facts = i.about.facts;
 ---
 
 <section class="section" id={id.about}>
-  <div class="wrap section-grid">
-    <SectionHead n={s.n} title={s.title} desc={s.desc}>
-      <dl class="facts reveal" style="--d: 0.15s">
-        {i.about.facts.map((f) => (
-          <div>
-            <dt class="mono">{f.k}</dt>
-            <dd>{f.v}</dd>
-          </div>
-        ))}
-      </dl>
-    </SectionHead>
+  <div class="wrap">
+    <SectionHead n={s.n} file={s.file} title={s.title} desc={s.desc} />
 
-    <div class="section-body">
-      <p class="lead prose reveal" set:html={i.about.lead} />
-      <div class="body prose">
-        {i.about.body.map((p, idx) => <p class="reveal" style={`--d: ${0.05 * idx}s`} set:html={p} />)}
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="lead prose reveal" set:html={i.about.lead} />
+        <div class="prose body">
+          {i.about.body.map((p, idx) => <p class="reveal" style={`--d: ${0.06 * idx}s`} set:html={p} />)}
+        </div>
       </div>
 
-      <h3 class="focus-title mono reveal">{i.about.focusTitle}</h3>
-      <ol class="focus">
-        {i.about.focus.map((f, idx) => (
-          <li class="focus-item reveal" style={`--d: ${idx * 0.06}s`}>
-            <span class="focus-n mono">{String(idx + 1).padStart(2, '0')}</span>
-            <h4 class="focus-h">{f.title}</h4>
-            <p class="focus-d">{f.desc}</p>
-          </li>
-        ))}
-      </ol>
+      <div class="win code reveal" style="--d: 0.15s">
+        <div class="win-bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="code-tab">{lang === 'es' ? 'perfil.ts' : 'profile.ts'}</span>
+        </div>
+        <pre class="code-body mono"><code><span class="ln">1</span><span class="k">export const</span> antonio <span class="k">=</span> {'{'}
+<span class="ln">2</span>  <span class="p">name</span>: <span class="s">'Antonio Payá González'</span>,
+<span class="ln">3</span>  <span class="p">roles</span>: [<span class="s">'Software Architect'</span>, <span class="s">'Professor'</span>],
+<span class="ln">4</span>  <span class="p">company</span>: <span class="s">'TheNextPangea'</span>,
+<span class="ln">5</span>  <span class="p">university</span>: <span class="s">'UNIR'</span>,
+<span class="ln">6</span>  <span class="p">phd</span>: {'{'} <span class="p">field</span>: <span class="s">'Software Engineering'</span>, <span class="p">year</span>: <span class="n">2025</span> {'}'},
+<span class="ln">7</span>  <span class="p">location</span>: <span class="s">'{facts[0].v}'</span>,
+<span class="ln">8</span>  <span class="p">languages</span>: [<span class="s">'es'</span>, <span class="s">'en'</span>],
+<span class="ln">9</span>  <span class="p">openToCollab</span>: <span class="k">true</span>, <span class="c">// ✓</span>
+<span class="ln">10</span>{'}'} <span class="k">as const</span>;</code></pre>
+      </div>
     </div>
+
+    <h3 class="focus-title mono reveal"><span class="accent">#</span> {i.about.focusTitle}</h3>
+    <ul class="focus">
+      {i.about.focus.map((f, idx) => (
+        <li class="focus-card card reveal" style={`--d: ${idx * 0.07}s`}>
+          <span class="focus-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" set:html={icons[idx]} />
+          </span>
+          <span class="focus-n mono">0{idx + 1}</span>
+          <h4 class="focus-h">{f.title}</h4>
+          <p class="focus-d">{f.desc}</p>
+        </li>
+      ))}
+    </ul>
   </div>
 </section>
 
 <style>
-  .facts {
-    margin-top: 2.25rem;
+  .about-grid {
     display: grid;
-    gap: 1rem;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
   }
-
-  .facts dt { font-size: 0.66rem; color: var(--muted); margin-bottom: 0.15rem; }
-  .facts dd { font-size: 0.95rem; color: var(--ink-2); }
 
   .lead {
-    font-family: var(--serif);
-    font-size: clamp(1.6rem, 2.8vw, 2.35rem);
-    line-height: 1.22;
-    letter-spacing: -0.01em;
-    margin-bottom: 2rem;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(1.45rem, 2.4vw, 2rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
   }
 
-  .lead :global(strong) {
-    font-weight: 400;
-    font-style: italic;
-    color: var(--accent);
+  .lead :global(strong) { color: var(--accent); font-weight: 600; }
+
+  .body { color: var(--text-2); }
+  .body p { margin-bottom: 1rem; }
+
+  .code { position: sticky; top: 100px; }
+
+  .code-tab {
+    padding: 0.15rem 0.6rem;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--text-2);
   }
 
-  .body {
-    columns: 2;
-    column-gap: 2.5rem;
-    color: var(--ink-2);
+  .code-body {
+    padding: 1.1rem 1.2rem 1.25rem 0.6rem;
+    font-size: 0.8rem;
+    line-height: 1.85;
+    overflow-x: auto;
+    color: var(--text);
+    scrollbar-width: thin;
   }
 
-  .body p { break-inside: avoid; margin-bottom: 1.1rem; }
-
-  .focus-title {
-    color: var(--muted);
-    font-size: 0.7rem;
-    margin: 3rem 0 0;
-    padding-bottom: 0.9rem;
-    border-bottom: 1px solid var(--ink);
+  .ln {
+    display: inline-block;
+    width: 2.2rem;
+    padding-right: 0.9rem;
+    text-align: right;
+    color: var(--syn-com);
+    user-select: none;
+    opacity: 0.6;
   }
+
+  .focus-title { font-size: 0.85rem; color: var(--text-2); margin: clamp(3rem, 6vw, 4.5rem) 0 1.25rem; font-weight: 500; }
 
   .focus {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.9rem;
   }
 
-  .focus-item {
-    padding: 1.4rem 1.5rem 1.5rem 0;
-    border-bottom: 1px solid var(--rule);
-    position: relative;
+  .focus-card { padding: 1.4rem 1.3rem 1.5rem; }
+  .focus-card:hover { transform: translateY(-4px); }
+
+  .focus-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    background: var(--accent-glow);
+    color: var(--accent);
+    margin-bottom: 1.1rem;
   }
 
-  .focus-item:nth-child(even) { padding-left: 1.5rem; border-left: 1px solid var(--rule); }
-
-  .focus-n { font-size: 0.66rem; color: var(--accent); }
+  .focus-n { position: absolute; top: 1.2rem; right: 1.2rem; font-size: 0.7rem; color: var(--muted); }
 
   .focus-h {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: 1.6rem;
-    line-height: 1.1;
-    margin: 0.35rem 0 0.4rem;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 0.45rem;
   }
 
-  .focus-d { color: var(--muted); font-size: 0.95rem; }
+  .focus-d { color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
 
-  @media (max-width: 720px) {
-    .body { columns: 1; }
+  @media (max-width: 1000px) {
+    .about-grid { grid-template-columns: minmax(0, 1fr); }
+    .code { position: static; }
+    .focus { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 520px) {
     .focus { grid-template-columns: minmax(0, 1fr); }
-    .focus-item:nth-child(even) { padding-left: 0; border-left: 0; }
+    .code-body { font-size: 0.72rem; }
   }
 </style>
