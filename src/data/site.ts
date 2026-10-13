@@ -75,7 +75,7 @@ export const publications = [
 
 /** Featured repositories; live stats are fetched at build time (see github.ts). */
 export const featuredRepos = [
-  { repo: 'antoniopaya22/go-rest-template', key: 'go-rest-template', tags: ['Go', 'Gin', 'REST'], fallback: { stars: 172, forks: 36, language: 'Go' } },
+  { repo: 'antoniopaya22/go-rest-template', key: 'go-rest-template', tags: ['Go', 'chi', 'OpenAPI'], fallback: { stars: 172, forks: 36, language: 'Go' } },
   { repo: 'antoniopaya22/apollon', key: 'apollon', paper: 'https://doi.org/10.1016/j.cose.2023.103546', tags: ['Adversarial ML', 'IDS'], fallback: { stars: 4, forks: 1, language: 'Jupyter Notebook' } },
   { repo: 'antoniopaya22/Software-Defined-Perimeter', key: 'Software-Defined-Perimeter', paper: 'https://doi.org/10.2139/ssrn.4326496', tags: ['SDP', 'Zero Trust', 'SPA'], fallback: { stars: 21, forks: 3, language: 'Go' } },
   { repo: 'Egida-Kassandra/egida', key: 'egida', paper: 'https://doi.org/10.1016/j.cose.2022.102638', tags: ['Hardening', 'DSL'], fallback: { stars: 10, forks: 1, language: 'Java' } },

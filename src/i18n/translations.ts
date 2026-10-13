@@ -201,7 +201,7 @@ export const translations = {
       updated: 'actualizado',
       more: 'Ver todos los repositorios',
       items: {
-        'go-rest-template': 'Plantilla de API REST en Go con Gin lista para producción: estructura por capas, configuración, ORM, Docker y tests.',
+        'go-rest-template': 'Plantilla moderna de API REST en Go 1.26: chi, contrato OpenAPI 3.1 con validación, JWT, PostgreSQL/SQLite, métricas Prometheus y CI.',
         apollon: 'Sistema de defensa frente a ataques de Adversarial Machine Learning en sistemas de detección de intrusiones.',
         'Software-Defined-Perimeter': 'Despliegue automatizado y seguro del framework Software-Defined Perimeter con fingerprinting avanzado.',
         egida: 'DSL para desplegar infraestructuras altamente seguras (hardening de SO) con detección temprana de errores.',
@@ -512,7 +512,7 @@ export const translations = {
       updated: 'updated',
       more: 'See all repositories',
       items: {
-        'go-rest-template': 'Production-ready Go REST API template with Gin: layered structure, configuration, ORM, Docker and tests.',
+        'go-rest-template': 'Modern Go 1.26 REST API template: chi, OpenAPI 3.1 contract validation, JWT, PostgreSQL/SQLite, Prometheus metrics and CI.',
         apollon: 'Defence system against Adversarial Machine Learning attacks on intrusion detection systems.',
         'Software-Defined-Perimeter': 'Automated, secure deployment of the Software-Defined Perimeter framework with advanced fingerprinting.',
         egida: 'DSL to deploy highly secure infrastructures (OS hardening) with early error detection.',
