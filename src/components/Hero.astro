@@ -29,7 +29,8 @@ const id = ids(lang);
         <span class="nm nm-2 l3" data-hero-scramble>González</span>
       </h1>
 
-      <p class="hero-role mono l4" aria-label={i.ui.roles.join(' · ')}>
+      <p class="hero-role mono l4">
+        <span class="sr-only">{i.ui.roles.join(' · ')}</span>
         <span class="accent" aria-hidden="true">&gt;</span>
         <span id="role-text" aria-hidden="true" data-roles={JSON.stringify(i.ui.roles)}>{i.ui.roles[0]}</span><span class="caret" aria-hidden="true"></span>
       </p>

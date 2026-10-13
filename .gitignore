@@ -15,3 +15,7 @@ Thumbs.db
 
 # astro generated types
 .astro/
+
+# playwright
+test-results/
+playwright-report/
