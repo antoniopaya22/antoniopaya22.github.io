@@ -30,7 +30,7 @@ export const translations = {
         ['theme', 'cambiar tema'],
         ['clear', 'limpiar terminal'],
       ],
-      whoami: 'Antonio Payá González — Arquitecto de Software @ TheNextPangea · Profesor @ UNIR · PhD en Ingeniería Informática (Universidad de Oviedo).',
+      whoami: 'Antonio Payá González — Arquitecto de Software @ TheNextPangea · Profesor @ UNIR · PhD en Informática (Universidad de Oviedo).',
       sudo: 'Buen intento. Este incidente será reportado. 🔒',
       cv: 'Descargando CV…',
       theme: 'Tema cambiado.',
@@ -46,7 +46,7 @@ export const translations = {
 
     meta: {
       title: 'Antonio Payá González — Arquitecto de Software, Profesor en UNIR & PhD',
-      description: 'Antonio Payá González — Arquitecto de Software en TheNextPangea, profesor en UNIR (Grado y Máster en Ciberseguridad) y Doctor en Ingeniería Informática por la Universidad de Oviedo. Especialista en ciberseguridad, Zero Trust, cloud e IA.',
+      description: 'Antonio Payá González — Arquitecto de Software en TheNextPangea, profesor en UNIR (Grado y Máster en Ciberseguridad) y Doctor en Informática por la Universidad de Oviedo. Especialista en ciberseguridad, Zero Trust, cloud e IA.',
       skip: 'Saltar al contenido',
     },
 
@@ -62,14 +62,14 @@ export const translations = {
       kicker: 'Arquitecto de Software · Profesor · Investigador',
       status: 'Abierto a colaboraciones',
       statement: 'Diseño software que <em>escala</em>, enseño a <em>protegerlo</em> e investigo cómo hacerlo más <em>seguro</em>.',
-      intro: 'Arquitecto de Software en TheNextPangea, profesor en la Universidad Internacional de La Rioja (UNIR) y Doctor en Ingeniería Informática por la Universidad de Oviedo.',
+      intro: 'Arquitecto de Software en TheNextPangea, profesor en la Universidad Internacional de La Rioja (UNIR) y Doctor en Informática por la Universidad de Oviedo.',
       ctaPrimary: 'Contactar',
       ctaCv: 'Descargar CV',
       figure: 'Fig. 01 — Antonio Payá González',
       spec: [
         { k: 'Actualmente', v: 'Arquitecto de Software', s: 'TheNextPangea' },
         { k: 'Docencia', v: 'Profesor', s: 'UNIR — desde 2026' },
-        { k: 'Doctorado', v: 'PhD Ing. Informática', s: 'Universidad de Oviedo' },
+        { k: 'Doctorado', v: 'PhD en Informática', s: 'Universidad de Oviedo' },
         { k: 'Investigación', v: 'SDP · Zero Trust', s: 'IDS · Adversarial ML' },
       ],
       metrics: [
@@ -77,7 +77,7 @@ export const translations = {
         { value: '200+', label: 'Citas' },
         { value: '8+', label: 'Años de experiencia' },
         { value: '3', label: 'Titulaciones en UNIR' },
-        { value: '2', label: 'Hackathons ganados' },
+        { value: '3', label: 'Hackathons ganados' },
       ],
     },
 
@@ -94,7 +94,7 @@ export const translations = {
     },
 
     about: {
-      lead: 'Soy <strong>Arquitecto de Software</strong> en TheNextPangea, <strong>profesor</strong> en UNIR y <strong>PhD en Ingeniería Informática</strong> por la Universidad de Oviedo, con línea de investigación en Ingeniería del Software.',
+      lead: 'Soy <strong>Arquitecto de Software</strong> en TheNextPangea, <strong>profesor</strong> en UNIR y <strong>PhD en Informática</strong> por la Universidad de Oviedo, con línea de investigación en Ingeniería del Software.',
       body: [
         'En la industria diseño soluciones escalables que llevan la <em>Inteligencia Artificial</em> a producción, sobre arquitecturas cloud en AWS, Azure y GCP y con la infraestructura automatizada mediante Terraform.',
         'Mi tesis doctoral mejora los <em>Software-Defined Perimeters</em> integrando sistemas de detección de intrusiones y gestión de identidades, y refuerza los IDS frente a ataques de <em>Adversarial Machine Learning</em>.',
@@ -233,7 +233,7 @@ export const translations = {
       certsTitle: 'Certificaciones',
       degrees: [
         {
-          title: 'Doctorado en Ingeniería Informática',
+          title: 'Doctorado en Informática',
           school: 'Universidad de Oviedo',
           period: '2021 — 2025',
           desc: 'Tesis sobre Software-Defined Perimeter, Intrusion Detection Systems y Adversarial Machine Learning.',
@@ -247,7 +247,7 @@ export const translations = {
           honors: ['Trabajo Fin de Máster'],
         },
         {
-          title: 'Grado en Ingeniería del Software',
+          title: 'Grado en Ingeniería Informática del Software',
           school: 'Universidad de Oviedo',
           period: '2015 — 2019',
           desc: 'Ingeniería del software, algoritmos, bases de datos y sistemas distribuidos. Proyecto Fin de Grado: 10/10.',
@@ -288,10 +288,10 @@ export const translations = {
 
     awards: {
       items: [
-        { title: 'Finalista INNCYBER', org: 'INCIBE', year: '2020', desc: 'Competición nacional de ciberseguridad e innovación.' },
+        { title: 'Top 3 INNCYBER Innovation Hub', org: 'INCIBE', year: '2020', desc: 'Top 3 en el programa internacional de innovación en ciberseguridad de INCIBE.' },
         { title: 'Ganador HP Hackathon', org: 'HP Inc.', year: '2019', desc: 'Primer premio en el hackathon de HP España.' },
         { title: 'Ganador Salesforce Hackathon', org: 'Salesforce', year: '2019', desc: 'Primer premio con soluciones sobre tecnologías cloud.' },
-        { title: '2º puesto Capgemini Challenge', org: 'Capgemini', year: '2018', desc: 'Desafío tecnológico de Capgemini España.' },
+        { title: 'Ganador Capgemini Hackathon', org: 'Capgemini', year: '2018', desc: 'Primer premio en el hackathon de Capgemini España.' },
         { title: 'Jurado Ajyal Film Festival', org: 'Doha Film Institute', year: '2014', desc: 'Jurado joven del festival de Doha, Qatar.' },
         { title: 'Jurado Giffoni Film Festival', org: 'Giffoni Experience', year: '2014', desc: 'Jurado juvenil del festival de Giffoni, Italia.' },
       ],
@@ -341,7 +341,7 @@ export const translations = {
         ['theme', 'toggle theme'],
         ['clear', 'clear terminal'],
       ],
-      whoami: 'Antonio Payá González — Software Architect @ TheNextPangea · Professor @ UNIR · PhD in Computer Engineering (University of Oviedo).',
+      whoami: 'Antonio Payá González — Software Architect @ TheNextPangea · Professor @ UNIR · PhD in Computer Science (University of Oviedo).',
       sudo: 'Nice try. This incident will be reported. 🔒',
       cv: 'Downloading CV…',
       theme: 'Theme switched.',
@@ -357,7 +357,7 @@ export const translations = {
 
     meta: {
       title: 'Antonio Payá González — Software Architect, Professor at UNIR & PhD',
-      description: 'Antonio Payá González — Software Architect at TheNextPangea, professor at UNIR (Cybersecurity BSc & MSc) and PhD in Computer Engineering from the University of Oviedo. Specialist in cybersecurity, Zero Trust, cloud and AI.',
+      description: 'Antonio Payá González — Software Architect at TheNextPangea, professor at UNIR (Cybersecurity BSc & MSc) and PhD in Computer Science from the University of Oviedo. Specialist in cybersecurity, Zero Trust, cloud and AI.',
       skip: 'Skip to content',
     },
 
@@ -373,14 +373,14 @@ export const translations = {
       kicker: 'Software Architect · Professor · Researcher',
       status: 'Open to collaborations',
       statement: 'I design software that <em>scales</em>, teach how to <em>protect</em> it, and research how to make it more <em>secure</em>.',
-      intro: 'Software Architect at TheNextPangea, professor at the International University of La Rioja (UNIR) and PhD in Computer Engineering from the University of Oviedo.',
+      intro: 'Software Architect at TheNextPangea, professor at the International University of La Rioja (UNIR) and PhD in Computer Science from the University of Oviedo.',
       ctaPrimary: 'Get in touch',
       ctaCv: 'Download CV',
       figure: 'Fig. 01 — Antonio Payá González',
       spec: [
         { k: 'Currently', v: 'Software Architect', s: 'TheNextPangea' },
         { k: 'Teaching', v: 'Professor', s: 'UNIR — since 2026' },
-        { k: 'Doctorate', v: 'PhD Computer Eng.', s: 'University of Oviedo' },
+        { k: 'Doctorate', v: 'PhD Computer Science', s: 'University of Oviedo' },
         { k: 'Research', v: 'SDP · Zero Trust', s: 'IDS · Adversarial ML' },
       ],
       metrics: [
@@ -388,7 +388,7 @@ export const translations = {
         { value: '200+', label: 'Citations' },
         { value: '8+', label: 'Years of experience' },
         { value: '3', label: 'UNIR programmes' },
-        { value: '2', label: 'Hackathons won' },
+        { value: '3', label: 'Hackathons won' },
       ],
     },
 
@@ -405,7 +405,7 @@ export const translations = {
     },
 
     about: {
-      lead: "I'm a <strong>Software Architect</strong> at TheNextPangea, a <strong>professor</strong> at UNIR and hold a <strong>PhD in Computer Engineering</strong> from the University of Oviedo, with a research focus on Software Engineering.",
+      lead: "I'm a <strong>Software Architect</strong> at TheNextPangea, a <strong>professor</strong> at UNIR and hold a <strong>PhD in Computer Science</strong> from the University of Oviedo, with a research focus on Software Engineering.",
       body: [
         'In industry I design scalable solutions that bring <em>Artificial Intelligence</em> into production, on cloud architectures across AWS, Azure and GCP, with infrastructure automated through Terraform.',
         'My doctoral thesis improves <em>Software-Defined Perimeters</em> by integrating intrusion detection and identity management, and hardens IDS against <em>Adversarial Machine Learning</em> attacks.',
@@ -544,7 +544,7 @@ export const translations = {
       certsTitle: 'Certifications',
       degrees: [
         {
-          title: 'PhD in Computer Engineering',
+          title: 'PhD in Computer Science',
           school: 'University of Oviedo',
           period: '2021 — 2025',
           desc: 'Thesis on Software-Defined Perimeter, Intrusion Detection Systems and Adversarial Machine Learning.',
@@ -558,7 +558,7 @@ export const translations = {
           honors: ["Master's Thesis"],
         },
         {
-          title: 'BSc in Software Engineering',
+          title: 'BSc in Computer Science (Software Engineering)',
           school: 'University of Oviedo',
           period: '2015 — 2019',
           desc: 'Software engineering, algorithms, databases and distributed systems. Final year project: 10/10.',
@@ -599,10 +599,10 @@ export const translations = {
 
     awards: {
       items: [
-        { title: 'INNCYBER Finalist', org: 'INCIBE', year: '2020', desc: 'National cybersecurity and innovation competition.' },
+        { title: 'Top 3, INNCYBER Innovation Hub', org: 'INCIBE', year: '2020', desc: 'Top 3 in INCIBE’s international cybersecurity innovation programme.' },
         { title: 'HP Hackathon Winner', org: 'HP Inc.', year: '2019', desc: 'First prize at the HP Spain hackathon.' },
         { title: 'Salesforce Hackathon Winner', org: 'Salesforce', year: '2019', desc: 'First prize with cloud-based solutions.' },
-        { title: '2nd place, Capgemini Challenge', org: 'Capgemini', year: '2018', desc: 'Capgemini Spain technology challenge.' },
+        { title: 'Capgemini Hackathon Winner', org: 'Capgemini', year: '2018', desc: 'First prize at the Capgemini Spain hackathon.' },
         { title: 'Ajyal Film Festival Juror', org: 'Doha Film Institute', year: '2014', desc: 'Youth jury at the Doha festival, Qatar.' },
         { title: 'Giffoni Film Festival Juror', org: 'Giffoni Experience', year: '2014', desc: 'Youth jury at the Giffoni festival, Italy.' },
       ],

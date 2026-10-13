@@ -6,7 +6,7 @@ export const cvCopy = {
     title: 'CV — Antonio Payá González',
     role: 'Arquitecto de Software · Profesor en UNIR · PhD',
     summary:
-      'Arquitecto de Software y Doctor en Ingeniería Informática con más de 8 años de experiencia diseñando arquitecturas cloud seguras y escalables, llevando modelos de IA a producción y automatizando infraestructura. Investigador en Software-Defined Perimeters, Zero Trust y defensa frente a Adversarial Machine Learning, con 4 artículos JCR como primer autor. Desde 2026, profesor en el Grado y Máster en Ciberseguridad de UNIR.',
+      'Arquitecto de Software y Doctor en Informática con más de 8 años de experiencia diseñando arquitecturas cloud seguras y escalables, llevando modelos de IA a producción y automatizando infraestructura. Investigador en Software-Defined Perimeters, Zero Trust y defensa frente a Adversarial Machine Learning, con 4 artículos JCR como primer autor. Desde 2026, profesor en el Grado y Máster en Ciberseguridad de UNIR.',
     labels: {
       profile: 'Perfil',
       experience: 'Experiencia',
@@ -48,7 +48,7 @@ export const cvCopy = {
     title: 'CV — Antonio Payá González',
     role: 'Software Architect · Professor at UNIR · PhD',
     summary:
-      'Software Architect and PhD in Computer Engineering with over 8 years of experience designing secure, scalable cloud architectures, bringing AI models into production and automating infrastructure. Researcher in Software-Defined Perimeters, Zero Trust and defences against Adversarial Machine Learning, with 4 JCR articles as first author. Since 2026, Professor in the Cybersecurity Bachelor\'s and Master\'s degrees at UNIR.',
+      'Software Architect and PhD in Computer Science with over 8 years of experience designing secure, scalable cloud architectures, bringing AI models into production and automating infrastructure. Researcher in Software-Defined Perimeters, Zero Trust and defences against Adversarial Machine Learning, with 4 JCR articles as first author. Since 2026, Professor in the Cybersecurity Bachelor\'s and Master\'s degrees at UNIR.',
     labels: {
       profile: 'Profile',
       experience: 'Experience',

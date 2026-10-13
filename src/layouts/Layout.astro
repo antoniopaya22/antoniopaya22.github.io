@@ -11,7 +11,7 @@ interface Props {
   ogImage?: string;
 }
 
-const { title, description = 'Antonio Payá González — Software Architect, Professor at UNIR and PhD in Computer Engineering specializing in cybersecurity, Zero Trust, cloud architecture and AI.', lang = 'es', ogImage = '/images/og-card.png' } = Astro.props;
+const { title, description = 'Antonio Payá González — Software Architect, Professor at UNIR and PhD in Computer Science specializing in cybersecurity, Zero Trust, cloud architecture and AI.', lang = 'es', ogImage = '/images/og-card.png' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const siteUrl = 'https://antoniopaya22.github.io';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
@@ -42,7 +42,7 @@ const jsonLd = {
   "name": "Antonio Payá González",
   "url": siteUrl,
   "image": `${siteUrl}/images/foto1.jpg`,
-  "description": "Software Architect at TheNextPangea, Professor at the International University of La Rioja (UNIR) and PhD in Computer Engineering. Specialist in cloud architecture, AI productization, cybersecurity, and Zero Trust security.",
+  "description": "Software Architect at TheNextPangea, Professor at the International University of La Rioja (UNIR) and PhD in Computer Science. Specialist in cloud architecture, AI productization, cybersecurity, and Zero Trust security.",
   "jobTitle": ["Software Architect", "Professor"],
   "worksFor": [
     {
