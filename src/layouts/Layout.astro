@@ -1,4 +1,8 @@
 ---
+import '@fontsource-variable/bricolage-grotesque/opsz.css';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/jetbrains-mono';
+
 interface Props {
   title: string;
   description?: string;
@@ -132,9 +136,6 @@ const websiteJsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
 
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Geist:wght@400..600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
     <title>{title}</title>
     <script is:inline>
       (function () {
@@ -180,9 +181,9 @@ const websiteJsonLd = {
     --shadow: 0 1px 0 rgba(11, 15, 20, 0.04), 0 24px 48px -28px rgba(11, 15, 20, 0.35);
     color-scheme: light;
 
-    --display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
-    --sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
-    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+    --display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+    --sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+    --mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
     --wrap: 1240px;
     --gutter: clamp(16px, 4vw, 40px);
     --r: 14px;
