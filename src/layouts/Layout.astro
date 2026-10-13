@@ -3,6 +3,8 @@ import '@fontsource-variable/bricolage-grotesque/opsz.css';
 import '@fontsource-variable/geist';
 import '@fontsource-variable/jetbrains-mono';
 import { createHash } from 'node:crypto';
+import displayFont from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url';
+import sansFont from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -154,6 +156,8 @@ const websiteJsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
 
+    <link rel="preload" as="font" type="font/woff2" href={displayFont} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sansFont} crossorigin />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <title>{title}</title>
     <script is:inline set:html={themeScript} />
