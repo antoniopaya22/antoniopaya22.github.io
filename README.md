@@ -1,6 +1,6 @@
 # antoniopaya22.github.io
 
-Personal website of **Antonio Payá González** — Software Architect at TheNextPangea, Lecturer at UNIR and PhD in Computer Engineering.
+Personal website of **Antonio Payá González** — Software Architect at TheNextPangea, Professor at UNIR and PhD in Computer Engineering.
 
 🌐 **Live:** [antoniopaya22.github.io](https://antoniopaya22.github.io) · [English](https://antoniopaya22.github.io/en/)
 

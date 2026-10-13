@@ -290,7 +290,7 @@ export const translations = {
   en: {
     // Layout
     layout: {
-      title: 'Antonio Payá González — Software Architect, Lecturer at UNIR & PhD',
+      title: 'Antonio Payá González — Software Architect, Professor at UNIR & PhD',
       description: 'Antonio Payá González — Software Architect & PhD',
     },
 
@@ -311,8 +311,8 @@ export const translations = {
     // Hero
     hero: {
       badge: 'Open to collaborations',
-      role: 'Software Architect · Lecturer at UNIR · PhD in Computer Engineering',
-      intro: '<strong>Software Architect</strong> at TheNextPangea, <strong>lecturer</strong> at the International University of La Rioja (UNIR) and <strong>PhD in Computer Engineering</strong> from the University of Oviedo. Specialised in cybersecurity, Zero Trust, cloud architecture and artificial intelligence.',
+      role: 'Software Architect · Professor at UNIR · PhD in Computer Engineering',
+      intro: '<strong>Software Architect</strong> at TheNextPangea, <strong>professor</strong> at the International University of La Rioja (UNIR) and <strong>PhD in Computer Engineering</strong> from the University of Oviedo. Specialised in cybersecurity, Zero Trust, cloud architecture and artificial intelligence.',
       ctaPrimary: 'Get in Touch',
       ctaSecondary: 'Publications',
       scroll: 'Scroll',
@@ -324,7 +324,7 @@ export const translations = {
       heading: 'A bit about my',
       headingAccent: 'story',
       body: [
-        'My name is <strong>Antonio Payá González</strong>. I\'m a Software Architect at <strong>TheNextPangea S.L.</strong>, a lecturer at the <strong>International University of La Rioja (UNIR)</strong>, and hold a PhD in Computer Engineering from the <strong>University of Oviedo</strong>, with a research focus on Intelligent Systems.',
+        'My name is <strong>Antonio Payá González</strong>. I\'m a Software Architect at <strong>TheNextPangea S.L.</strong>, a professor at the <strong>International University of La Rioja (UNIR)</strong>, and hold a PhD in Computer Engineering from the <strong>University of Oviedo</strong>, with a research focus on Intelligent Systems.',
         'Since September 2026 I teach at UNIR in the <strong>Bachelor\'s Degree in Cybersecurity</strong>, the <strong>Master\'s Degree in Cybersecurity</strong> and the <strong>Master\'s Degree in Digital Transformation through Disruptive Technologies</strong>, bringing my industry and research experience into the classroom.',
         'In my day-to-day work, I specialize in designing scalable software solutions that integrate <em>Artificial Intelligence</em> into production environments. I have extensive experience in multi-cloud architectures (<strong>AWS, Azure, and GCP</strong>) and automating deployments through <em>Infrastructure as Code</em> (IaC) with Terraform.',
         'On the research side, my doctoral thesis focuses on improving <em>Software-Defined Perimeters</em> (SDP) by integrating intrusion detection systems and optimizing identity management. I develop automated security configurations and improve IDS resilience against <em>Adversarial Machine Learning</em> attacks.',
@@ -349,11 +349,11 @@ export const translations = {
       desc: 'Over 8 years of experience in software architecture, research, and university teaching.',
       jobs: [
         {
-          role: 'Lecturer',
+          role: 'Professor',
           company: 'UNIR — International University of La Rioja',
           type: 'University teaching',
           period: 'Sept 2026 — Present',
-          desc: 'Lecturer in the Bachelor\'s Degree in Cybersecurity, the Master\'s Degree in Cybersecurity, and the Master\'s Degree in Digital Transformation through Disruptive Technologies.',
+          desc: 'Professor in the Bachelor\'s Degree in Cybersecurity, the Master\'s Degree in Cybersecurity, and the Master\'s Degree in Digital Transformation through Disruptive Technologies.',
           tags: ['Teaching', 'Cybersecurity', 'Digital Transformation', 'Disruptive Technologies'],
           current: true,
           logo: 'logo-unir.png',
@@ -411,7 +411,7 @@ export const translations = {
       eyebrow: 'Teaching',
       heading: 'University',
       headingAccent: 'teaching',
-      desc: 'Lecturer at the International University of La Rioja (UNIR) since September 2026, in official bachelor\'s and master\'s degrees.',
+      desc: 'Professor at the International University of La Rioja (UNIR) since September 2026, in official bachelor\'s and master\'s degrees.',
       institution: 'UNIR — International University of La Rioja',
       linkLabel: 'View programme',
       programs: [
@@ -561,7 +561,7 @@ export const translations = {
 
     // Footer
     footer: {
-      copy: 'Software Architect · Lecturer at UNIR · PhD',
+      copy: 'Software Architect · Professor at UNIR · PhD',
       links: [
         { href: '#about', label: 'About' },
         { href: '#experience', label: 'Experience' },

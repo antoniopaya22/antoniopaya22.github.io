@@ -6,7 +6,7 @@ interface Props {
   ogImage?: string;
 }
 
-const { title, description = 'Antonio Payá González — Software Architect, Lecturer at UNIR and PhD in Computer Engineering specializing in cybersecurity, Zero Trust, cloud architecture and AI.', lang = 'es', ogImage = '/images/og-card.png' } = Astro.props;
+const { title, description = 'Antonio Payá González — Software Architect, Professor at UNIR and PhD in Computer Engineering specializing in cybersecurity, Zero Trust, cloud architecture and AI.', lang = 'es', ogImage = '/images/og-card.png' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const siteUrl = 'https://antoniopaya22.github.io';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
@@ -20,8 +20,8 @@ const jsonLd = {
   "name": "Antonio Payá González",
   "url": siteUrl,
   "image": `${siteUrl}/images/foto1.jpg`,
-  "description": "Software Architect at TheNextPangea, Lecturer at the International University of La Rioja (UNIR) and PhD in Computer Engineering. Specialist in cloud architecture, AI productization, cybersecurity, and Zero Trust security.",
-  "jobTitle": ["Software Architect", "Lecturer"],
+  "description": "Software Architect at TheNextPangea, Professor at the International University of La Rioja (UNIR) and PhD in Computer Engineering. Specialist in cloud architecture, AI productization, cybersecurity, and Zero Trust security.",
+  "jobTitle": ["Software Architect", "Professor"],
   "worksFor": [
     {
       "@type": "Organization",
@@ -46,8 +46,8 @@ const jsonLd = {
     },
     {
       "@type": "Occupation",
-      "name": "University Lecturer",
-      "description": "Lecturer in the Bachelor's Degree in Cybersecurity, the Master's Degree in Cybersecurity and the Master's Degree in Digital Transformation through Disruptive Technologies at UNIR."
+      "name": "University Professor",
+      "description": "Professor in the Bachelor's Degree in Cybersecurity, the Master's Degree in Cybersecurity and the Master's Degree in Digital Transformation through Disruptive Technologies at UNIR."
     }
   ],
   "alumniOf": {
@@ -88,7 +88,7 @@ const websiteJsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="author" content="Antonio Payá González" />
-    <meta name="keywords" content="Antonio Payá González, Antonio Payá, Antonio Paya Gonzalez, software architect, profesor UNIR, lecturer UNIR, PhD computer engineering, cybersecurity, ciberseguridad, zero trust, software-defined perimeter, artificial intelligence, Universidad de Oviedo, Gijón" />
+    <meta name="keywords" content="Antonio Payá González, Antonio Payá, Antonio Paya Gonzalez, software architect, profesor UNIR, professor UNIR, PhD computer engineering, cybersecurity, ciberseguridad, zero trust, software-defined perimeter, artificial intelligence, Universidad de Oviedo, Gijón" />
     <meta name="generator" content={Astro.generator} />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#06060a" />
@@ -111,7 +111,7 @@ const websiteJsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:alt" content="Antonio Payá González — Software Architect, Lecturer at UNIR & PhD" />
+    <meta property="og:image:alt" content="Antonio Payá González — Software Architect, Professor at UNIR & PhD" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
