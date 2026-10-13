@@ -8,6 +8,10 @@ updates:
       # minor/patch updates are merged automatically once CI passes
       npm-minor-patch:
         update-types: [minor, patch]
+    ignore:
+      # TypeScript 7 is not supported by @astrojs/check yet
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
