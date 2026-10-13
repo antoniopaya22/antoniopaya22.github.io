@@ -34,6 +34,14 @@ export const translations = {
       sudo: 'Buen intento. Este incidente será reportado. 🔒',
       cv: 'Descargando CV…',
       theme: 'Tema cambiado.',
+      ctf: {
+        teaser: '🏁 Hay una flag escondida en esta terminal. ¿Te atreves? Empieza por mirar lo que no se ve.',
+        hint: 'Nada aquí está en claro. Primero, base64. Después, César se queda a medio camino (13). Herramientas: base64 -d, rot13. Envía la flag con: submit FLAG{...}',
+        usage: 'uso: submit FLAG{...}',
+        ok: '✔ ¡Flag correcta! Acceso concedido. Si has llegado hasta aquí, escríbeme: me encantará conocerte.',
+        ko: '✘ Flag incorrecta. Sigue intentándolo.',
+        solved: 'Reto completado 🏆',
+      },
     },
 
     meta: {
@@ -337,6 +345,14 @@ export const translations = {
       sudo: 'Nice try. This incident will be reported. 🔒',
       cv: 'Downloading CV…',
       theme: 'Theme switched.',
+      ctf: {
+        teaser: '🏁 There is a flag hidden in this terminal. Up for it? Start by looking at what is not visible.',
+        hint: 'Nothing here is in plain text. First, base64. Then Caesar stops halfway (13). Tools: base64 -d, rot13. Submit the flag with: submit FLAG{...}',
+        usage: 'usage: submit FLAG{...}',
+        ok: '✔ Correct flag! Access granted. If you made it this far, drop me a line: I would love to meet you.',
+        ko: '✘ Wrong flag. Keep trying.',
+        solved: 'Challenge solved 🏆',
+      },
     },
 
     meta: {

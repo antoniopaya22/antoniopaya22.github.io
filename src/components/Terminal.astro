@@ -148,6 +148,11 @@ const data = {
     help: () => print(`<div class="grid">${D.term.help.map(([c, d]: string[]) => `<b>${c}</b><span class="dim">${esc(d)}</span>`).join('')}</div>`),
     whoami: () => print(esc(D.term.whoami)),
     ls: () => print(D.files.map((f: string) => `<span class="hl">${esc(f)}</span>`).join('   ')),
+    'ls -a': () => print(['.', '..', '.hint', '.flag.enc', ...D.files].map((f: string) => `<span class="${f.startsWith('.') ? 'n' : 'hl'}">${esc(f)}</span>`).join('   ')),
+    'ls -la': () => commands['ls -a'](),
+    'cat .hint': () => print(`<span class="dim">${esc(D.term.ctf.hint)}</span>`),
+    'cat .flag.enc': () => print(`<span class="s">${FLAG_ENC}</span>`),
+    ctf: () => print(solved() ? `<span class="ok">${esc(D.term.ctf.solved)}</span>` : esc(D.term.ctf.teaser)),
     'cat focus.json': () => print(json({ name: 'Antonio Payá González', focus: D.focus, location: 'Gijón, ES', openTo: D.lang === 'es' ? 'colaboraciones' : 'collaborations' })),
     experience: () => print(`<div class="grid">${D.jobs.map((j: any) => `<span class="dim">${esc(j.period)}</span><span><b>${esc(j.role)}</b> @ ${esc(j.company)}</span>`).join('')}</div>`),
     teaching: () => print(`<div class="grid">${D.programs.map((p: any) => `<span class="hl">${esc(p.level)}</span><span>${esc(p.title)}</span>`).join('')}</div>`),
@@ -170,6 +175,28 @@ const data = {
 
   const aliases: Record<string, string> = { repos: 'projects', proyectos: 'projects', about: 'whoami', jobs: 'experience', papers: 'publications', stack: 'skills', email: 'contact', '?': 'help', cls: 'clear' };
 
+  // --- mini CTF: base64 → rot13 → submit (only the SHA-256 of the flag lives here) ---
+  const FLAG_ENC = 'U1lOVHttcmViX2dlaGZnX2FyaXJlX2dlaGZnfQ==';
+  const FLAG_SHA256 = '590cd31c5c6d607b2d6f214c48e1be728331578f9f6436566085f87328d48fb5';
+  const rot13 = (s: string) => s.replace(/[a-z]/gi, (c) => {
+    const b = c <= 'Z' ? 65 : 97;
+    return String.fromCharCode(((c.charCodeAt(0) - b + 13) % 26) + b);
+  });
+  const sha256 = async (s: string) => {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('');
+  };
+  const solved = () => { try { return localStorage.getItem('ctf') === 'solved'; } catch { return false; } };
+
+  const submit = async (flag: string) => {
+    if (!flag) return print(`<span class="dim">${esc(D.term.ctf.usage)}</span>`);
+    const ok = (await sha256(flag.trim())) === FLAG_SHA256;
+    if (!ok) return print(`<span class="err">${esc(D.term.ctf.ko)}</span>`);
+    try { localStorage.setItem('ctf', 'solved'); } catch {}
+    print(`<span class="ok">${esc(D.term.ctf.ok)}</span>\n<a href="mailto:${D.email}?subject=FLAG%20captured%20%F0%9F%8F%81">${D.email}</a>`);
+    (window as any).__toast?.(D.term.ctf.solved);
+  };
+
   const run = (rawCmd: string) => {
     const cmd = rawCmd.trim();
     echo(cmd);
@@ -178,6 +205,12 @@ const data = {
     if (lower.startsWith('sudo')) return print(`<span class="err">${esc(D.term.sudo)}</span>`);
     if (lower.startsWith('rm ')) return print('<span class="err">permission denied: nice try 🙂</span>');
     if (lower.startsWith('echo ')) return print(esc(cmd.slice(5)));
+    if (lower.startsWith('submit')) { submit(cmd.slice(6).trim()); return; }
+    if (lower.startsWith('rot13 ')) return print(esc(rot13(cmd.slice(6).trim())));
+    if (lower.startsWith('base64 -d ') || lower.startsWith('base64 --decode ')) {
+      try { return print(esc(atob(cmd.split(/\s+/).slice(2).join('')))); }
+      catch { return print('<span class="err">base64: invalid input</span>'); }
+    }
     if (lower.startsWith('cd ')) {
       const target = lower.slice(3).replace(/^\.?\/?/, '').replace(/\/$/, '').split('.')[0];
       const anchor = Object.values(D.anchors).find((a) => a === target);
@@ -218,23 +251,32 @@ const data = {
 
   // autoplay intro: types a couple of commands without stealing focus
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  let interrupted = false;
+  const stop = () => {
+    if (interrupted) return;
+    interrupted = true;
+    input.value = '';
+  };
+  input.addEventListener('focus', stop, { once: true });
+  input.addEventListener('keydown', stop, { once: true });
+
   const typeCmd = async (cmd: string) => {
     if (reduced) { run(cmd); return; }
     for (let k = 1; k <= cmd.length; k++) {
+      if (interrupted) return;
       input.value = cmd.slice(0, k);
       await sleep(45 + Math.random() * 55);
     }
     await sleep(250);
+    if (interrupted) return;
     input.value = '';
     run(cmd);
   };
 
   (async () => {
     print(D.term.welcome, 'dim');
+    print(solved() ? D.term.ctf.solved : D.term.ctf.teaser, 'hl');
     await sleep(reduced ? 0 : 1100);
-    let interrupted = false;
-    const stop = () => (interrupted = true);
-    input.addEventListener('focus', stop, { once: true });
     for (const c of ['whoami', 'cat focus.json']) {
       if (interrupted) break;
       await typeCmd(c);
