@@ -7,6 +7,9 @@ export const site = {
   cv: 'cv-antonio-paya.pdf',
 };
 
+/** PDF CV per language (rendered from /cv and /en/cv). */
+export const cvPdf = (lang: 'es' | 'en') => (lang === 'es' ? site.cv : site.cv.replace('.pdf', '-en.pdf'));
+
 export const profiles = [
   { label: 'GitHub', handle: 'antoniopaya22', href: 'https://github.com/antoniopaya22' },
   { label: 'LinkedIn', handle: 'in/antoniopaya22', href: 'https://www.linkedin.com/in/antoniopaya22/' },

@@ -38,6 +38,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # keep the downloadable PDFs in sync with /cv (falls back to the committed ones)
+      - name: Render CV PDFs
+        continue-on-error: true
+        run: |
+          python3 -m http.server 4321 -d dist >/dev/null 2>&1 &
+          sleep 2
+          google-chrome --headless=new --disable-gpu --no-sandbox --no-pdf-header-footer --virtual-time-budget=6000 --print-to-pdf=dist/cv-antonio-paya.pdf http://localhost:4321/cv/
+          google-chrome --headless=new --disable-gpu --no-sandbox --no-pdf-header-footer --virtual-time-budget=6000 --print-to-pdf=dist/cv-antonio-paya-en.pdf http://localhost:4321/en/cv/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:

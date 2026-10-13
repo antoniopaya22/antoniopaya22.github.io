@@ -1,0 +1,542 @@
+---
+import '@fontsource-variable/bricolage-grotesque/opsz.css';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/jetbrains-mono';
+import { t, altLang, type Lang } from '../../i18n/translations';
+import { cv } from '../../i18n/cv';
+import { site, cvPdf } from '../../data/site';
+import { getPublications } from '../../data/scholarly';
+import { getFeaturedRepos } from '../../data/github';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const i = t(lang);
+const c = cv(lang);
+const L = c.labels;
+const pubs = await getPublications();
+const repos = (await getFeaturedRepos()).slice(0, 4);
+const pdfName = cvPdf(lang);
+const otherCv = lang === 'es' ? `${base}en/cv/` : `${base}cv/`;
+const updated = new Date().toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-GB', { month: 'long', year: 'numeric' });
+
+const contact = [
+  { icon: 'mail', label: site.email, href: `mailto:${site.email}` },
+  { icon: 'globe', label: 'antoniopaya22.github.io', href: site.url },
+  { icon: 'in', label: 'linkedin.com/in/antoniopaya22', href: 'https://www.linkedin.com/in/antoniopaya22/' },
+  { icon: 'gh', label: 'github.com/antoniopaya22', href: 'https://github.com/antoniopaya22' },
+  { icon: 'id', label: 'orcid.org/0000-0003-3733-3805', href: 'https://orcid.org/0000-0003-3733-3805' },
+  { icon: 'pin', label: i.about.facts[0].v, href: '' },
+];
+
+const icons: Record<string, string> = {
+  mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  in: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/>',
+  gh: '<path d="M9 19c-4 1.5-4-2-6-2.5m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C6.8 2.3 5.8 2.6 5.8 2.6a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.4 9c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/>',
+  id: '<circle cx="12" cy="12" r="9"/><path d="M9 8v8M12.5 8H14a4 4 0 0 1 0 8h-1.5z"/>',
+  pin: '<path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+};
+
+const jobs = i.experience.jobs.map((j) => ({
+  ...j,
+  bullets: [...(c.extraPoints[j.company] ?? []), ...j.points],
+}));
+
+const courses = [
+  ...i.education.certs.map((x) => ({ title: x.title, issuer: x.issuer, year: x.year as number | undefined })),
+  ...c.extraCourses.map((x) => ({ ...x, year: undefined as number | undefined })),
+].filter((x) => !/Udemy|COIIPA/.test(x.issuer));
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{c.title}</title>
+    <meta name="description" content={c.summary} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, site.url).href} />
+    <link rel="alternate" hreflang={altLang(lang)} href={new URL(otherCv, site.url).href} />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <meta name="theme-color" content="#07090C" />
+  </head>
+  <body>
+    <nav class="toolbar" aria-label="CV">
+      <a href={lang === 'es' ? base : `${base}en/`} class="tb-btn">← {L.back}</a>
+      <span class="tb-spacer"></span>
+      <a href={otherCv} class="tb-btn" hreflang={altLang(lang)}>{altLang(lang).toUpperCase()}</a>
+      <a href={`${base}${pdfName}`} class="tb-btn tb-primary" download>{L.print} ↓</a>
+    </nav>
+
+    <!-- ================= PAGE 1 ================= -->
+    <article class="page">
+      <header class="head">
+        <div class="head-grid" aria-hidden="true"></div>
+        <div class="photo">
+          <img src={`${base}images/foto1.webp`} alt="Antonio Payá González" width="686" height="911" />
+        </div>
+        <div class="id">
+          <p class="cmd"><span class="lime">$</span> whoami</p>
+          <h1 class="name">Antonio Payá <span class="grad">González</span></h1>
+          <p class="role"><span class="lime">&gt;</span> {c.role}</p>
+        </div>
+        <ul class="contact">
+          {contact.map((x) => (
+            <li>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[x.icon]} />
+              {x.href ? <a href={x.href}>{x.label}</a> : <span>{x.label}</span>}
+            </li>
+          ))}
+        </ul>
+      </header>
+
+      <div class="body">
+        <main class="main">
+          <section class="block">
+            <h2 class="h2"><span class="hn">01</span>{L.profile}</h2>
+            <p class="summary">{c.summary}</p>
+          </section>
+
+          <section class="block">
+            <h2 class="h2"><span class="hn">02</span>{L.experience}</h2>
+            <ol class="jobs">
+              {jobs.map((j) => (
+                <li class:list={['job', { now: j.current }]}>
+                  <div class="job-top">
+                    <h3 class="job-role">{j.role}</h3>
+                    <span class="job-period">{j.period}</span>
+                  </div>
+                  <p class="job-co">{j.company} <span class="muted">· {j.type}</span></p>
+                  <ul class="bul">
+                    {j.bullets.map((b) => <li>{b}</li>)}
+                  </ul>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </main>
+
+        <aside class="side">
+          <section class="sblock">
+            <h2 class="h3">{L.expertise}</h2>
+            <ul class="focus">
+              {i.about.focus.map((f) => (
+                <li><strong>{f.title}</strong><span>{f.desc}</span></li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="sblock">
+            <h2 class="h3">{L.skills}</h2>
+            <dl class="skills">
+              {i.skills.groups.map((g) => (
+                <div>
+                  <dt>{g.label}</dt>
+                  <dd>{g.items.join(' · ')}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+
+          <section class="sblock">
+            <h2 class="h3">{L.languages}</h2>
+            <ul class="langs">
+              {c.languages.map((l) => (
+                <li>
+                  <div class="lang-top"><span>{l.name}</span><span class="muted">{l.level}</span></div>
+                  <div class="bar"><span style={`width:${l.pct}%`}></span></div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="foot"><span>Antonio Payá González — CV</span><span>{L.updated}: {updated}</span><span>1 / 2</span></footer>
+    </article>
+
+    <!-- ================= PAGE 2 ================= -->
+    <article class="page">
+      <div class="body body-2">
+        <main class="main">
+          <section class="block">
+            <h2 class="h2"><span class="hn">03</span>{L.research}</h2>
+            <div class="thesis">
+              <p class="thesis-l">{L.thesis}</p>
+              <p class="thesis-t">{c.thesisTitle}</p>
+              <p class="thesis-n">{c.thesisNote}</p>
+            </div>
+            <ul class="stats">
+              {i.research.metrics.map((m) => (
+                <li><strong>{m.value}</strong><span>{m.label}</span></li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="block">
+            <h2 class="h2"><span class="hn">04</span>{L.publications}</h2>
+            <ol class="pubs">
+              {pubs.map((p) => (
+                <li>
+                  <span class="pub-year">{p.year}</span>
+                  <div>
+                    <p class="pub-title">{p.title}</p>
+                    <p class="pub-meta">
+                      <em>{p.journal}</em>{p.type === 'preprint' ? ' · preprint' : ` · ${p.publisher}`}
+                      {p.citations > 0 && <span class="pub-cites"> · {p.citations} {p.citations === 1 ? L.citation : L.citations}</span>}
+                    </p>
+                    <a class="pub-doi" href={p.url}>doi.org/{p.doi}</a>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section class="block">
+            <h2 class="h2"><span class="hn">05</span>{L.education}</h2>
+            <ol class="jobs">
+              {i.education.degrees.map((d) => (
+                <li class="job">
+                  <div class="job-top">
+                    <h3 class="job-role">{d.title}</h3>
+                    <span class="job-period">{d.period}</span>
+                  </div>
+                  <p class="job-co">{d.school}</p>
+                  <p class="deg-desc">{d.desc}</p>
+                  {d.honors.length > 0 && <p class="honors">★ {L.honors}: {d.honors.join(', ')}</p>}
+                </li>
+              ))}
+            </ol>
+          </section>
+        </main>
+
+        <aside class="side">
+          <section class="sblock">
+            <h2 class="h3">{L.projects}</h2>
+            <ul class="repos">
+              {repos.map((r) => (
+                <li>
+                  <a href={r.url} class="repo-name">{r.repo.split('/')[1]}</a>
+                  <span class="repo-meta">{r.language} · ★ {r.stars}</span>
+                  <span class="repo-desc">{(i.projects.items as Record<string, string>)[r.key]}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="sblock">
+            <h2 class="h3">{L.awards}</h2>
+            <ul class="awards">
+              {i.awards.items.slice(0, 4).map((a) => (
+                <li><strong>{a.title}</strong><span>{a.org} · {a.year}</span></li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="sblock">
+            <h2 class="h3">{L.courses}</h2>
+            <ul class="courses">
+              {courses.map((x) => (
+                <li><strong>{x.title}</strong><span>{x.issuer}{x.year ? ` · ${x.year}` : ''}</span></li>
+              ))}
+            </ul>
+          </section>
+
+          <section class="sblock sblock-cta">
+            <p class="cta-cmd"><span class="lime">$</span> open</p>
+            <a href={site.url} class="cta-url">antoniopaya22.github.io</a>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="foot"><span>Antonio Payá González — CV</span><span>{L.updated}: {updated}</span><span>2 / 2</span></footer>
+    </article>
+  </body>
+</html>
+
+<style is:global>
+  @page { size: A4; margin: 0; }
+
+  :root {
+    --ink: #0B0F14;
+    --ink-2: #2E3640;
+    --muted: #5F6A76;
+    --line: #E3E6E1;
+    --side: #F4F6F2;
+    --accent: #0E7490;
+    --lime: #4D7C0F;
+    --dark: #07090C;
+    --display: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+    --sans: 'Geist Variable', system-ui, sans-serif;
+    --mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: #2A2F36;
+    font-size: 9pt;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(7, 9, 12, 0.9);
+    backdrop-filter: blur(8px);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  .tb-spacer { flex: 1; }
+
+  .tb-btn {
+    color: #E8EDF2;
+    padding: 7px 12px;
+    border: 1px solid rgba(232, 237, 242, 0.2);
+    border-radius: 8px;
+  }
+
+  .tb-btn:hover { border-color: #B6FF3B; color: #B6FF3B; }
+  .tb-primary { background: #B6FF3B; color: #07090C; border-color: #B6FF3B; }
+  .tb-primary:hover { color: #07090C; }
+
+  .page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    margin: 24px auto;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---------- header ---------- */
+  .head {
+    position: relative;
+    display: grid;
+    grid-template-columns: 30mm 1fr 58mm;
+    gap: 7mm;
+    align-items: center;
+    padding: 9mm 12mm;
+    background: var(--dark);
+    color: #E8EDF2;
+    overflow: hidden;
+  }
+
+  .head-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232, 237, 242, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232, 237, 242, 0.05) 1px, transparent 1px);
+    background-size: 6mm 6mm;
+    mask-image: linear-gradient(90deg, transparent 30%, #000);
+    -webkit-mask-image: linear-gradient(90deg, transparent 30%, #000);
+  }
+
+  .head > *:not(.head-grid) { position: relative; }
+
+  .photo {
+    width: 30mm;
+    height: 30mm;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #B6FF3B;
+  }
+
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 36% 61%;
+    transform: translate(13%, -12%) scale(1.75);
+    transform-origin: 36% 63%;
+  }
+
+  .cmd { font-family: var(--mono); font-size: 8pt; color: #7D8794; margin-bottom: 1mm; }
+  .lime { color: #B6FF3B; }
+
+  .name {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 25pt;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  .grad {
+    background: linear-gradient(100deg, #B6FF3B 10%, #5CE1E6 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .role { font-family: var(--mono); font-size: 7.6pt; margin-top: 2.5mm; color: #E8EDF2; white-space: nowrap; letter-spacing: -0.01em; }
+
+  .contact { list-style: none; display: grid; gap: 1.3mm; font-family: var(--mono); font-size: 7pt; color: #B9C2CC; }
+  .contact li { display: flex; align-items: center; gap: 2mm; white-space: nowrap; }
+  .contact svg { color: #5CE1E6; flex-shrink: 0; }
+
+  /* ---------- body ---------- */
+  .body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 64mm;
+    min-height: 0;
+  }
+
+  .main { padding: 8mm 9mm 0 12mm; }
+  .side { background: var(--side); padding: 8mm 10mm 0 8mm; border-left: 1px solid var(--line); }
+
+  .block { margin-bottom: 5.5mm; }
+
+  .h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 2.5mm;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 13pt;
+    letter-spacing: -0.02em;
+    padding-bottom: 1.6mm;
+    margin-bottom: 3mm;
+    border-bottom: 1.5px solid var(--ink);
+  }
+
+  .hn { font-family: var(--mono); font-size: 7.5pt; color: var(--accent); font-weight: 500; letter-spacing: 0; }
+
+  .h3 {
+    font-family: var(--mono);
+    font-size: 7.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 2.4mm;
+  }
+
+  .sblock { margin-bottom: 6mm; }
+
+  .summary { font-size: 9.3pt; line-height: 1.55; color: var(--ink-2); }
+
+  .muted { color: var(--muted); }
+
+  /* jobs */
+  .jobs { list-style: none; }
+  .job { position: relative; padding-left: 4mm; margin-bottom: 3.6mm; }
+
+  .job::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1.4mm;
+    width: 1.6mm;
+    height: 1.6mm;
+    border-radius: 50%;
+    border: 1.2px solid var(--muted);
+  }
+
+  .job.now::before { background: var(--lime); border-color: var(--lime); }
+
+  .job-top { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; }
+  .job-role { font-family: var(--display); font-weight: 700; font-size: 10.5pt; letter-spacing: -0.01em; }
+  .job-period { font-family: var(--mono); font-size: 7pt; color: var(--muted); white-space: nowrap; }
+  .job-co { font-size: 8.6pt; font-weight: 500; color: var(--accent); margin: 0.3mm 0 1mm; }
+
+  .bul { list-style: none; color: var(--ink-2); }
+  .bul li { position: relative; padding-left: 3mm; margin-bottom: 0.5mm; }
+  .bul li::before { content: '▹'; position: absolute; left: 0; color: var(--lime); font-size: 7pt; top: 0.2mm; }
+
+  .deg-desc { color: var(--ink-2); }
+  .honors { margin-top: 0.8mm; font-size: 7.6pt; color: #9A5B00; }
+
+  /* sidebar lists */
+  .focus, .awards, .courses, .repos, .langs { list-style: none; display: grid; gap: 2mm; }
+  .focus li, .awards li, .courses li { display: flex; flex-direction: column; }
+  .focus strong, .awards strong, .courses strong { font-weight: 600; font-size: 8.4pt; }
+  .focus span, .awards span, .courses span { color: var(--muted); font-size: 7.6pt; }
+
+  .skills { display: grid; gap: 1.8mm; }
+  .skills dt { font-weight: 600; font-size: 8pt; }
+  .skills dd { color: var(--ink-2); font-size: 7.6pt; }
+
+  .lang-top { display: flex; justify-content: space-between; font-size: 8.2pt; margin-bottom: 1mm; }
+  .bar { height: 1.4mm; background: var(--line); border-radius: 1mm; overflow: hidden; }
+  .bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--lime), var(--accent)); }
+
+  .repos li { display: flex; flex-direction: column; }
+  .repo-name { font-family: var(--mono); font-size: 8pt; font-weight: 700; color: var(--accent); }
+  .repo-meta { font-family: var(--mono); font-size: 6.8pt; color: var(--muted); }
+  .repo-desc { font-size: 7.6pt; color: var(--ink-2); }
+
+  .sblock-cta {
+    background: var(--dark);
+    color: #E8EDF2;
+    border-radius: 2.5mm;
+    padding: 3.5mm 4mm;
+    font-family: var(--mono);
+  }
+
+  .cta-cmd { font-size: 7pt; color: #7D8794; }
+  .cta-url { font-size: 8.4pt; color: #B6FF3B; }
+
+  /* research */
+  .thesis { border-left: 2px solid var(--lime); padding: 0.5mm 0 0.5mm 3.5mm; margin-bottom: 3mm; }
+  .thesis-l { font-family: var(--mono); font-size: 7pt; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; }
+  .thesis-t { font-family: var(--display); font-weight: 600; font-size: 10.5pt; line-height: 1.3; letter-spacing: -0.01em; margin: 0.6mm 0; }
+  .thesis-n { font-size: 7.6pt; color: var(--muted); }
+
+  .stats { list-style: none; display: flex; gap: 8mm; }
+  .stats li { display: flex; align-items: baseline; gap: 1.6mm; }
+  .stats strong { font-family: var(--display); font-weight: 800; font-size: 15pt; letter-spacing: -0.03em; }
+  .stats span { font-size: 7.6pt; color: var(--muted); }
+
+  .pubs { list-style: none; display: grid; gap: 2.6mm; }
+  .pubs li { display: grid; grid-template-columns: 10mm 1fr; gap: 2mm; }
+  .pub-year { font-family: var(--mono); font-size: 7.6pt; color: #9A5B00; padding-top: 0.4mm; }
+  .pub-title { font-weight: 600; font-size: 8.7pt; line-height: 1.35; }
+  .pub-meta { font-size: 7.8pt; color: var(--ink-2); }
+  .pub-cites { color: var(--lime); font-weight: 500; }
+  .pub-doi { font-family: var(--mono); font-size: 6.8pt; color: var(--accent); }
+
+  .body-2 .main { padding-top: 11mm; }
+  .body-2 .side { padding-top: 11mm; }
+
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    padding: 3mm 12mm;
+    font-family: var(--mono);
+    font-size: 6.5pt;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    background: #fff;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .toolbar { display: none; }
+    .page { margin: 0; box-shadow: none; break-after: page; }
+    .page:last-of-type { break-after: auto; }
+  }
+
+  @media screen and (max-width: 840px) {
+    .page { transform-origin: top left; zoom: 0.48; }
+  }
+</style>

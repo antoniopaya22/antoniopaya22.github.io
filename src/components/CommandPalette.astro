@@ -1,6 +1,6 @@
 ---
 import { t, ids, altLang, langPath, navSections, type Lang } from '../i18n/translations';
-import { site, profiles } from '../data/site';
+import { site, profiles, cvPdf } from '../data/site';
 
 interface Props { lang?: Lang; }
 const { lang = 'es' } = Astro.props;
@@ -20,7 +20,8 @@ const groups = [
       { label: i.ui.paletteActions.theme, hint: 'theme', action: 'theme', value: '' },
       { label: i.ui.paletteActions.lang, hint: altLang(lang).toUpperCase(), action: 'url', value: langPath(altLang(lang), base) },
       { label: i.ui.paletteActions.email, hint: site.email, action: 'copy', value: site.email },
-      { label: i.ui.paletteActions.cv, hint: 'PDF', action: 'download', value: `${base}${site.cv}` },
+      { label: i.ui.paletteActions.cv, hint: 'PDF', action: 'download', value: `${base}${cvPdf(lang)}` },
+      { label: i.ui.paletteActions.cvOnline, hint: '/cv', action: 'url', value: `${base}${lang === 'es' ? '' : 'en/'}cv/` },
       { label: i.ui.paletteActions.top, hint: '↑', action: 'go', value: '#' },
     ],
   },

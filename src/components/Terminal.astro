@@ -1,6 +1,6 @@
 ---
 import { t, ids, type Lang } from '../i18n/translations';
-import { site, profiles } from '../data/site';
+import { site, profiles, cvPdf } from '../data/site';
 import { getPublications } from '../data/scholarly';
 import { getFeaturedRepos } from '../data/github';
 
@@ -16,7 +16,8 @@ const publications = await getPublications();
 
 const data = {
   lang,
-  cv: `${base}${site.cv}`,
+  cv: `${base}${cvPdf(lang)}`,
+  cvPage: `${base}${lang === 'es' ? '' : 'en/'}cv/`,
   email: site.email,
   term: i.term,
   focus: i.about.focus.map((f) => f.title),
@@ -161,7 +162,7 @@ const data = {
     skills: () => print(`<div class="grid">${D.skills.map((g: any) => `<span class="p">${esc(g.label)}</span><span>${g.items.map(esc).join(' · ')}</span>`).join('')}</div>`),
     contact: () => print(`<div class="grid"><span class="p">email</span><a href="mailto:${D.email}">${D.email}</a>${D.profiles.map((p: any) => `<span class="p">${esc(p.label.toLowerCase())}</span><a href="${p.href}" target="_blank" rel="noopener">${esc(p.href.replace(/^https?:\/\/(www\.)?/, ''))}</a>`).join('')}</div>`),
     cv: () => {
-      print(`<span class="ok">${esc(D.term.cv)}</span>`);
+      print(`<span class="ok">${esc(D.term.cv)}</span> <a href="${D.cvPage}">${D.cvPage}</a>`);
       const a = document.createElement('a');
       a.href = D.cv; a.download = ''; document.body.appendChild(a); a.click(); a.remove();
     },

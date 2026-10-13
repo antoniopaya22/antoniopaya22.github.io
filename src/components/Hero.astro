@@ -1,6 +1,6 @@
 ---
 import { t, ids, type Lang } from '../i18n/translations';
-import { site } from '../data/site';
+import { cvPdf } from '../data/site';
 import Terminal from './Terminal.astro';
 
 interface Props { lang?: Lang; }
@@ -41,7 +41,7 @@ const id = ids(lang);
           {i.hero.ctaPrimary}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <a href={`${base}${site.cv}`} class="btn btn-ghost" download data-magnetic>
+        <a href={`${base}${cvPdf(lang)}`} class="btn btn-ghost" download data-magnetic>
           {i.hero.ctaCv}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M6 12l6 6 6-6M5 21h14"/></svg>
         </a>
