@@ -4,7 +4,7 @@ export const translations = {
   es: {
     // Layout
     layout: {
-      title: 'Antonio Payá González — Arquitecto de Software & Investigador PhD',
+      title: 'Antonio Payá González — Arquitecto de Software, Profesor en UNIR & PhD',
       description: 'Antonio Payá González — Software Architect & PhD',
     },
 
@@ -24,8 +24,8 @@ export const translations = {
     // Hero
     hero: {
       badge: 'Disponible para colaboraciones',
-      role: 'Software Architect · PhD en Ingeniería Informática',
-      intro: '<strong>Arquitecto de Software</strong> en TheNextPangea y <strong>PhD en Ingeniería Informática</strong> por la Universidad de Oviedo. Investigador en ciberseguridad, sistemas inteligentes y tecnologías blockchain.',
+      role: 'Software Architect · Profesor en UNIR · PhD en Ingeniería Informática',
+      intro: '<strong>Arquitecto de Software</strong> en TheNextPangea, <strong>profesor</strong> en la Universidad Internacional de La Rioja (UNIR) y <strong>PhD en Ingeniería Informática</strong> por la Universidad de Oviedo. Especializado en ciberseguridad, Zero Trust, arquitecturas cloud e inteligencia artificial.',
       ctaPrimary: 'Contactar',
       ctaSecondary: 'Publicaciones',
       scroll: 'Scroll',
@@ -37,15 +37,16 @@ export const translations = {
       heading: 'Un poco sobre mi',
       headingAccent: 'historia',
       body: [
-        'Mi nombre es Antonio Payá González. Soy <strong>Arquitecto de Software</strong> en TheNextPangea S.L. y <strong>PhD en Ingeniería Informática</strong> por la Universidad de Oviedo, con línea de investigación en Ingeniería del Software.',
+        'Mi nombre es Antonio Payá González. Soy <strong>Arquitecto de Software</strong> en TheNextPangea S.L., <strong>profesor</strong> en la Universidad Internacional de La Rioja (UNIR) y <strong>PhD en Ingeniería Informática</strong> por la Universidad de Oviedo, con línea de investigación en Ingeniería del Software.',
+        'Desde septiembre de 2026 imparto docencia en UNIR en el <strong>Grado en Ciberseguridad</strong>, el <strong>Máster Universitario en Ciberseguridad</strong> y el <strong>Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas</strong>, trasladando a las aulas mi experiencia en la industria y en investigación.',
         'En mi día a día profesional, me especializo en el diseño de soluciones de software escalables que integran <em>Inteligencia Artificial</em> en entornos de producción. Cuento con amplia experiencia en arquitecturas cloud multiplataforma (<strong>AWS, Azure y GCP</strong>) y en la automatización de despliegues mediante <em>Infraestructura como Código</em> (IaC) con Terraform.',
         'En el ámbito investigador, mi tesis doctoral se centra en mejorar los <em>Software-Defined Perimeters</em> (SDP) integrando sistemas de detección de intrusiones y optimizando la gestión de identidades. Desarrollo configuraciones de seguridad automatizadas y mejoro la resiliencia de IDS frente a ataques de <em>Adversarial Machine Learning</em>.',
         'También soy escritor y editor de <a href="https://medium.com/better-programming" target="_blank" rel="noopener" class="animated-link">Better Programming</a> y <a href="https://medium.com/coinmonks" target="_blank" rel="noopener" class="animated-link">Coinmonks</a> en Medium.',
       ],
-      skills: ['Desarrollo Web', 'Machine Learning', 'Blockchain', 'Ciberseguridad', 'Software Architecture', 'IoT'],
+      skills: ['Software Architecture', 'Ciberseguridad', 'Zero Trust', 'Cloud', 'IA / Machine Learning', 'Docencia universitaria'],
       stats: [
         { value: '5', label: 'Publicaciones' },
-        { value: '128+', label: 'Citas' },
+        { value: '200+', label: 'Citas' },
         { value: '8', label: 'Matrículas Honor' },
         { value: '2', label: 'Hackathons ganados' },
       ],
@@ -58,8 +59,19 @@ export const translations = {
       eyebrow: 'Experiencia',
       heading: 'Trayectoria',
       headingAccent: 'profesional',
-      desc: 'Más de 7 años de experiencia en desarrollo de software, investigación y arquitectura.',
+      desc: 'Más de 8 años de experiencia en arquitectura de software, investigación y docencia universitaria.',
       jobs: [
+        {
+          role: 'Profesor',
+          company: 'UNIR — Universidad Internacional de La Rioja',
+          type: 'Docencia universitaria',
+          period: 'Sept 2026 — Actualidad',
+          desc: 'Profesor en el Grado en Ciberseguridad, el Máster Universitario en Ciberseguridad y el Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas.',
+          tags: ['Docencia', 'Ciberseguridad', 'Transformación Digital', 'Tecnologías Disruptivas'],
+          current: true,
+          logo: 'logo-unir.png',
+          logoDark: true,
+        },
         {
           role: 'Arquitecto de Software',
           company: 'TheNextPangea S.L.',
@@ -191,7 +203,7 @@ export const translations = {
       desc: 'Investigación publicada en revistas internacionales de alto impacto (Q1 & Q2).',
       stats: [
         { value: '5', label: 'Publicaciones', icon: 'file-text' },
-        { value: '128+', label: 'Citas', icon: 'bar-chart' },
+        { value: '200+', label: 'Citas', icon: 'bar-chart' },
         { value: '1.1K+', label: 'Lecturas', icon: 'eye' },
       ],
     },
@@ -217,7 +229,7 @@ export const translations = {
       heading: '¿',
       headingAccent: 'Hablamos',
       headingSuffix: '?',
-      text: 'Siempre abierto a nuevas oportunidades de investigación, colaboraciones técnicas o simplemente una buena conversación sobre tecnología.',
+      text: 'Siempre abierto a colaboraciones de investigación, proyectos de arquitectura y ciberseguridad, charlas y actividades docentes, o simplemente una buena conversación sobre tecnología.',
       terminalFile: 'contact.sh',
       terminalLines: [
         { prompt: '$', cmd: 'echo', arg: '"¡Hablemos!"' },
@@ -228,7 +240,7 @@ export const translations = {
 
     // Footer
     footer: {
-      copy: 'Software Architect · PhD Researcher',
+      copy: 'Software Architect · Profesor en UNIR · PhD',
       links: [
         { href: '#sobre-mi', label: 'Sobre mí' },
         { href: '#experiencia', label: 'Experiencia' },
@@ -243,7 +255,7 @@ export const translations = {
   en: {
     // Layout
     layout: {
-      title: 'Antonio Payá González — Software Architect & PhD Researcher',
+      title: 'Antonio Payá González — Software Architect, Lecturer at UNIR & PhD',
       description: 'Antonio Payá González — Software Architect & PhD',
     },
 
@@ -263,8 +275,8 @@ export const translations = {
     // Hero
     hero: {
       badge: 'Open to collaborations',
-      role: 'Software Architect · PhD in Computer Engineering',
-      intro: 'Software Architect at <strong>TheNextPangea</strong> and PhD from the <strong>University of Oviedo</strong>. Researcher in cybersecurity, intelligent systems, and blockchain technologies.',
+      role: 'Software Architect · Lecturer at UNIR · PhD in Computer Engineering',
+      intro: '<strong>Software Architect</strong> at TheNextPangea, <strong>lecturer</strong> at the International University of La Rioja (UNIR) and <strong>PhD in Computer Engineering</strong> from the University of Oviedo. Specialised in cybersecurity, Zero Trust, cloud architecture and artificial intelligence.',
       ctaPrimary: 'Get in Touch',
       ctaSecondary: 'Publications',
       scroll: 'Scroll',
@@ -276,15 +288,16 @@ export const translations = {
       heading: 'A bit about my',
       headingAccent: 'story',
       body: [
-        'My name is <strong>Antonio Payá González</strong>. I\'m a Software Architect at <strong>TheNextPangea S.L.</strong> and hold a PhD in Computer Engineering from the <strong>University of Oviedo</strong>, with a research focus on Intelligent Systems.',
+        'My name is <strong>Antonio Payá González</strong>. I\'m a Software Architect at <strong>TheNextPangea S.L.</strong>, a lecturer at the <strong>International University of La Rioja (UNIR)</strong>, and hold a PhD in Computer Engineering from the <strong>University of Oviedo</strong>, with a research focus on Intelligent Systems.',
+        'Since September 2026 I teach at UNIR in the <strong>Bachelor\'s Degree in Cybersecurity</strong>, the <strong>Master\'s Degree in Cybersecurity</strong> and the <strong>Master\'s Degree in Digital Transformation through Disruptive Technologies</strong>, bringing my industry and research experience into the classroom.',
         'In my day-to-day work, I specialize in designing scalable software solutions that integrate <em>Artificial Intelligence</em> into production environments. I have extensive experience in multi-cloud architectures (<strong>AWS, Azure, and GCP</strong>) and automating deployments through <em>Infrastructure as Code</em> (IaC) with Terraform.',
         'On the research side, my doctoral thesis focuses on improving <em>Software-Defined Perimeters</em> (SDP) by integrating intrusion detection systems and optimizing identity management. I develop automated security configurations and improve IDS resilience against <em>Adversarial Machine Learning</em> attacks.',
         'I\'m also a writer and editor at <a href="https://medium.com/better-programming" target="_blank" rel="noopener" class="animated-link">Better Programming</a> and <a href="https://medium.com/coinmonks" target="_blank" rel="noopener" class="animated-link">Coinmonks</a> on Medium.',
       ],
-      skills: ['Web Development', 'Machine Learning', 'Blockchain', 'Cybersecurity', 'Software Architecture', 'IoT'],
+      skills: ['Software Architecture', 'Cybersecurity', 'Zero Trust', 'Cloud', 'AI / Machine Learning', 'University Teaching'],
       stats: [
         { value: '5', label: 'Publications' },
-        { value: '128+', label: 'Citations' },
+        { value: '200+', label: 'Citations' },
         { value: '8', label: 'Honours' },
         { value: '2', label: 'Hackathons Won' },
       ],
@@ -297,8 +310,19 @@ export const translations = {
       eyebrow: 'Experience',
       heading: 'Professional',
       headingAccent: 'career',
-      desc: 'Over 6 years of experience in software development, research, and architecture.',
+      desc: 'Over 8 years of experience in software architecture, research, and university teaching.',
       jobs: [
+        {
+          role: 'Lecturer',
+          company: 'UNIR — International University of La Rioja',
+          type: 'University teaching',
+          period: 'Sept 2026 — Present',
+          desc: 'Lecturer in the Bachelor\'s Degree in Cybersecurity, the Master\'s Degree in Cybersecurity, and the Master\'s Degree in Digital Transformation through Disruptive Technologies.',
+          tags: ['Teaching', 'Cybersecurity', 'Digital Transformation', 'Disruptive Technologies'],
+          current: true,
+          logo: 'logo-unir.png',
+          logoDark: true,
+        },
         {
           role: 'Software Architect',
           company: 'TheNextPangea S.L.',
@@ -430,7 +454,7 @@ export const translations = {
       desc: 'Research published in high-impact international journals (Q1 & Q2).',
       stats: [
         { value: '5', label: 'Publications', icon: 'file-text' },
-        { value: '128+', label: 'Citations', icon: 'bar-chart' },
+        { value: '200+', label: 'Citations', icon: 'bar-chart' },
         { value: '1.1K+', label: 'Reads', icon: 'eye' },
       ],
     },
@@ -456,7 +480,7 @@ export const translations = {
       heading: '',
       headingAccent: 'Let\'s Talk',
       headingSuffix: '?',
-      text: 'Always open to new research opportunities, technical collaborations, or just a great conversation about technology.',
+      text: 'Always open to research collaborations, architecture and cybersecurity projects, talks and teaching activities, or just a great conversation about technology.',
       terminalFile: 'contact.sh',
       terminalLines: [
         { prompt: '$', cmd: 'echo', arg: '"Let\'s talk!"' },
@@ -467,7 +491,7 @@ export const translations = {
 
     // Footer
     footer: {
-      copy: 'Software Architect · PhD Researcher',
+      copy: 'Software Architect · Lecturer at UNIR · PhD',
       links: [
         { href: '#about', label: 'About' },
         { href: '#experience', label: 'Experience' },

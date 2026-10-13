@@ -6,7 +6,7 @@ interface Props {
   ogImage?: string;
 }
 
-const { title, description = 'Antonio Payá González — Software Architect & PhD Researcher specializing in cybersecurity, intelligent systems and blockchain technologies.', lang = 'es', ogImage = '/images/og-card.svg' } = Astro.props;
+const { title, description = 'Antonio Payá González — Software Architect, Lecturer at UNIR and PhD in Computer Engineering specializing in cybersecurity, Zero Trust, cloud architecture and AI.', lang = 'es', ogImage = '/images/og-card.png' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const siteUrl = 'https://antoniopaya22.github.io';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
@@ -20,12 +20,36 @@ const jsonLd = {
   "name": "Antonio Payá González",
   "url": siteUrl,
   "image": `${siteUrl}/images/foto1.jpg`,
-  "description": "Software Architect at TheNextPangea and PhD in Computer Engineering. Specialist in cloud architecture, AI productization, cybersecurity, and Zero Trust security.",
-  "jobTitle": "Software Architect",
-  "worksFor": {
-    "@type": "Organization",
-    "name": "TheNextPangea S.L."
+  "description": "Software Architect at TheNextPangea, Lecturer at the International University of La Rioja (UNIR) and PhD in Computer Engineering. Specialist in cloud architecture, AI productization, cybersecurity, and Zero Trust security.",
+  "jobTitle": ["Software Architect", "Lecturer"],
+  "worksFor": [
+    {
+      "@type": "Organization",
+      "name": "TheNextPangea S.L.",
+      "url": "https://thenextpangea.com/"
+    },
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "UNIR - Universidad Internacional de La Rioja",
+      "url": "https://www.unir.net/"
+    }
+  ],
+  "affiliation": {
+    "@type": "CollegeOrUniversity",
+    "name": "UNIR - Universidad Internacional de La Rioja",
+    "url": "https://www.unir.net/"
   },
+  "hasOccupation": [
+    {
+      "@type": "Occupation",
+      "name": "Software Architect"
+    },
+    {
+      "@type": "Occupation",
+      "name": "University Lecturer",
+      "description": "Lecturer in the Bachelor's Degree in Cybersecurity, the Master's Degree in Cybersecurity and the Master's Degree in Digital Transformation through Disruptive Technologies at UNIR."
+    }
+  ],
   "alumniOf": {
     "@type": "CollegeOrUniversity",
     "name": "Universidad de Oviedo"
@@ -36,13 +60,14 @@ const jsonLd = {
     "addressRegion": "Asturias",
     "addressCountry": "ES"
   },
-  "knowsAbout": ["Software Architecture", "Cybersecurity", "Machine Learning", "Blockchain", "Cloud Computing", "Terraform", "AI/ML Productization"],
+  "knowsAbout": ["Software Architecture", "Cybersecurity", "Zero Trust", "Software-Defined Perimeter", "Intrusion Detection Systems", "Adversarial Machine Learning", "Cloud Computing", "Terraform", "AI/ML Productization", "Digital Transformation"],
   "sameAs": [
     "https://github.com/antoniopaya22",
     "https://www.linkedin.com/in/antoniopaya22/",
     "https://scholar.google.com/citations?user=4bCBOysAAAAJ",
     "https://orcid.org/0000-0003-3733-3805",
-    "https://www.researchgate.net/profile/Antonio-Paya-3"
+    "https://www.researchgate.net/profile/Antonio-Paya-3",
+    "https://medium.com/@antonioalfa22"
   ],
   "alternateName": ["Antonio Payá", "Antonio Paya Gonzalez", "A. Payá González"]
 };
@@ -63,7 +88,7 @@ const websiteJsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="author" content="Antonio Payá González" />
-    <meta name="keywords" content="Antonio Payá González, Antonio Payá, Antonio Paya Gonzalez, software architect, PhD computer engineering, cybersecurity, blockchain, artificial intelligence, zero trust, Universidad de Oviedo, Gijón" />
+    <meta name="keywords" content="Antonio Payá González, Antonio Payá, Antonio Paya Gonzalez, software architect, profesor UNIR, lecturer UNIR, PhD computer engineering, cybersecurity, ciberseguridad, zero trust, software-defined perimeter, artificial intelligence, Universidad de Oviedo, Gijón" />
     <meta name="generator" content={Astro.generator} />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#06060a" />
@@ -86,7 +111,8 @@ const websiteJsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:alt" content="Antonio Payá González — Software Architect & PhD Researcher" />
+    <meta property="og:image:alt" content="Antonio Payá González — Software Architect, Lecturer at UNIR & PhD" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
@@ -98,7 +124,6 @@ const websiteJsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <meta name="twitter:creator" content="@antoniopaya22" />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
