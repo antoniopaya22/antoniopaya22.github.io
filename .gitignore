@@ -12,3 +12,6 @@ dist/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# astro generated types
+.astro/

@@ -13,6 +13,7 @@ export const translations = {
       links: [
         { href: '#sobre-mi', label: 'Sobre mí' },
         { href: '#experiencia', label: 'Experiencia' },
+        { href: '#docencia', label: 'Docencia' },
         { href: '#educacion', label: 'Educación' },
         { href: '#skills', label: 'Skills' },
         { href: '#publicaciones', label: 'Publicaciones' },
@@ -117,6 +118,40 @@ export const translations = {
           logoDark: true,
         },
       ],
+    },
+
+    // Teaching
+    teaching: {
+      eyebrow: 'Docencia',
+      heading: 'Docencia',
+      headingAccent: 'universitaria',
+      desc: 'Profesor en la Universidad Internacional de La Rioja (UNIR) desde septiembre de 2026, en titulaciones oficiales de grado y máster.',
+      institution: 'UNIR — Universidad Internacional de La Rioja',
+      linkLabel: 'Ver titulación',
+      programs: [
+        {
+          level: 'Grado',
+          title: 'Grado en Ciberseguridad',
+          meta: 'Titulación oficial · 240 ECTS',
+          url: 'https://www.unir.net/ingenieria/grado-ciberseguridad/',
+          icon: 'shield',
+        },
+        {
+          level: 'Máster',
+          title: 'Máster Universitario en Ciberseguridad',
+          meta: 'Titulación oficial · 60 ECTS',
+          url: 'https://www.unir.net/ingenieria/master-seguridad-informatica/',
+          icon: 'lock',
+        },
+        {
+          level: 'Máster',
+          title: 'Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas',
+          meta: 'Titulación oficial · 60 ECTS',
+          url: 'https://www.unir.net/ingenieria/master-transformacion-digital-tecnologias-disruptivas/',
+          icon: 'cpu',
+        },
+      ],
+      note: 'Abierto a charlas, seminarios y colaboraciones académicas en ciberseguridad, Zero Trust, arquitectura cloud e IA.',
     },
 
     // Education
@@ -264,6 +299,7 @@ export const translations = {
       links: [
         { href: '#about', label: 'About' },
         { href: '#experience', label: 'Experience' },
+        { href: '#teaching', label: 'Teaching' },
         { href: '#education', label: 'Education' },
         { href: '#skills', label: 'Skills' },
         { href: '#publications', label: 'Publications' },
@@ -368,6 +404,40 @@ export const translations = {
           logoDark: true,
         },
       ],
+    },
+
+    // Teaching
+    teaching: {
+      eyebrow: 'Teaching',
+      heading: 'University',
+      headingAccent: 'teaching',
+      desc: 'Lecturer at the International University of La Rioja (UNIR) since September 2026, in official bachelor\'s and master\'s degrees.',
+      institution: 'UNIR — International University of La Rioja',
+      linkLabel: 'View programme',
+      programs: [
+        {
+          level: 'Bachelor\'s',
+          title: 'Bachelor\'s Degree in Cybersecurity',
+          meta: 'Official degree · 240 ECTS',
+          url: 'https://www.unir.net/ingenieria/grado-ciberseguridad/',
+          icon: 'shield',
+        },
+        {
+          level: 'Master\'s',
+          title: 'Master\'s Degree in Cybersecurity',
+          meta: 'Official degree · 60 ECTS',
+          url: 'https://www.unir.net/ingenieria/master-seguridad-informatica/',
+          icon: 'lock',
+        },
+        {
+          level: 'Master\'s',
+          title: 'Master\'s Degree in Digital Transformation through Disruptive Technologies',
+          meta: 'Official degree · 60 ECTS',
+          url: 'https://www.unir.net/ingenieria/master-transformacion-digital-tecnologias-disruptivas/',
+          icon: 'cpu',
+        },
+      ],
+      note: 'Open to talks, seminars and academic collaborations on cybersecurity, Zero Trust, cloud architecture and AI.',
     },
 
     // Education
@@ -509,6 +579,7 @@ export const sectionIds = {
   es: {
     about: 'sobre-mi',
     experience: 'experiencia',
+    teaching: 'docencia',
     education: 'educacion',
     skills: 'skills',
     publications: 'publicaciones',
@@ -518,6 +589,7 @@ export const sectionIds = {
   en: {
     about: 'about',
     experience: 'experience',
+    teaching: 'teaching',
     education: 'education',
     skills: 'skills',
     publications: 'publications',

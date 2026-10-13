@@ -49,19 +49,26 @@ const pubs = [
 // Medium / technical articles
 const articles = [
   {
-    title: 'How to Develop Safer Applications in Node.js',
-    platform: 'Better Programming · Medium',
-    url: 'https://betterprogramming.pub/',
+    title: lang === 'es' ? 'Creando una API Rest lista para producción con Go' : 'Creating a Production-Ready REST API With Go',
+    platform: lang === 'es' ? 'Medium · 2020' : 'The Startup · Medium · 2020',
+    url: lang === 'es'
+      ? 'https://medium.com/@antonioalfa22/creando-una-api-rest-lista-para-producci%C3%B3n-con-go-d4ae6af08a1f'
+      : 'https://medium.com/swlh/creating-a-production-ready-rest-api-with-go-6d91c5b09add',
   },
   {
-    title: 'Blockchain Frameworks',
-    platform: 'Coinmonks · Medium',
-    url: 'https://medium.com/coinmonks',
+    title: 'How to Develop Safer Applications in Node.js',
+    platform: 'Better Programming · Medium · 2020',
+    url: 'https://medium.com/better-programming/developing-safer-applications-in-nodejs-f645788f9c65',
+  },
+  {
+    title: 'Blockchain Frameworks (4-part series)',
+    platform: 'Coinmonks · Medium · 2020',
+    url: 'https://medium.com/coinmonks/blockchain-frameworks-part-1-introduction-307846125c71',
   },
   {
     title: 'Creando una API Rest con Hyperledger Fabric',
-    platform: 'Coinmonks · Medium',
-    url: 'https://medium.com/coinmonks',
+    platform: 'Medium · 2018',
+    url: 'https://medium.com/@antonioalfa22/creando-una-api-rest-con-hyperledger-fabric-e22675f97e98',
   },
 ];
 
