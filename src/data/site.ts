@@ -58,3 +58,13 @@ export const publications = [
     tags: ['Hardening', 'Automation'],
   },
 ];
+
+/** Featured repositories; live stats are fetched at build time (see github.ts). */
+export const featuredRepos = [
+  { repo: 'antoniopaya22/go-rest-template', key: 'go-rest-template', tags: ['Go', 'Gin', 'REST'], fallback: { stars: 172, forks: 36, language: 'Go' } },
+  { repo: 'antoniopaya22/apollon', key: 'apollon', paper: 'https://www.sciencedirect.com/science/article/pii/S016740482300456X', tags: ['Adversarial ML', 'IDS'], fallback: { stars: 4, forks: 1, language: 'Jupyter Notebook' } },
+  { repo: 'antoniopaya22/Software-Defined-Perimeter', key: 'Software-Defined-Perimeter', paper: 'https://www.researchgate.net/publication/367325161', tags: ['SDP', 'Zero Trust', 'SPA'], fallback: { stars: 21, forks: 3, language: 'Go' } },
+  { repo: 'Egida-Kassandra/egida', key: 'egida', paper: 'https://www.sciencedirect.com/science/article/pii/S0167404822000372', tags: ['Hardening', 'DSL'], fallback: { stars: 10, forks: 1, language: 'Java' } },
+  { repo: 'antoniopaya22/SimpleSDP', key: 'SimpleSDP', tags: ['SDP', 'Zero Trust'], fallback: { stars: 2, forks: 0, language: 'Python' } },
+  { repo: 'antoniopaya22/project-agent-harness', key: 'project-agent-harness', tags: ['AI agents', 'Claude Code'], fallback: { stars: 2, forks: 0, language: 'JavaScript' } },
+] as const;

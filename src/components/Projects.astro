@@ -1,0 +1,123 @@
+---
+import { t, ids, type Lang } from '../i18n/translations';
+import { getFeaturedRepos } from '../data/github';
+import SectionHead from './SectionHead.astro';
+
+interface Props { lang?: Lang; }
+const { lang = 'es' } = Astro.props;
+
+const i = t(lang);
+const id = ids(lang);
+const s = i.sections.projects;
+const repos = await getFeaturedRepos();
+const descs = i.projects.items as Record<string, string>;
+
+const langColors: Record<string, string> = {
+  Go: '#00ADD8',
+  Python: '#3572A5',
+  Java: '#B07219',
+  JavaScript: '#F1E05A',
+  TypeScript: '#3178C6',
+  'Jupyter Notebook': '#DA5B0B',
+};
+
+const fmtDate = (iso?: string) =>
+  iso ? new Date(iso).toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-GB', { month: 'short', year: 'numeric' }) : '';
+---
+
+<section class="section" id={id.projects}>
+  <div class="wrap">
+    <SectionHead n={s.n} file={s.file} title={s.title} desc={s.desc} />
+
+    <ul class="repos">
+      {repos.map((r, idx) => {
+        const [owner, name] = r.repo.split('/');
+        return (
+          <li class="reveal" style={`--d: ${(idx % 3) * 0.07}s`}>
+            <article class="repo card">
+              <header class="r-head mono">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></svg>
+                <a href={r.url} target="_blank" rel="noopener noreferrer" class="r-name">
+                  <span class="r-owner">{owner}/</span>{name}
+                </a>
+              </header>
+
+              <p class="r-desc">{descs[r.key]}</p>
+
+              <div class="r-tags">{r.tags.map((tag) => <span class="chip">{tag}</span>)}</div>
+
+              <footer class="r-foot mono">
+                <span class="r-lang"><i style={`background:${langColors[r.language] ?? 'var(--muted)'}`}></i>{r.language}</span>
+                <span title="stars">★ {r.stars}</span>
+                <span title="forks">⑂ {r.forks}</span>
+                {r.pushedAt && <span class="r-date">{i.projects.updated} {fmtDate(r.pushedAt)}</span>}
+              </footer>
+
+              <div class="r-actions mono">
+                <a href={r.url} target="_blank" rel="noopener noreferrer">{i.projects.repo} ↗</a>
+                {r.paper && <a href={r.paper} target="_blank" rel="noopener noreferrer" class="r-paper">{i.projects.paper} ↗</a>}
+              </div>
+            </article>
+          </li>
+        );
+      })}
+    </ul>
+
+    <p class="more reveal">
+      <a class="btn btn-ghost" href="https://github.com/antoniopaya22?tab=repositories" target="_blank" rel="noopener noreferrer" data-magnetic>
+        {i.projects.more}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .repos {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .repos li { display: flex; }
+
+  .repo { display: flex; flex-direction: column; width: 100%; padding: 1.3rem 1.35rem 1.2rem; }
+  .repo:hover { transform: translateY(-4px); }
+
+  .r-head { display: flex; align-items: center; gap: 0.55rem; color: var(--muted); font-size: 0.9rem; margin-bottom: 0.8rem; }
+
+  .r-name { color: var(--accent-2); font-weight: 500; overflow-wrap: anywhere; transition: color 0.2s; }
+  .r-name:hover { color: var(--accent); }
+  .r-owner { color: var(--muted); font-weight: 400; }
+
+  .r-desc { color: var(--text-2); font-size: 0.93rem; line-height: 1.55; margin-bottom: 1rem; }
+
+  .r-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.1rem; }
+
+  .r-foot {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1rem;
+    font-size: 0.74rem;
+    color: var(--muted);
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .r-lang { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text-2); }
+  .r-lang i { width: 9px; height: 9px; border-radius: 50%; }
+  .r-date { margin-left: auto; }
+
+  .r-actions { display: flex; gap: 1rem; font-size: 0.75rem; margin-top: 0.8rem; }
+  .r-actions a { color: var(--muted); transition: color 0.2s; }
+  .r-actions a:hover { color: var(--accent); }
+  .r-actions .r-paper { color: var(--syn-num); }
+
+  .more { margin-top: 1.75rem; }
+
+  @media (max-width: 1000px) { .repos { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .repos { grid-template-columns: minmax(0, 1fr); } }
+</style>

@@ -22,6 +22,7 @@ export const translations = {
         ['whoami', 'quién soy'],
         ['experience', 'trayectoria profesional'],
         ['teaching', 'docencia en UNIR'],
+        ['projects', 'proyectos open source'],
         ['publications', 'artículos JCR'],
         ['skills', 'stack técnico'],
         ['contact', 'cómo contactarme'],
@@ -76,11 +77,12 @@ export const translations = {
       about: { n: '01', file: 'perfil.md', title: 'Perfil', desc: 'Entre la industria, la universidad y la investigación.' },
       experience: { n: '02', file: 'git log --graph', title: 'Experiencia', desc: 'Más de 8 años en arquitectura de software, investigación y docencia.' },
       teaching: { n: '03', file: 'docencia.yaml', title: 'Docencia', desc: 'Profesor en UNIR desde septiembre de 2026, en titulaciones oficiales de grado y máster.' },
-      research: { n: '04', file: 'publicaciones.bib', title: 'Investigación', desc: 'Publicaciones en revistas internacionales JCR (Q1 & Q2).' },
-      education: { n: '05', file: 'formacion.json', title: 'Formación', desc: 'Del grado al doctorado, con 8 matrículas de honor.' },
-      skills: { n: '06', file: 'stack/', title: 'Competencias', desc: 'Stack técnico con el que diseño, construyo y despliego.' },
-      awards: { n: '07', file: 'premios.txt', title: 'Premios', desc: 'Hackathons, competiciones y festivales internacionales.' },
-      contact: { n: '08', file: 'contacto.sh', title: 'Contacto', desc: 'Investigación, arquitectura, charlas o docencia.' },
+      projects: { n: '04', file: 'repos/', title: 'Proyectos', desc: 'Código abierto: plantillas usadas por la comunidad e implementaciones de mi investigación.' },
+      research: { n: '05', file: 'publicaciones.bib', title: 'Investigación', desc: 'Publicaciones en revistas internacionales JCR (Q1 & Q2).' },
+      education: { n: '06', file: 'formacion.json', title: 'Formación', desc: 'Del grado al doctorado, con 8 matrículas de honor.' },
+      skills: { n: '07', file: 'stack/', title: 'Competencias', desc: 'Stack técnico con el que diseño, construyo y despliego.' },
+      awards: { n: '08', file: 'premios.txt', title: 'Premios', desc: 'Hackathons, competiciones y festivales internacionales.' },
+      contact: { n: '09', file: 'contacto.sh', title: 'Contacto', desc: 'Investigación, arquitectura, charlas o docencia.' },
     },
 
     about: {
@@ -183,6 +185,21 @@ export const translations = {
         { level: 'Máster', title: 'Máster Universitario en Transformación Digital mediante Tecnologías Disruptivas', meta: 'Oficial · 60 ECTS', url: 'https://www.unir.net/ingenieria/master-transformacion-digital-tecnologias-disruptivas/' },
       ],
       note: 'Abierto a charlas, seminarios y colaboraciones académicas en ciberseguridad, Zero Trust, arquitectura cloud e IA.',
+    },
+
+    projects: {
+      paper: 'Paper',
+      repo: 'Repositorio',
+      updated: 'actualizado',
+      more: 'Ver todos los repositorios',
+      items: {
+        'go-rest-template': 'Plantilla de API REST en Go con Gin lista para producción: estructura por capas, configuración, ORM, Docker y tests.',
+        apollon: 'Sistema de defensa frente a ataques de Adversarial Machine Learning en sistemas de detección de intrusiones.',
+        'Software-Defined-Perimeter': 'Despliegue automatizado y seguro del framework Software-Defined Perimeter con fingerprinting avanzado.',
+        egida: 'DSL para desplegar infraestructuras altamente seguras (hardening de SO) con detección temprana de errores.',
+        SimpleSDP: 'Implementación sencilla de un Software-Defined Perimeter para acceso a red Zero Trust.',
+        'project-agent-harness': 'Harness para agentes de código: backlog verificable, roles especializados y comandos automatizados.',
+      },
     },
 
     research: {
@@ -308,6 +325,7 @@ export const translations = {
         ['whoami', 'who I am'],
         ['experience', 'professional career'],
         ['teaching', 'teaching at UNIR'],
+        ['projects', 'open source projects'],
         ['publications', 'JCR articles'],
         ['skills', 'tech stack'],
         ['contact', 'how to reach me'],
@@ -362,11 +380,12 @@ export const translations = {
       about: { n: '01', file: 'profile.md', title: 'Profile', desc: 'Between industry, academia and research.' },
       experience: { n: '02', file: 'git log --graph', title: 'Experience', desc: 'Over 8 years in software architecture, research and teaching.' },
       teaching: { n: '03', file: 'teaching.yaml', title: 'Teaching', desc: "Professor at UNIR since September 2026, in official bachelor's and master's degrees." },
-      research: { n: '04', file: 'publications.bib', title: 'Research', desc: 'Published in international JCR journals (Q1 & Q2).' },
-      education: { n: '05', file: 'education.json', title: 'Education', desc: "From bachelor's to PhD, with 8 distinctions." },
-      skills: { n: '06', file: 'stack/', title: 'Skills', desc: 'The stack I design, build and ship with.' },
-      awards: { n: '07', file: 'awards.txt', title: 'Awards', desc: 'Hackathons, competitions and international festivals.' },
-      contact: { n: '08', file: 'contact.sh', title: 'Contact', desc: 'Research, architecture, talks or teaching.' },
+      projects: { n: '04', file: 'repos/', title: 'Projects', desc: 'Open source: community-used templates and implementations of my research.' },
+      research: { n: '05', file: 'publications.bib', title: 'Research', desc: 'Published in international JCR journals (Q1 & Q2).' },
+      education: { n: '06', file: 'education.json', title: 'Education', desc: "From bachelor's to PhD, with 8 distinctions." },
+      skills: { n: '07', file: 'stack/', title: 'Skills', desc: 'The stack I design, build and ship with.' },
+      awards: { n: '08', file: 'awards.txt', title: 'Awards', desc: 'Hackathons, competitions and international festivals.' },
+      contact: { n: '09', file: 'contact.sh', title: 'Contact', desc: 'Research, architecture, talks or teaching.' },
     },
 
     about: {
@@ -469,6 +488,21 @@ export const translations = {
         { level: "Master's", title: "Master's Degree in Digital Transformation through Disruptive Technologies", meta: 'Official · 60 ECTS', url: 'https://www.unir.net/ingenieria/master-transformacion-digital-tecnologias-disruptivas/' },
       ],
       note: 'Open to talks, seminars and academic collaborations on cybersecurity, Zero Trust, cloud architecture and AI.',
+    },
+
+    projects: {
+      paper: 'Paper',
+      repo: 'Repository',
+      updated: 'updated',
+      more: 'See all repositories',
+      items: {
+        'go-rest-template': 'Production-ready Go REST API template with Gin: layered structure, configuration, ORM, Docker and tests.',
+        apollon: 'Defence system against Adversarial Machine Learning attacks on intrusion detection systems.',
+        'Software-Defined-Perimeter': 'Automated, secure deployment of the Software-Defined Perimeter framework with advanced fingerprinting.',
+        egida: 'DSL to deploy highly secure infrastructures (OS hardening) with early error detection.',
+        SimpleSDP: 'Simple Software-Defined Perimeter implementation for Zero Trust network access.',
+        'project-agent-harness': 'Harness for coding agents: verifiable backlog, specialised roles and automated commands.',
+      },
     },
 
     research: {
@@ -580,6 +614,7 @@ export const sectionIds = {
     about: 'perfil',
     experience: 'experiencia',
     teaching: 'docencia',
+    projects: 'proyectos',
     research: 'investigacion',
     education: 'formacion',
     skills: 'competencias',
@@ -590,6 +625,7 @@ export const sectionIds = {
     about: 'profile',
     experience: 'experience',
     teaching: 'teaching',
+    projects: 'projects',
     research: 'research',
     education: 'education',
     skills: 'skills',
@@ -601,7 +637,7 @@ export const sectionIds = {
 export type SectionKey = keyof typeof sectionIds.es;
 
 /** Sections shown in the main navigation, in order */
-export const navSections: SectionKey[] = ['about', 'experience', 'teaching', 'research', 'education', 'skills', 'contact'];
+export const navSections: SectionKey[] = ['about', 'experience', 'teaching', 'projects', 'research', 'education', 'skills', 'contact'];
 
 export function t(lang: Lang) {
   return translations[lang];

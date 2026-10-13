@@ -1,6 +1,7 @@
 ---
 import { t, ids, type Lang } from '../i18n/translations';
 import { site, profiles, publications } from '../data/site';
+import { getFeaturedRepos } from '../data/github';
 
 interface Props { lang?: Lang; }
 const { lang = 'es' } = Astro.props;
@@ -8,6 +9,8 @@ const { lang = 'es' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const i = t(lang);
 const id = ids(lang);
+
+const repos = await getFeaturedRepos();
 
 const data = {
   lang,
@@ -21,6 +24,7 @@ const data = {
   skills: i.skills.groups.map((g) => ({ label: g.label, items: g.items })),
   profiles: profiles.map((p) => ({ label: p.label, href: p.href })),
   files: Object.values(i.sections).map((s) => s.file),
+  repos: repos.map((r) => ({ repo: r.repo, url: r.url, stars: r.stars, language: r.language })),
   anchors: id,
 };
 ---
@@ -146,6 +150,7 @@ const data = {
     experience: () => print(`<div class="grid">${D.jobs.map((j: any) => `<span class="dim">${esc(j.period)}</span><span><b>${esc(j.role)}</b> @ ${esc(j.company)}</span>`).join('')}</div>`),
     teaching: () => print(`<div class="grid">${D.programs.map((p: any) => `<span class="hl">${esc(p.level)}</span><span>${esc(p.title)}</span>`).join('')}</div>`),
     publications: () => print(`<div class="grid">${D.pubs.map((p: any) => `<span class="n">${p.year}</span><span><a href="${p.url}" target="_blank" rel="noopener">${esc(p.title)}</a> <span class="dim">— ${esc(p.journal)}</span></span>`).join('')}</div>`),
+    projects: () => print(`<div class="grid">${D.repos.map((r: any) => `<span class="n">★ ${r.stars}</span><span><a href="${r.url}" target="_blank" rel="noopener">${esc(r.repo)}</a> <span class="dim">${esc(r.language)}</span></span>`).join('')}</div>`),
     skills: () => print(`<div class="grid">${D.skills.map((g: any) => `<span class="p">${esc(g.label)}</span><span>${g.items.map(esc).join(' · ')}</span>`).join('')}</div>`),
     contact: () => print(`<div class="grid"><span class="p">email</span><a href="mailto:${D.email}">${D.email}</a>${D.profiles.map((p: any) => `<span class="p">${esc(p.label.toLowerCase())}</span><a href="${p.href}" target="_blank" rel="noopener">${esc(p.href.replace(/^https?:\/\/(www\.)?/, ''))}</a>`).join('')}</div>`),
     cv: () => {
@@ -161,7 +166,7 @@ const data = {
     exit: () => print('<span class="dim">logout… just kidding 😉</span>'),
   };
 
-  const aliases: Record<string, string> = { about: 'whoami', jobs: 'experience', papers: 'publications', stack: 'skills', email: 'contact', '?': 'help', cls: 'clear' };
+  const aliases: Record<string, string> = { repos: 'projects', proyectos: 'projects', about: 'whoami', jobs: 'experience', papers: 'publications', stack: 'skills', email: 'contact', '?': 'help', cls: 'clear' };
 
   const run = (rawCmd: string) => {
     const cmd = rawCmd.trim();
