@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { t, ids, navSections } from '../i18n/translations';
+
+const es = t('es');
+const id = ids('es');
+---
+
+<Layout title="404 — Antonio Payá González" description="Página no encontrada · Page not found" lang="es">
+  <main id="main-content" class="nf">
+    <div class="wrap nf-inner">
+      <a href="/" class="nf-brand mono"><span class="accent">❯</span> ~/antonio-paya</a>
+
+      <div class="win nf-term">
+        <div class="win-bar">
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>antonio@paya: ~ — 404</span>
+        </div>
+        <div class="nf-body mono">
+          <p><span class="accent">❯</span> cd <span id="nf-path">/ruta</span></p>
+          <p class="err">zsh: no such file or directory: <span id="nf-path-2">/ruta</span></p>
+          <p class="dim">// 404 · página no encontrada · page not found</p>
+          <p class="nf-gap"><span class="accent">❯</span> ls ~</p>
+          <ul class="nf-links">
+            {navSections.map((k) => (
+              <li><a href={`/#${id[k]}`}>{es.sections[k].file}</a></li>
+            ))}
+          </ul>
+          <p class="nf-gap"><span class="accent">❯</span> <a href="/">cd ~</a> <span class="dim"># volver al inicio</span> · <a href="/en/">cd ~/en</a> <span class="dim"># english</span><span class="caret" aria-hidden="true"></span></p>
+        </div>
+      </div>
+
+      <p class="nf-big" aria-hidden="true">404</p>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .nf { min-height: 100vh; display: grid; place-items: center; padding: 3rem 0; position: relative; overflow: hidden; }
+  .nf-inner { position: relative; width: 100%; max-width: 760px; }
+  .nf-brand { display: inline-block; margin-bottom: 1.25rem; font-size: 0.9rem; }
+
+  .nf-term { position: relative; z-index: 1; }
+  .nf-body { padding: 1.25rem 1.4rem 1.5rem; font-size: 0.88rem; line-height: 1.9; }
+  .err { color: var(--syn-key); }
+  .dim { color: var(--muted); }
+  .nf-gap { margin-top: 0.9rem; }
+
+  .nf-links { list-style: none; display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
+  .nf-links a, .nf-body a { color: var(--accent-2); text-decoration: underline; text-underline-offset: 3px; }
+  .nf-links a:hover, .nf-body a:hover { color: var(--accent); }
+
+  .nf-big {
+    position: absolute;
+    right: -2rem;
+    bottom: -4rem;
+    z-index: 0;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(8rem, 30vw, 16rem);
+    line-height: 1;
+    letter-spacing: -0.06em;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--line-strong);
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  const path = decodeURIComponent(location.pathname);
+  for (const el of [document.getElementById('nf-path'), document.getElementById('nf-path-2')]) {
+    if (el) el.textContent = path;
+  }
+</script>

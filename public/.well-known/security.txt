@@ -1,0 +1,5 @@
+# Security contact for antoniopaya22.github.io (RFC 9116)
+Contact: mailto:antoniopaya@outlook.com
+Expires: 2027-10-13T00:00:00.000Z
+Preferred-Languages: es, en
+Canonical: https://antoniopaya22.github.io/.well-known/security.txt

@@ -2,6 +2,7 @@
 import '@fontsource-variable/bricolage-grotesque/opsz.css';
 import '@fontsource-variable/geist';
 import '@fontsource-variable/jetbrains-mono';
+import { createHash } from 'node:crypto';
 
 interface Props {
   title: string;
@@ -18,6 +19,22 @@ const altLang = lang === 'es' ? 'en' : 'es';
 const altUrl = lang === 'es' ? `${siteUrl}/en/` : `${siteUrl}/`;
 const ogImageUrl = new URL(ogImage, siteUrl).href;
 const skip = lang === 'es' ? 'Saltar al contenido' : 'Skip to content';
+
+// the only inline script (theme before first paint); its hash is pinned in the CSP
+const themeScript = `(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')d.setAttribute('data-theme',t);}catch(e){}})();`;
+const themeHash = createHash('sha256').update(themeScript).digest('base64');
+const csp = [
+  "default-src 'self'",
+  `script-src 'self' 'sha256-${themeHash}'`,
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  'upgrade-insecure-requests',
+].join('; ');
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -90,6 +107,8 @@ const websiteJsonLd = {
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content={csp} />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="author" content="Antonio Payá González" />
@@ -137,16 +156,7 @@ const websiteJsonLd = {
 
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <title>{title}</title>
-    <script is:inline>
-      (function () {
-        var d = document.documentElement;
-        d.classList.add('js');
-        try {
-          var t = localStorage.getItem('theme');
-          if (t === 'light' || t === 'dark') d.setAttribute('data-theme', t);
-        } catch (e) {}
-      })();
-    </script>
+    <script is:inline set:html={themeScript} />
   </head>
   <body>
     <a href="#main-content" class="skip-link">{skip}</a>

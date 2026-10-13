@@ -47,10 +47,18 @@ jobs:
           google-chrome --headless=new --disable-gpu --no-sandbox --no-pdf-header-footer --virtual-time-budget=6000 --print-to-pdf=dist/cv-antonio-paya.pdf http://localhost:4321/cv/
           google-chrome --headless=new --disable-gpu --no-sandbox --no-pdf-header-footer --virtual-time-budget=6000 --print-to-pdf=dist/cv-antonio-paya-en.pdf http://localhost:4321/en/cv/
 
+      # same format as actions/upload-pages-artifact, but keeps dot-folders
+      # such as /.well-known (security.txt), which that action excludes
+      - name: Package site
+        run: tar --dereference --hard-dereference --directory dist -cf "$RUNNER_TEMP/artifact.tar" --exclude=.git --exclude=.github .
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
-          path: ./dist
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          if-no-files-found: error
 
   deploy:
     needs: build
