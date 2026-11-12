@@ -20,7 +20,7 @@ const scholarlyLd = publications.map((p) => ({
   url: p.url,
   sameAs: p.url,
   isPartOf: { '@type': 'Periodical', name: p.journal },
-  author: { '@type': 'Person', name: site.name, url: site.url },
+  author: { '@type': 'Person', '@id': `${site.url}/#person`, name: site.name, url: site.url },
 }));
 const academic = profiles.filter((p) => ['Google Scholar', 'ORCID', 'ResearchGate'].includes(p.label));
 ---

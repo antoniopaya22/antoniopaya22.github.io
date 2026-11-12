@@ -14,7 +14,7 @@ const links = navSections.map((key) => ({ href: `#${id[key]}`, label: i.sections
 
 <header class="hdr" id="hdr">
   <div class="hdr-inner wrap">
-    <a href={langPath(lang, base)} class="brand mono" aria-label={i.header.home}>
+    <a href={langPath(lang, base)} class="brand mono" aria-label={`~/antonio-paya — ${i.header.home}`}>
       <span class="brand-icon" aria-hidden="true">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 7 5 5-5 5M13 18h7"/></svg>
       </span>
@@ -90,7 +90,23 @@ const links = navSections.map((key) => ({ href: `#${id[key]}`, label: i.sections
   .brand:hover .brand-icon { transform: rotate(-10deg) scale(1.05); }
   .brand-tilde { color: var(--muted); }
 
-  .nav-list { display: flex; list-style: none; gap: 0.1rem; }
+  .nav-list { position: relative; isolation: isolate; display: flex; list-style: none; gap: 0.1rem; }
+
+  /* pill that slides to the section in view (--ix / --iw set from the scroll spy) */
+  .nav-list::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--iw, 0px);
+    transform: translateX(var(--ix, 0px));
+    border-radius: 7px;
+    background: var(--accent-glow);
+    opacity: var(--io, 0);
+    transition: transform 0.5s var(--ease), width 0.5s var(--ease), opacity 0.3s;
+  }
 
   .nav-link {
     display: inline-flex;
@@ -155,7 +171,13 @@ const links = navSections.map((key) => ({ href: `#${id[key]}`, label: i.sections
 
   .m-link .mono { font-size: 0.72rem; color: var(--accent); font-weight: 400; letter-spacing: 0; }
 
-  @media (max-width: 1360px) {
+  @media (max-width: 1400px) {
+    .nav-link { padding: 0.4rem 0.36rem; font-size: 0.75rem; }
+    .tool-k .kbd { display: none; }
+    .hdr-inner { gap: 0.75rem; }
+  }
+
+  @media (max-width: 1240px) {
     .nav { display: none; }
     .tool-menu { display: inline-flex; }
   }
@@ -178,7 +200,10 @@ const links = navSections.map((key) => ({ href: `#${id[key]}`, label: i.sections
   }
 
   document.querySelectorAll('[data-theme-toggle]').forEach((b) =>
-    b.addEventListener('click', () => (window as any).__toggleTheme())
+    b.addEventListener('click', () => {
+      const r = b.getBoundingClientRect();
+      (window as any).__toggleTheme({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+    })
   );
 
   const btn = document.getElementById('menu-toggle');
@@ -195,9 +220,23 @@ const links = navSections.map((key) => ({ href: `#${id[key]}`, label: i.sections
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
 
   const links = document.querySelectorAll<HTMLAnchorElement>('[data-nav]');
+  const navList = document.querySelector<HTMLElement>('.nav-list');
+  const moveIndicator = () => {
+    const active = navList?.querySelector<HTMLElement>('.is-active');
+    if (!navList || !navList.offsetParent) return; // nav hidden (burger layout)
+    navList.style.setProperty('--io', active ? '1' : '0');
+    if (active) {
+      navList.style.setProperty('--ix', `${active.offsetLeft}px`);
+      navList.style.setProperty('--iw', `${active.offsetWidth}px`);
+    }
+  };
+  window.addEventListener('resize', moveIndicator);
+  document.fonts?.ready.then(moveIndicator);
   const spy = new IntersectionObserver(
     (entries) => entries.forEach((e) => {
-      if (e.isIntersecting) links.forEach((l) => l.classList.toggle('is-active', l.getAttribute('href') === `#${e.target.id}`));
+      if (!e.isIntersecting) return;
+      links.forEach((l) => l.classList.toggle('is-active', l.getAttribute('href') === `#${e.target.id}`));
+      moveIndicator();
     }),
     { rootMargin: '-45% 0px -50% 0px' }
   );

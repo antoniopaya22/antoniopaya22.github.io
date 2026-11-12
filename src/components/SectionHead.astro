@@ -15,7 +15,7 @@ const { n, title, desc, file } = Astro.props;
     <span class="sh-line" aria-hidden="true"></span>
   </div>
   <div class="sh-row">
-    <h2 class="sh-title" data-scramble>{title}</h2>
+    <h2 class="sh-title">{title}</h2>
     {desc && <p class="sh-desc reveal" style="--d: 0.1s">{desc}</p>}
   </div>
 </header>
@@ -57,8 +57,11 @@ const { n, title, desc, file } = Astro.props;
     font-size: clamp(2.6rem, 6vw, 5rem);
     line-height: 0.95;
     letter-spacing: -0.035em;
-    min-height: 0.95em;
   }
+
+  /* SplitText line masks: leave room for descenders and accents */
+  .sh-title :global(.sh-l-mask) { padding: 0.14em 0.04em 0.18em; margin: -0.14em -0.04em -0.18em; }
+  .sh-title :global(.sh-c) { will-change: transform; }
 
   .sh-desc {
     color: var(--muted);

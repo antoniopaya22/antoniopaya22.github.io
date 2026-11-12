@@ -11,14 +11,22 @@ interface Props {
   description?: string;
   lang?: 'es' | 'en';
   ogImage?: string;
+  /** keep utility pages (404) out of the index */
+  noindex?: boolean;
 }
 
-const { title, description = 'Antonio Payá González — Software Architect, Professor at UNIR and PhD in Computer Science specializing in cybersecurity, Zero Trust, cloud architecture and AI.', lang = 'es', ogImage = '/images/og-card.png' } = Astro.props;
+const { title, description = 'Antonio Payá González — Software Architect, Professor at UNIR and PhD in Computer Science specializing in cybersecurity, Zero Trust, cloud architecture and AI.', lang = 'es', ogImage = '/images/og-card.png', noindex = false } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const siteUrl = 'https://antoniopaya22.github.io';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const altLang = lang === 'es' ? 'en' : 'es';
 const altUrl = lang === 'es' ? `${siteUrl}/en/` : `${siteUrl}/`;
+const isHome = canonicalUrl === `${siteUrl}/` || canonicalUrl === `${siteUrl}/en/`;
+const ogAlt = lang === 'es'
+  ? 'Antonio Payá González — Arquitecto de Software, Profesor en UNIR y PhD'
+  : 'Antonio Payá González — Software Architect, Professor at UNIR & PhD';
+const personId = `${siteUrl}/#person`;
+const websiteId = `${siteUrl}/#website`;
 const ogImageUrl = new URL(ogImage, siteUrl).href;
 const skip = lang === 'es' ? 'Saltar al contenido' : 'Skip to content';
 
@@ -38,9 +46,9 @@ const csp = [
   'upgrade-insecure-requests',
 ].join('; ');
 
-const jsonLd = {
-  "@context": "https://schema.org",
+const person = {
   "@type": "Person",
+  "@id": personId,
   "name": "Antonio Payá González",
   "url": siteUrl,
   "image": `${siteUrl}/images/foto1.jpg`,
@@ -97,12 +105,33 @@ const jsonLd = {
   "alternateName": ["Antonio Payá", "Antonio Paya Gonzalez", "A. Payá González"]
 };
 
-const websiteJsonLd = {
+// one connected graph: WebSite → ProfilePage → Person (the entity the page is about)
+const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "WebSite",
-  "url": siteUrl,
-  "name": "Antonio Payá González",
-  "author": { "@type": "Person", "name": "Antonio Payá González" }
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": websiteId,
+      "url": `${siteUrl}/`,
+      "name": "Antonio Payá González",
+      "inLanguage": ["es", "en"],
+      "publisher": { "@id": personId }
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${canonicalUrl}#profile`,
+      "url": canonicalUrl,
+      "name": title,
+      "description": description,
+      "inLanguage": lang,
+      "isPartOf": { "@id": websiteId },
+      "about": { "@id": personId },
+      "mainEntity": { "@id": personId },
+      "primaryImageOfPage": ogImageUrl,
+      "dateModified": new Date().toISOString()
+    },
+    person
+  ]
 };
 ---
 
@@ -117,18 +146,23 @@ const websiteJsonLd = {
     <meta name="author" content="Antonio Payá González" />
     <meta name="keywords" content="Antonio Payá González, Antonio Payá, Antonio Paya Gonzalez, software architect, profesor UNIR, professor UNIR, PhD computer engineering, cybersecurity, ciberseguridad, zero trust, software-defined perimeter, artificial intelligence, Universidad de Oviedo, Gijón" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#07090C" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'} />
+    <meta name="theme-color" content="#07090C" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F5F6F2" media="(prefers-color-scheme: light)" />
     <meta name="color-scheme" content="dark light" />
 
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="UQinHbKmnToC-3fal-2WekX6NkpLHj5RfP4i_JO1Q4U" />
 
     <!-- Canonical & Hreflang -->
-    <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" hreflang={lang} href={canonicalUrl} />
-    <link rel="alternate" hreflang={altLang} href={altUrl} />
-    <link rel="alternate" hreflang="x-default" href={siteUrl} />
+    {!noindex && <link rel="canonical" href={canonicalUrl} />}
+    {isHome && (
+      <>
+        <link rel="alternate" hreflang={lang} href={canonicalUrl} />
+        <link rel="alternate" hreflang={altLang} href={altUrl} />
+        <link rel="alternate" hreflang="x-default" href={`${siteUrl}/`} />
+      </>
+    )}
 
     <!-- Open Graph -->
     <meta property="og:type" content="profile" />
@@ -139,7 +173,7 @@ const websiteJsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:alt" content="Antonio Payá González — Software Architect, Professor at UNIR & PhD" />
+    <meta property="og:image:alt" content={ogAlt} />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -152,14 +186,17 @@ const websiteJsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogAlt} />
 
     <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
+    {isHome && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 
     <link rel="preload" as="font" type="font/woff2" href={displayFont} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={sansFont} crossorigin />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="icon" type="image/png" sizes="96x96" href={`${base}favicon-96.png`} />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
+    <link rel="manifest" href={`${base}site.webmanifest`} />
     <title>{title}</title>
     <script is:inline set:html={themeScript} />
   </head>
@@ -291,8 +328,7 @@ const websiteJsonLd = {
     border-radius: 10px;
     border: 1px solid var(--line-strong);
     cursor: pointer;
-    transition: transform 0.25s var(--ease), background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
-    will-change: transform;
+    transition: background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
   }
 
   .btn svg { transition: transform 0.3s var(--ease); }
@@ -459,14 +495,19 @@ const websiteJsonLd = {
 
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-  /* reveal on scroll — visible without JS */
-  .js .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
-    transition-delay: var(--d, 0s);
+  /* reveal on scroll — visible without JS. Until the motion module boots (class
+     "motion" on <html>) the elements wait hidden; if it never does, they show anyway. */
+  .js:not(.motion) .reveal { opacity: 0; animation: reveal-failsafe 0.4s 4s forwards; }
+  @keyframes reveal-failsafe { to { opacity: 1; } }
+  .rv-wait { transition: none !important; }
+
+  /* theme switch: the new theme grows as a circle from the toggle */
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+  ::view-transition-new(root) { animation: theme-reveal 0.65s cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes theme-reveal {
+    from { clip-path: circle(0 at var(--vx, 50%) var(--vy, 50%)); }
+    to { clip-path: circle(150vmax at var(--vx, 50%) var(--vy, 50%)); }
   }
-  .js .reveal.is-in { opacity: 1; transform: none; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -476,70 +517,16 @@ const websiteJsonLd = {
       transition-duration: 0.01ms !important;
       transition-delay: 0s !important;
     }
-    .js .reveal { opacity: 1; transform: none; }
+    .js:not(.motion) .reveal { opacity: 1; animation: none; }
+    ::view-transition-new(root) { animation: none; }
     .cursor-glow { display: none; }
   }
 </style>
 
 <script>
+  import '../scripts/motion';
+
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // text scramble ("decrypt") effect
-  const GLYPHS = '!<>-_\\/[]{}=+*^?#$%&01アイウエオカキクケコ';
-  function scramble(el: HTMLElement, duration = 900) {
-    const final = el.dataset.text || el.textContent || '';
-    el.dataset.text = final;
-    if (reduced) { el.textContent = final; return; }
-    const start = performance.now();
-    const frame = (now: number) => {
-      const p = Math.min((now - start) / duration, 1);
-      let out = '';
-      for (let i = 0; i < final.length; i++) {
-        const ch = final[i];
-        const revealAt = 0.3 + 0.7 * (i / final.length);
-        if (ch === ' ' || p >= revealAt) out += ch;
-        else out += GLYPHS[(Math.random() * GLYPHS.length) | 0];
-      }
-      el.textContent = out;
-      if (p < 1) requestAnimationFrame(frame);
-      else el.textContent = final;
-    };
-    requestAnimationFrame(frame);
-  }
-  (window as any).__scramble = scramble;
-
-  // count-up numbers
-  function countUp(el: HTMLElement) {
-    const raw = el.dataset.count || el.textContent || '';
-    const m = raw.match(/^(\d+)(.*)$/);
-    if (!m || reduced) return;
-    const target = parseInt(m[1], 10);
-    const suffix = m[2];
-    const dur = 1400;
-    const start = performance.now();
-    const frame = (now: number) => {
-      const p = Math.min((now - start) / dur, 1);
-      const eased = 1 - Math.pow(1 - p, 4);
-      el.textContent = Math.round(target * eased) + suffix;
-      if (p < 1) requestAnimationFrame(frame);
-    };
-    requestAnimationFrame(frame);
-  }
-
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        const el = e.target as HTMLElement;
-        el.classList.add('is-in');
-        if (el.hasAttribute('data-scramble')) scramble(el);
-        if (el.hasAttribute('data-count')) countUp(el);
-        io.unobserve(el);
-      });
-    },
-    { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-  );
-  document.querySelectorAll('.reveal, [data-scramble], [data-count]').forEach((el) => io.observe(el));
 
   // spotlight cards
   document.addEventListener('pointermove', (e) => {
@@ -549,38 +536,6 @@ const websiteJsonLd = {
     card.style.setProperty('--mx', `${e.clientX - r.left}px`);
     card.style.setProperty('--my', `${e.clientY - r.top}px`);
   }, { passive: true });
-
-  // ambient cursor glow (fine pointers only)
-  const glow = document.getElementById('cursor-glow');
-  if (glow && !reduced && matchMedia('(pointer: fine)').matches) {
-    let gx = 0, gy = 0, tx = 0, ty = 0, running = false;
-    const loop = () => {
-      gx += (tx - gx) * 0.12;
-      gy += (ty - gy) * 0.12;
-      glow.style.transform = `translate3d(${gx}px, ${gy}px, 0)`;
-      if (Math.abs(tx - gx) > 0.5 || Math.abs(ty - gy) > 0.5) requestAnimationFrame(loop);
-      else running = false;
-    };
-    window.addEventListener('pointermove', (e) => {
-      tx = e.clientX; ty = e.clientY;
-      glow.classList.add('on');
-      if (!running) { running = true; requestAnimationFrame(loop); }
-    }, { passive: true });
-    document.addEventListener('pointerleave', () => glow.classList.remove('on'));
-  }
-
-  // magnetic buttons
-  if (!reduced && matchMedia('(pointer: fine)').matches) {
-    document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach((el) => {
-      el.addEventListener('pointermove', (e) => {
-        const r = el.getBoundingClientRect();
-        const x = (e.clientX - r.left - r.width / 2) * 0.25;
-        const y = (e.clientY - r.top - r.height / 2) * 0.35;
-        el.style.transform = `translate(${x}px, ${y}px)`;
-      });
-      el.addEventListener('pointerleave', () => { el.style.transform = ''; });
-    });
-  }
 
   // toast + clipboard helpers
   const toastEl = document.getElementById('toast');
@@ -593,14 +548,21 @@ const websiteJsonLd = {
     toastTimer = window.setTimeout(() => toastEl.classList.remove('show'), 2200);
   };
 
-  // theme helper
-  (window as any).__toggleTheme = () => {
+  // theme helper: with View Transitions the new theme expands from the click point
+  (window as any).__toggleTheme = (origin?: { x: number; y: number }) => {
     const root = document.documentElement;
     const current = root.getAttribute('data-theme') || 'dark';
     const next = current === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch (e) {}
-    window.dispatchEvent(new CustomEvent('themechange', { detail: next }));
+    const apply = () => {
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      window.dispatchEvent(new CustomEvent('themechange', { detail: next }));
+    };
+    const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+    if (reduced || !doc.startViewTransition) { apply(); return; }
+    root.style.setProperty('--vx', `${origin?.x ?? innerWidth / 2}px`);
+    root.style.setProperty('--vy', `${origin?.y ?? innerHeight / 2}px`);
+    doc.startViewTransition(apply);
   };
 
   // scroll progress

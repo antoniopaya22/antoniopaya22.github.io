@@ -14,7 +14,7 @@ const s = i.sections.contact;
   <div class="glow" aria-hidden="true"></div>
   <div class="wrap">
     <p class="c-meta mono reveal"><span class="accent">// {s.n}</span> <span class="c-file">{s.file}</span></p>
-    <h2 class="c-heading" data-scramble>{i.contact.heading}</h2>
+    <h2 class="c-heading">{i.contact.heading}</h2>
     <p class="c-text reveal">{i.contact.text}</p>
 
     <div class="c-grid">
@@ -80,7 +80,17 @@ const s = i.sections.contact;
     letter-spacing: -0.055em;
     line-height: 0.9;
     margin: 1.25rem 0 1.5rem;
-    background: linear-gradient(100deg, var(--text) 30%, var(--accent) 70%, var(--accent-2));
+    /* dim letters that the gradient lights up left→right while scrolling in:
+       --fill (0%→100%) is scrubbed by motion.ts; fully lit without JS */
+    width: fit-content;
+    max-width: 100%;
+    background: linear-gradient(
+      100deg,
+      var(--text) calc(var(--fill, 100%) * 0.3),
+      var(--accent) calc(var(--fill, 100%) * 0.7),
+      var(--accent-2) var(--fill, 100%),
+      color-mix(in srgb, var(--text) 13%, transparent) var(--fill, 100%)
+    );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;

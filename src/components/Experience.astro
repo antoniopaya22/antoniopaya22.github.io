@@ -99,6 +99,9 @@ const jobs = i.experience.jobs.map((j) => ({
     bottom: 1.2rem;
     width: 2px;
     border-radius: 2px;
+    /* --draw is scrubbed 0→1 by the scroll (motion.ts); fully drawn without JS */
+    transform: scaleY(var(--draw, 1));
+    transform-origin: 50% 0;
   }
 
   .log::before { left: 15px; background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 25%, transparent)); }

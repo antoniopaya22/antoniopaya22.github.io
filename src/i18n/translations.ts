@@ -46,7 +46,7 @@ export const translations = {
 
     meta: {
       title: 'Antonio Payá González — Arquitecto de Software, Profesor en UNIR & PhD',
-      description: 'Antonio Payá González — Arquitecto de Software en TheNextPangea, profesor en UNIR (Grado y Máster en Ciberseguridad) y Doctor en Informática por la Universidad de Oviedo. Especialista en ciberseguridad, Zero Trust, cloud e IA.',
+      description: 'Antonio Payá González: Arquitecto de Software en TheNextPangea, profesor de Ciberseguridad en UNIR y Doctor en Informática. Zero Trust, cloud e IA.',
       skip: 'Saltar al contenido',
     },
 
@@ -357,7 +357,7 @@ export const translations = {
 
     meta: {
       title: 'Antonio Payá González — Software Architect, Professor at UNIR & PhD',
-      description: 'Antonio Payá González — Software Architect at TheNextPangea, professor at UNIR (Cybersecurity BSc & MSc) and PhD in Computer Science from the University of Oviedo. Specialist in cybersecurity, Zero Trust, cloud and AI.',
+      description: 'Antonio Payá González: Software Architect at TheNextPangea, Cybersecurity professor at UNIR and PhD in Computer Science. Zero Trust, cloud and AI.',
       skip: 'Skip to content',
     },
 

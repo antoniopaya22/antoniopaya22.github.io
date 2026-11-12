@@ -12,7 +12,8 @@ export default defineConfig({
     channel: process.env.CI ? undefined : 'chrome',
   },
   projects: [
-    { name: 'desktop', use: { ...devices['Desktop Chrome'], channel: process.env.CI ? undefined : 'chrome' } },
+    // the burger menu only exists below 1240px, so its spec runs in the mobile project only
+    { name: 'desktop', use: { ...devices['Desktop Chrome'], channel: process.env.CI ? undefined : 'chrome' }, testIgnore: /mobile\.spec\.ts/ },
     { name: 'mobile', use: { ...devices['Pixel 7'], channel: process.env.CI ? undefined : 'chrome' }, testMatch: /mobile\.spec\.ts/ },
   ],
   webServer: {
