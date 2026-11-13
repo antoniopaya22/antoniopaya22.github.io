@@ -8,6 +8,17 @@ export default defineConfig({
       // hreflang alternates between / and /en/ plus a lastmod for every URL
       i18n: { defaultLocale: 'es', locales: { es: 'es', en: 'en' } },
       lastmod: new Date(),
+      // image sitemap entry: tells Google Images which photo belongs to the person
+      serialize(item) {
+        if (/\.io\/(en\/)?$/.test(item.url)) {
+          item.img = [{
+            url: 'https://antoniopaya22.github.io/images/antonio-paya-gonzalez.jpg',
+            title: 'Antonio Payá González',
+            caption: 'Antonio Payá González — Software Architect, Professor at UNIR and PhD',
+          }];
+        }
+        return item;
+      },
     }),
   ],
   build: {

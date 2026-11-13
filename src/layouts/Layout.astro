@@ -27,6 +27,7 @@ const ogAlt = lang === 'es'
   : 'Antonio Payá González — Software Architect, Professor at UNIR & PhD';
 const personId = `${siteUrl}/#person`;
 const websiteId = `${siteUrl}/#website`;
+const photoId = `${siteUrl}/#photo`;
 const ogImageUrl = new URL(ogImage, siteUrl).href;
 const skip = lang === 'es' ? 'Saltar al contenido' : 'Skip to content';
 
@@ -51,7 +52,16 @@ const person = {
   "@id": personId,
   "name": "Antonio Payá González",
   "url": siteUrl,
-  "image": `${siteUrl}/images/foto1.jpg`,
+  "image": {
+    "@type": "ImageObject",
+    "@id": photoId,
+    "url": `${siteUrl}/images/antonio-paya-gonzalez.jpg`,
+    "contentUrl": `${siteUrl}/images/antonio-paya-gonzalez.jpg`,
+    "width": 686,
+    "height": 911,
+    "caption": ogAlt,
+    "creditText": "Antonio Payá González"
+  },
   "description": "Software Architect at TheNextPangea, Professor at the International University of La Rioja (UNIR) and PhD in Computer Science. Specialist in cloud architecture, AI productization, cybersecurity, and Zero Trust security.",
   "jobTitle": ["Software Architect", "Professor"],
   "worksFor": [
@@ -114,6 +124,7 @@ const jsonLd = {
       "@id": websiteId,
       "url": `${siteUrl}/`,
       "name": "Antonio Payá González",
+      "alternateName": ["Antonio Payá", "Antonio Paya"],
       "inLanguage": ["es", "en"],
       "publisher": { "@id": personId }
     },
@@ -127,7 +138,7 @@ const jsonLd = {
       "isPartOf": { "@id": websiteId },
       "about": { "@id": personId },
       "mainEntity": { "@id": personId },
-      "primaryImageOfPage": ogImageUrl,
+      "primaryImageOfPage": { "@id": photoId },
       "dateModified": new Date().toISOString()
     },
     person
