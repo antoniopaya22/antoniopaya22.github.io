@@ -198,15 +198,16 @@ export const translations = {
     projects: {
       paper: 'Paper',
       repo: 'Repositorio',
+      web: 'Web',
       updated: 'actualizado',
       more: 'Ver todos los repositorios',
       items: {
         'go-rest-template': 'Plantilla moderna de API REST en Go 1.26: chi, contrato OpenAPI 3.1 con validación, JWT, PostgreSQL/SQLite, métricas Prometheus y CI.',
-        apollon: 'Sistema de defensa frente a ataques de Adversarial Machine Learning en sistemas de detección de intrusiones.',
-        'Software-Defined-Perimeter': 'Despliegue automatizado y seguro del framework Software-Defined Perimeter con fingerprinting avanzado.',
-        egida: 'DSL para desplegar infraestructuras altamente seguras (hardening de SO) con detección temprana de errores.',
-        SimpleSDP: 'Implementación sencilla de un Software-Defined Perimeter para acceso a red Zero Trust.',
-        'project-agent-harness': 'Harness para agentes de código: backlog verificable, roles especializados y comandos automatizados.',
+        proteus: 'Detección de intrusiones de red certificada: detección monótona sobre contadores por entidad que la evasión solo puede aumentar; cada alerta se certifica con una evaluación extra.',
+        apollon: 'Defensa frente a ataques de Adversarial Machine Learning en IDS: selección por Thompson sampling sobre un conjunto de clasificadores.',
+        'Secure-SDP': 'Software-Defined Perimeter en Go con controladores en modelo Bridge, SPA con fwknop y hardening dinámico con Egida.',
+        'Software-Defined-Perimeter': 'Laboratorio reproducible de Software-Defined Perimeter (SPA con fwknop, Docker Compose), complemento de SecureSDP.',
+        egida: 'DSL para desplegar infraestructuras altamente seguras (hardening de SO con benchmarks CIS) con detección temprana de errores.',
       },
     },
 
@@ -509,15 +510,16 @@ export const translations = {
     projects: {
       paper: 'Paper',
       repo: 'Repository',
+      web: 'Website',
       updated: 'updated',
       more: 'See all repositories',
       items: {
         'go-rest-template': 'Modern Go 1.26 REST API template: chi, OpenAPI 3.1 contract validation, JWT, PostgreSQL/SQLite, Prometheus metrics and CI.',
-        apollon: 'Defence system against Adversarial Machine Learning attacks on intrusion detection systems.',
-        'Software-Defined-Perimeter': 'Automated, secure deployment of the Software-Defined Perimeter framework with advanced fingerprinting.',
-        egida: 'DSL to deploy highly secure infrastructures (OS hardening) with early error detection.',
-        SimpleSDP: 'Simple Software-Defined Perimeter implementation for Zero Trust network access.',
-        'project-agent-harness': 'Harness for coding agents: verifiable backlog, specialised roles and automated commands.',
+        proteus: 'Certified network intrusion detection: monotone detection over per-entity counters that evasion can only increase; one extra evaluation certifies each alert.',
+        apollon: 'Defence against Adversarial Machine Learning attacks on IDS: Thompson-sampling selection over a pool of classifiers.',
+        'Secure-SDP': 'Software-Defined Perimeter in Go with Bridge-model controllers, fwknop SPA and dynamic hardening with Egida.',
+        'Software-Defined-Perimeter': 'Reproducible Software-Defined Perimeter lab (fwknop SPA, Docker Compose), companion to SecureSDP.',
+        egida: 'DSL to deploy highly secure infrastructures (OS hardening with CIS benchmarks) with early error detection.',
       },
     },
 

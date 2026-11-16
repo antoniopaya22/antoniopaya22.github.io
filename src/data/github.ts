@@ -9,6 +9,7 @@ export interface RepoStats {
   language: string;
   pushedAt?: string;
   paper?: string;
+  homepage?: string;
   tags: readonly string[];
 }
 
@@ -26,6 +27,7 @@ export function getFeaturedRepos(): Promise<RepoStats[]> {
         key: r.key,
         url: `https://github.com/${r.repo}`,
         paper: 'paper' in r ? r.paper : undefined,
+        homepage: 'homepage' in r ? r.homepage : undefined,
         tags: r.tags,
         ...r.fallback,
       };
