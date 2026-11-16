@@ -15,7 +15,7 @@ export const profiles = [
   { label: 'LinkedIn', handle: 'in/antoniopaya22', href: 'https://www.linkedin.com/in/antoniopaya22/' },
   { label: 'Google Scholar', handle: '4bCBOysAAAAJ', href: 'https://scholar.google.com/citations?user=4bCBOysAAAAJ' },
   { label: 'ORCID', handle: '0000-0003-3733-3805', href: 'https://orcid.org/0000-0003-3733-3805' },
-  { label: 'ResearchGate', handle: 'Antonio-Paya-3', href: 'https://www.researchgate.net/profile/Antonio-Paya-3' },
+  { label: 'ResearchGate', handle: 'Antonio-Paya-Gonzalez-2', href: 'https://www.researchgate.net/profile/Antonio-Paya-Gonzalez-2' },
   { label: 'Medium', handle: '@antonioalfa22', href: 'https://medium.com/@antonioalfa22' },
 ];
 
