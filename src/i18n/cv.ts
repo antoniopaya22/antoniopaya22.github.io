@@ -29,7 +29,7 @@ export const cvCopy = {
       back: 'Volver a la web',
       updated: 'Actualizado',
     },
-    thesisTitle: 'Diseño de estrategias de refuerzo para sistemas basados en Perímetros Definidos por Software mediante estrategias de seguridad inteligentes',
+    thesisTitle: 'Diseño de estrategias de refuerzo para sistemas basados en Perímetros Definidos por Software mediante mecanismos de seguridad inteligentes',
     thesisNote: 'Universidad de Oviedo · 2021 — 2025',
     extraPoints: {
       'TheNextPangea S.L.': ['Liderazgo técnico y estratégico en el ciclo de vida de los productos digitales.'],
@@ -71,7 +71,7 @@ export const cvCopy = {
       back: 'Back to website',
       updated: 'Updated',
     },
-    thesisTitle: 'Diseño de estrategias de refuerzo para sistemas basados en Perímetros Definidos por Software mediante estrategias de seguridad inteligentes',
+    thesisTitle: 'Diseño de estrategias de refuerzo para sistemas basados en Perímetros Definidos por Software mediante mecanismos de seguridad inteligentes',
     thesisNote: 'University of Oviedo · 2021 — 2025 · original title (Spanish)',
     extraPoints: {
       'TheNextPangea S.L.': ['Technical and strategic leadership across the digital product lifecycle.'],
