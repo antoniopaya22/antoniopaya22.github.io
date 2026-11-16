@@ -206,7 +206,7 @@ const courses = [
                     <h3 class="job-role">{d.title}</h3>
                     <span class="job-period">{d.period}</span>
                   </div>
-                  <p class="job-co">{d.school}</p>
+                  <p class="job-co">{d.school}{d.grade && <span class="grade"> · {d.grade}</span>}</p>
                   <p class="deg-desc">{d.desc}</p>
                   {d.honors.length > 0 && <p class="honors">★ {L.honors}: {d.honors.join(', ')}</p>}
                 </li>
@@ -467,6 +467,7 @@ const courses = [
   .bul li::before { content: '▹'; position: absolute; left: 0; color: var(--lime); font-size: 7pt; top: 0.2mm; }
 
   .deg-desc { color: var(--ink-2); }
+  .grade { font-weight: 700; color: #9A5B00; }
   .honors { margin-top: 0.8mm; font-size: 7.6pt; color: #9A5B00; }
 
   /* sidebar lists */

@@ -238,6 +238,7 @@ export const translations = {
           school: 'Universidad de Oviedo',
           period: '2021 — 2025',
           desc: 'Tesis sobre Software-Defined Perimeter, Intrusion Detection Systems y Adversarial Machine Learning.',
+          grade: 'Sobresaliente Cum Laude',
           honors: [] as string[],
         },
         {
@@ -245,6 +246,7 @@ export const translations = {
           school: 'Universidad de Oviedo',
           period: '2019 — 2021',
           desc: 'Desarrollo web avanzado y arquitecturas modernas.',
+          grade: '',
           honors: ['Trabajo Fin de Máster'],
         },
         {
@@ -252,6 +254,7 @@ export const translations = {
           school: 'Universidad de Oviedo',
           period: '2015 — 2019',
           desc: 'Ingeniería del software, algoritmos, bases de datos y sistemas distribuidos. Proyecto Fin de Grado: 10/10.',
+          grade: '',
           honors: [
             'Administración de SO y Redes',
             'Computabilidad',
@@ -550,6 +553,7 @@ export const translations = {
           school: 'University of Oviedo',
           period: '2021 — 2025',
           desc: 'Thesis on Software-Defined Perimeter, Intrusion Detection Systems and Adversarial Machine Learning.',
+          grade: 'Cum Laude',
           honors: [] as string[],
         },
         {
@@ -557,6 +561,7 @@ export const translations = {
           school: 'University of Oviedo',
           period: '2019 — 2021',
           desc: 'Advanced web development and modern architectures.',
+          grade: '',
           honors: ["Master's Thesis"],
         },
         {
@@ -564,6 +569,7 @@ export const translations = {
           school: 'University of Oviedo',
           period: '2015 — 2019',
           desc: 'Software engineering, algorithms, databases and distributed systems. Final year project: 10/10.',
+          grade: '',
           honors: [
             'OS & Network Administration',
             'Computability',

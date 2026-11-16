@@ -30,7 +30,7 @@ export const cvCopy = {
       updated: 'Actualizado',
     },
     thesisTitle: 'Diseño de estrategias de refuerzo para sistemas basados en Perímetros Definidos por Software mediante mecanismos de seguridad inteligentes',
-    thesisNote: 'Universidad de Oviedo · 2021 — 2025',
+    thesisNote: 'Universidad de Oviedo · 2021 — 2025 · Sobresaliente Cum Laude',
     extraPoints: {
       'TheNextPangea S.L.': ['Liderazgo técnico y estratégico en el ciclo de vida de los productos digitales.'],
       'Icube SL': ['Diseño, gestión y despliegue de entornos DevOps; desarrollo full stack.'],
@@ -72,7 +72,7 @@ export const cvCopy = {
       updated: 'Updated',
     },
     thesisTitle: 'Diseño de estrategias de refuerzo para sistemas basados en Perímetros Definidos por Software mediante mecanismos de seguridad inteligentes',
-    thesisNote: 'University of Oviedo · 2021 — 2025 · original title (Spanish)',
+    thesisNote: 'University of Oviedo · 2021 — 2025 · Cum Laude · original title (Spanish)',
     extraPoints: {
       'TheNextPangea S.L.': ['Technical and strategic leadership across the digital product lifecycle.'],
       'Icube SL': ['Design, management and deployment of DevOps environments; full stack development.'],

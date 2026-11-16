@@ -24,6 +24,7 @@ const levels = ['PhD', 'MSc', 'BSc'];
           </div>
           <h3 class="d-title">{d.title}</h3>
           <p class="d-school">{d.school}</p>
+          {d.grade && <p class="d-grade mono">✦ {d.grade}</p>}
           <p class="d-desc">{d.desc}</p>
           {d.honors.length > 0 && (
             d.honors.length > 2 ? (
@@ -86,6 +87,17 @@ const levels = ['PhD', 'MSc', 'BSc'];
   }
 
   .d-school { color: var(--accent-2); font-size: 0.9rem; margin: 0.25rem 0 0.7rem; }
+  .d-grade {
+    display: inline-block;
+    margin: -0.2rem 0 0.75rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--syn-num);
+  }
+
   .d-desc { color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
 
   .honors-inline { margin-top: 0.9rem; font-size: 0.72rem; color: var(--syn-num); }
