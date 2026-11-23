@@ -213,7 +213,9 @@ export const translations = {
 
     research: {
       thesisLabel: 'Tesis doctoral',
-      thesis: 'Mejora de los Software-Defined Perimeters mediante la integración de sistemas de detección de intrusiones, gestión de identidades y defensa frente a Adversarial Machine Learning.',
+      thesis: 'Diseño de estrategias de refuerzo para sistemas basados en Perímetros Definidos por Software mediante mecanismos de seguridad inteligentes',
+      thesisNote: 'Universidad de Oviedo · 2025 · Sobresaliente Cum Laude',
+      thesisLink: 'Leer la tesis (RUO)',
       metrics: [
         { value: '4', label: 'Artículos JCR' },
         { value: '200+', label: 'Citas (Scholar)' },
@@ -528,7 +530,9 @@ export const translations = {
 
     research: {
       thesisLabel: 'Doctoral thesis',
-      thesis: 'Improving Software-Defined Perimeters through integrated intrusion detection, identity management and defences against Adversarial Machine Learning.',
+      thesis: 'Design of hardening strategies for Software-Defined Perimeter systems through intelligent security mechanisms',
+      thesisNote: 'University of Oviedo · 2025 · Cum Laude · original title in Spanish',
+      thesisLink: 'Read the thesis (RUO)',
       metrics: [
         { value: '4', label: 'JCR articles' },
         { value: '200+', label: 'Citations (Scholar)' },
@@ -661,7 +665,7 @@ export const sectionIds = {
 export type SectionKey = keyof typeof sectionIds.es;
 
 /** Sections shown in the main navigation, in order */
-export const navSections: SectionKey[] = ['about', 'experience', 'teaching', 'projects', 'research', 'education', 'skills', 'contact'];
+export const navSections: SectionKey[] = ['about', 'experience', 'teaching', 'projects', 'research', 'education', 'skills', 'awards', 'contact'];
 
 export function t(lang: Lang) {
   return translations[lang];

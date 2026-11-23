@@ -22,6 +22,7 @@ const scholarlyLd = publications.map((p) => ({
   isPartOf: { '@type': 'Periodical', name: p.journal },
   author: { '@type': 'Person', '@id': `${site.url}/#person`, name: site.name, url: site.url },
 }));
+const thesisUrl = 'https://hdl.handle.net/10651/83027';
 const academic = profiles.filter((p) => ['Google Scholar', 'ORCID', 'ResearchGate'].includes(p.label));
 ---
 
@@ -33,7 +34,9 @@ const academic = profiles.filter((p) => ['Google Scholar', 'ORCID', 'ResearchGat
       <div class="thesis card reveal">
         <span class="mono thesis-l"><span class="accent">❯</span> {i.research.thesisLabel}</span>
         <p class="thesis-t">{i.research.thesis}</p>
+        <p class="thesis-n">{i.research.thesisNote}</p>
         <ul class="r-profiles mono">
+          <li><a href={thesisUrl} target="_blank" rel="noopener noreferrer">{i.research.thesisLink} ↗</a></li>
           {academic.map((p) => (
             <li><a href={p.href} target="_blank" rel="noopener noreferrer">{p.label} ↗</a></li>
           ))}
@@ -95,6 +98,7 @@ const academic = profiles.filter((p) => ['Google Scholar', 'ORCID', 'ResearchGat
 
   .thesis { padding: 1.6rem 1.7rem; }
   .thesis-l { font-size: 0.75rem; color: var(--muted); }
+  .thesis-n { font-size: 0.85rem; color: var(--muted); margin: -0.8rem 0 1.4rem; }
 
   .thesis-t {
     font-family: var(--display);
