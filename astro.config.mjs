@@ -3,7 +3,7 @@ import sitemap from '@astrojs/sitemap';
 
 const SITE = 'https://antoniopaya22.github.io';
 // project and architecture pages live under a translated segment, so the i18n option cannot pair them
-const translated = [['proyectos', 'projects'], ['arquitectura', 'architecture']];
+const translated = [['proyectos', 'projects'], ['arquitectura/guias', 'architecture/guides'], ['arquitectura', 'architecture']];
 const projectPair = (url) => {
   for (const [es, en] of translated) {
     const m = url.match(new RegExp(`^https://[^/]+/(?:${es}|en/${en})/(.*)$`));

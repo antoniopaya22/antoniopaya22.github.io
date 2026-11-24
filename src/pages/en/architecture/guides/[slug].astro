@@ -1,0 +1,14 @@
+---
+import ArchGuide from '../../../../components/ArchGuide.astro';
+import { getGuides, type Guide } from '../../../../data/architecture';
+
+export async function getStaticPaths() {
+  const guides = await getGuides('en');
+  return guides.map((item) => ({ params: { slug: item.id.split('/').slice(1).join('/') }, props: { item } }));
+}
+
+interface Props { item: Guide; }
+const { item } = Astro.props;
+---
+
+<ArchGuide lang="en" item={item} />

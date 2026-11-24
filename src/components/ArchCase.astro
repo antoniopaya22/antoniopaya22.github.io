@@ -3,7 +3,7 @@ import { render } from 'astro:content';
 import ArchShell from './ArchShell.astro';
 import ArchDiagram from './ArchDiagram.astro';
 import { langPath, type Lang } from '../i18n/translations';
-import { archIndexPath, archPath, archSlug, archStrings, diagrams, getCases, platformLabel, platforms, type ArchCase as Case } from '../data/architecture';
+import { archIndexPath, archPath, archSlug, archStrings, diagrams, getCases, platformLabel, platforms, repoUrl, svcText, type ArchCase as Case } from '../data/architecture';
 import { siteUrl } from '../data/projects';
 
 interface Props { lang: Lang; item: Case; }
@@ -51,6 +51,18 @@ const title = `${d.title} — AWS, Azure, GCP ${lang === 'es' ? 'y' : 'and'} on-
       <p class="ac-n mono">// {String(idx + 1).padStart(2, '0')} · {s.section.toLowerCase()}</p>
       <h1 class="ac-title">{d.title}</h1>
       <p class="ac-sum">{d.summary}</p>
+      <a class="btn btn-ghost ac-repo" href={`${repoUrl}/tree/main/architectures/${slug}`} target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        {s.repo} ↗
+      </a>
+      <nav class="toc mono" aria-label={s.toc}>
+        <span>{s.toc}:</span>
+        {d.tiers && <a href="#opciones">{s.tiers}</a>}
+        {d.extensions && <a href="#ampliaciones">{s.extensions}</a>}
+        {d.savings && <a href="#ahorro">{s.savings}</a>}
+        <a href="#map-h">{s.mapping}</a>
+        <a href="#detalle">{s.detail}</a>
+      </nav>
     </header>
 
     <section class="ac-req card" aria-labelledby="req-h">
@@ -76,6 +88,71 @@ const title = `${d.title} — AWS, Azure, GCP ${lang === 'es' ? 'y' : 'and'} on-
       </section>
     ))}
 
+    {d.tiers && (
+      <section class="tiers" id="opciones" aria-labelledby="tiers-h">
+        <h2 id="tiers-h" class="sec-h">{s.tiers}</h2>
+        <p class="sec-hint">{s.tiersHint}</p>
+        <div class="map-scroll">
+          <table class="tier-table">
+            <thead>
+              <tr>
+                <th scope="col">{s.tierCols.option}</th>
+                <th scope="col">{s.tierCols.cost}</th>
+                <th scope="col">{s.tierCols.ops}</th>
+                <th scope="col">{s.tierCols.how}</th>
+                <th scope="col">{s.tierCols.tradeoffs}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {d.tiers.map((t) => (
+                <tr>
+                  <th scope="row"><strong>{t.name}</strong><span class="t-when">{t.when}</span></th>
+                  <td class="meter-cell">
+                    <span class="meter" role="img" aria-label={`${t.cost}/4 ${s.costScale}`}>{[1, 2, 3, 4].map((k) => <i class:list={{ on: k <= t.cost }}>€</i>)}</span>
+                    {t.estimate && <span class="t-est">{t.estimate}</span>}
+                  </td>
+                  <td class="meter-cell"><span class="meter dots" role="img" aria-label={`${t.ops}/3 ${s.opsScale}`}>{[1, 2, 3].map((k) => <i class:list={{ on: k <= t.ops }}></i>)}</span></td>
+                  <td>{platforms.map((p) => <span class={`pv pv-${p}`}><b class="pv-l mono">{platformLabel[p]}</b>{t[p]}</span>)}</td>
+                  <td class="t-trade">{t.tradeoffs}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )}
+
+    {d.extensions && (
+      <section class="exts" id="ampliaciones" aria-labelledby="ext-h">
+        <h2 id="ext-h" class="sec-h">{s.extensions}</h2>
+        <p class="sec-hint">{s.extensionsHint}</p>
+        <div class="map-scroll">
+          <table>
+            <thead>
+              <tr><th scope="col">{s.extCols.name}</th><th scope="col">{s.extCols.when}</th><th scope="col">{s.extCols.service}</th><th scope="col">{s.extCols.cost}</th></tr>
+            </thead>
+            <tbody>
+              {d.extensions.map((e) => (
+                <tr>
+                  <th scope="row">{e.name}</th>
+                  <td>{e.when}</td>
+                  <td>{platforms.map((p) => <span class={`pv pv-${p}`}><b class="pv-l mono">{platformLabel[p]}</b>{e[p]}</span>)}</td>
+                  <td><span class={`lvl lvl-${e.cost}`}>{s.costLevel[e.cost]}</span></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )}
+
+    {d.savings && (
+      <section class="save" id="ahorro" aria-labelledby="save-h">
+        <h2 id="save-h" class="sec-h">{s.savings}</h2>
+        <ul class="save-list">{d.savings.map((x) => <li set:html={x.replace(/`([^`]+)`/g, '<code>$1</code>')} />)}</ul>
+      </section>
+    )}
+
     <section class="map" aria-labelledby="map-h">
       <h2 id="map-h" class="sec-h">{s.mapping}</h2>
       <div class="map-scroll">
@@ -85,14 +162,17 @@ const title = `${d.title} — AWS, Azure, GCP ${lang === 'es' ? 'y' : 'and'} on-
           </thead>
           <tbody>
             {dg.nodes.filter((n) => n.kind !== 'client').map((n) => (
-              <tr><th scope="row">{n.role[lang]}</th>{platforms.map((p) => <td class={`c-${p}`}>{n.svc[p]}</td>)}</tr>
+              <tr><th scope="row">{n.role[lang]}</th>{platforms.map((p) => <td class={`c-${p}`}>{svcText(n.svc[p], lang)}</td>)}</tr>
             ))}
           </tbody>
         </table>
       </div>
     </section>
 
-    <div class="prose ac-prose"><Content /></div>
+    <div class="prose ac-prose" id="detalle">
+      <h2 class="sec-h">{s.detail}</h2>
+      <Content />
+    </div>
 
     <p class="ac-disc">{s.disclaimer}</p>
 
@@ -142,6 +222,7 @@ const title = `${d.title} — AWS, Azure, GCP ${lang === 'es' ? 'y' : 'and'} on-
   .ac-head { margin-bottom: 1.75rem; }
   .ac-n { font-size: 0.78rem; color: var(--accent); margin-bottom: 0.8rem; }
   .ac-title { font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 5.5vw, 4rem); line-height: 1; letter-spacing: -0.035em; }
+  .ac-repo { margin-top: 1.25rem; }
   .ac-sum { color: var(--text-2); font-size: clamp(1.05rem, 2vw, 1.25rem); margin-top: 1rem; max-width: 60ch; line-height: 1.5; }
 
   .mini-h { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.7rem; font-weight: 500; }
@@ -191,6 +272,46 @@ const title = `${d.title} — AWS, Azure, GCP ${lang === 'es' ? 'y' : 'and'} on-
   .pf-notes :global(code) { font-family: var(--mono); font-size: 0.86em; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 0.05rem 0.35rem; }
 
   .sec-h { font-family: var(--display); font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .sec-hint { color: var(--muted); font-size: 0.9rem; margin: -0.5rem 0 1rem; max-width: 70ch; }
+  .toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.76rem; color: var(--muted); margin-top: 1.25rem; }
+  .toc a { color: var(--accent-2); }
+  .toc a:hover { color: var(--accent); }
+  .tiers, .exts, .save { margin: 2.5rem 0; scroll-margin-top: 8rem; }
+  #detalle, #map-h { scroll-margin-top: 8rem; }
+  .tier-table { min-width: 860px; }
+  .tier-table tbody th { white-space: normal; min-width: 11rem; }
+  .tier-table th strong { display: block; color: var(--text); font-size: 0.95rem; }
+  .t-when { display: block; color: var(--muted); font-weight: 400; font-size: 0.82rem; margin-top: 0.25rem; line-height: 1.4; }
+  .t-trade { color: var(--muted); font-size: 0.85rem; }
+  .meter-cell { white-space: nowrap; }
+  .meter { font-family: var(--mono); letter-spacing: 0.05em; }
+  .meter i { font-style: normal; color: var(--line-strong); }
+  .meter i.on { color: var(--accent); }
+  .meter.dots { display: inline-flex; gap: 4px; }
+  .meter.dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--line-strong); }
+  .meter.dots i.on { background: var(--accent-2); }
+  .t-est { display: block; font-size: 0.75rem; color: var(--muted); margin-top: 0.3rem; white-space: normal; max-width: 11rem; }
+  .pv { display: block; }
+  .pv + .pv { margin-top: 0.4rem; }
+  .pv-l { display: block; font-size: 0.68rem; color: var(--muted); font-weight: 500; }
+  :global(.js) .pv { display: none; }
+  :global(.js) .pv-l { display: none; }
+  :global(.js) [data-platform='onprem'] .pv-onprem,
+  :global(.js) [data-platform='aws'] .pv-aws,
+  :global(.js) [data-platform='azure'] .pv-azure,
+  :global(.js) [data-platform='gcp'] .pv-gcp { display: block; }
+  .lvl { font-family: var(--mono); font-size: 0.72rem; padding: 0.12rem 0.5rem; border-radius: 6px; border: 1px solid currentColor; white-space: nowrap; }
+  .lvl-low { color: var(--accent); }
+  .lvl-medium { color: var(--syn-num); }
+  .lvl-high { color: var(--syn-key); }
+  .save-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 0.75rem; }
+  .save-list li { position: relative; padding: 0.9rem 1rem 0.9rem 2.4rem; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--text-2); font-size: 0.92rem; line-height: 1.55; }
+  .save-list li::before { content: '€'; position: absolute; left: 0.95rem; top: 0.85rem; font-family: var(--mono); color: var(--accent); font-weight: 600; }
+  .save-list :global(code) { font-family: var(--mono); font-size: 0.86em; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 0.05rem 0.3rem; }
+  .ac-prose :global(h3) { font-size: 1.15rem; color: var(--text); margin: 1.6rem 0 0.6rem; }
+  .ac-prose :global(table) { border-collapse: collapse; margin: 1rem 0 1.4rem; font-size: 0.9rem; display: block; overflow-x: auto; }
+  .ac-prose :global(th), .ac-prose :global(td) { border: 1px solid var(--line); padding: 0.45rem 0.7rem; text-align: left; vertical-align: top; }
+  .ac-prose :global(thead th) { background: var(--surface); color: var(--text); font-weight: 600; }
   .map { margin: 2.5rem 0; }
   .map-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); }
   table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 640px; }

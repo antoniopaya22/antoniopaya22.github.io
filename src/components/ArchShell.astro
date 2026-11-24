@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import { altLang, langPath, type Lang } from '../i18n/translations';
-import { archIndexPath, archPath, archSlug, archStrings, getCases } from '../data/architecture';
+import { archIndexPath, archPath, archSlug, archStrings, caseCategory, categories, categoryLabel, getCases, getGuides, guidePath } from '../data/architecture';
 import { siteUrl } from '../data/projects';
 
 interface Props {
@@ -12,14 +12,23 @@ interface Props {
   description: string;
   /** current case slug; undefined on the index */
   current?: string;
+  /** current guide slug, when the page is a guide */
+  guide?: string;
   jsonLd: Record<string, unknown>[];
 }
-const { lang, title, description, current, jsonLd } = Astro.props;
+const { lang, title, description, current, guide, jsonLd } = Astro.props;
 const s = archStrings[lang];
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const cases = await getCases(lang);
 const other = altLang(lang);
-const altPath = current ? archPath(other, current) : archIndexPath(other);
+const guides = await getGuides(lang);
+const altPath = guide ? guidePath(other, guide) : current ? archPath(other, current) : archIndexPath(other);
+const number = new Map(cases.map((c, i) => [archSlug(c), String(i + 1).padStart(2, '0')]));
+const allItems = [...guides.map((g) => ({ slug: g.id.split('/').slice(1).join('/'), short: g.data.short })), ...cases.map((c) => ({ slug: archSlug(c), short: c.data.short }))];
+const currentLabel = allItems.find((x) => x.slug === (current ?? guide))?.short ?? s.section;
+const groups = categories
+  .map((cat) => ({ cat, items: cases.filter((c) => caseCategory[archSlug(c)] === cat) }))
+  .filter((g) => g.items.length > 0);
 ---
 
 <Layout title={title} description={description} lang={lang} alternate={`${siteUrl}${altPath}`} jsonLd={jsonLd}>
@@ -28,26 +37,90 @@ const altPath = current ? archPath(other, current) : archIndexPath(other);
     <nav class="crumbs mono" aria-label="Breadcrumb">
       <a href={langPath(lang, base)}>~/antonio-paya</a>
       <span aria-hidden="true">/</span>
-      {current
-        ? <><a href={archIndexPath(lang)}>{s.section.toLowerCase()}</a><span aria-hidden="true">/</span><span aria-current="page">{current}</span></>
+      {current || guide
+        ? <><a href={archIndexPath(lang)}>{s.section.toLowerCase()}</a><span aria-hidden="true">/</span><span aria-current="page">{current ?? guide}</span></>
         : <span aria-current="page">{s.section.toLowerCase()}</span>}
     </nav>
     <div class="ar-grid">
+      <details class="ar-mob">
+        <summary class="mono"><span class="mob-l">{s.cases}</span><span class="mob-cur">{currentLabel}</span></summary>
+        <div class="mob-body">
+        {guides.length > 0 && (
+          <div class="side-group">
+            <p class="side-cat mono">{s.guides}</p>
+            <ol class="side-list">
+              {guides.map((g) => {
+                const gs = g.id.split('/').slice(1).join('/');
+                return (
+                  <li>
+                    <a href={guidePath(lang, gs)} class:list={['side-a', { on: gs === guide }]} aria-current={gs === guide ? 'page' : undefined}>
+                      <span class="mono side-n">G{g.data.order}</span>
+                      <span>{g.data.short}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        )}
+        {groups.map((g) => (
+          <div class="side-group">
+            <p class="side-cat mono">{categoryLabel[g.cat][lang]}</p>
+            <ol class="side-list">
+              {g.items.map((c) => {
+                const slug = archSlug(c);
+                return (
+                  <li>
+                    <a href={archPath(lang, slug)} class:list={['side-a', { on: slug === current }]} aria-current={slug === current ? 'page' : undefined}>
+                      <span class="mono side-n">{number.get(slug)}</span>
+                      <span>{c.data.short}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        ))}
+        </div>
+      </details>
       <aside class="ar-side">
         <p class="side-h mono">{s.cases}</p>
-        <ol class="side-list">
-          {cases.map((c, i) => {
-            const slug = archSlug(c);
-            return (
-              <li>
-                <a href={archPath(lang, slug)} class:list={['side-a', { on: slug === current }]} aria-current={slug === current ? 'page' : undefined}>
-                  <span class="mono side-n">{String(i + 1).padStart(2, '0')}</span>
-                  <span>{c.data.short}</span>
-                </a>
-              </li>
-            );
-          })}
-        </ol>
+        {guides.length > 0 && (
+          <div class="side-group">
+            <p class="side-cat mono">{s.guides}</p>
+            <ol class="side-list">
+              {guides.map((g) => {
+                const gs = g.id.split('/').slice(1).join('/');
+                return (
+                  <li>
+                    <a href={guidePath(lang, gs)} class:list={['side-a', { on: gs === guide }]} aria-current={gs === guide ? 'page' : undefined}>
+                      <span class="mono side-n">G{g.data.order}</span>
+                      <span>{g.data.short}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        )}
+        {groups.map((g) => (
+          <div class="side-group">
+            <p class="side-cat mono">{categoryLabel[g.cat][lang]}</p>
+            <ol class="side-list">
+              {g.items.map((c) => {
+                const slug = archSlug(c);
+                return (
+                  <li>
+                    <a href={archPath(lang, slug)} class:list={['side-a', { on: slug === current }]} aria-current={slug === current ? 'page' : undefined}>
+                      <span class="mono side-n">{number.get(slug)}</span>
+                      <span>{c.data.short}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        ))}
       </aside>
       <div class="ar-main">
         <slot />
@@ -65,19 +138,27 @@ const altPath = current ? archPath(other, current) : archIndexPath(other);
   .crumbs [aria-current] { color: var(--text-2); }
 
   .ar-grid { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: start; }
-  .ar-side { position: sticky; top: 6rem; }
+  .ar-side { position: sticky; top: 6rem; max-height: calc(100vh - 7rem); overflow-y: auto; scrollbar-width: thin; }
   .side-h { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.8rem; }
+  .side-group + .side-group { margin-top: 1.1rem; }
+  .side-cat { font-size: 0.7rem; color: var(--accent); margin: 0 0 0.35rem 0.8rem; }
   .side-list { list-style: none; display: flex; flex-direction: column; gap: 0.2rem; border-left: 1px solid var(--line); }
   .side-a { display: flex; gap: 0.7rem; align-items: baseline; padding: 0.55rem 0.8rem; margin-left: -1px; border-left: 2px solid transparent; color: var(--text-2); font-size: 0.93rem; transition: color 0.2s, border-color 0.2s, background-color 0.2s; }
   .side-a:hover { color: var(--text); background: var(--surface); }
   .side-a.on { color: var(--accent); border-left-color: var(--accent); background: var(--surface); }
   .side-n { font-size: 0.72rem; color: var(--muted); }
 
+  .ar-mob { display: none; }
   @media (max-width: 900px) {
     .ar-grid { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
-    .ar-side { position: static; }
-    .side-list { flex-direction: row; overflow-x: auto; border-left: 0; border-bottom: 1px solid var(--line); gap: 0; scrollbar-width: thin; }
-    .side-a { white-space: nowrap; border-left: 0; border-bottom: 2px solid transparent; margin: 0 0 -1px; }
-    .side-a.on { border-bottom-color: var(--accent); }
+    .ar-side { display: none; }
+    .ar-mob { display: block; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+    .ar-mob summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.8rem 1rem; cursor: pointer; font-size: 0.82rem; list-style: none; }
+    .ar-mob summary::-webkit-details-marker { display: none; }
+    .ar-mob summary::after { content: '▾'; color: var(--muted); }
+    .ar-mob[open] summary::after { content: '▴'; }
+    .mob-l { color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem; }
+    .mob-cur { color: var(--accent); margin-left: auto; text-align: right; }
+    .mob-body { padding: 0 0.5rem 0.8rem; max-height: 60vh; overflow-y: auto; }
   }
 </style>

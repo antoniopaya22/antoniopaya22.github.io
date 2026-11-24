@@ -1,0 +1,74 @@
+---
+import { render } from 'astro:content';
+import ArchShell from './ArchShell.astro';
+import { langPath, type Lang } from '../i18n/translations';
+import { archIndexPath, archStrings, guidePath, type Guide } from '../data/architecture';
+import { siteUrl } from '../data/projects';
+
+interface Props { lang: Lang; item: Guide; }
+const { lang, item } = Astro.props;
+const s = archStrings[lang];
+const d = item.data;
+const slug = item.id.split('/').slice(1).join('/');
+const { Content, headings } = await render(item);
+const toc = headings.filter((h) => h.depth === 2);
+const pageUrl = `${siteUrl}${guidePath(lang, slug)}`;
+const graph = [
+  {
+    '@type': 'TechArticle',
+    '@id': `${pageUrl}#article`,
+    url: pageUrl,
+    headline: d.title,
+    description: d.description,
+    inLanguage: lang,
+    author: { '@id': `${siteUrl}/#person` },
+    isPartOf: { '@id': `${siteUrl}/#website` },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Antonio Payá González', item: `${siteUrl}${langPath(lang, '/')}` },
+        { '@type': 'ListItem', position: 2, name: s.section, item: `${siteUrl}${archIndexPath(lang)}` },
+        { '@type': 'ListItem', position: 3, name: d.title, item: pageUrl },
+      ],
+    },
+  },
+];
+---
+
+<ArchShell lang={lang} title={`${d.title} | Antonio Payá`} description={d.description} guide={slug} jsonLd={graph}>
+  <article class="gd">
+    <p class="gd-n mono">// {s.guideLabel} {d.order}</p>
+    <h1 class="gd-title">{d.title}</h1>
+    <p class="gd-sum">{d.summary}</p>
+    {toc.length > 2 && (
+      <nav class="toc mono" aria-label={s.toc}>
+        <span>{s.toc}:</span>
+        {toc.map((h) => <a href={`#${h.slug}`}>{h.text}</a>)}
+      </nav>
+    )}
+    <div class="prose gd-prose"><Content /></div>
+  </article>
+</ArchShell>
+
+<style>
+  .gd-n { font-size: 0.78rem; color: var(--accent); margin-bottom: 0.8rem; }
+  .gd-title { font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 5.5vw, 3.8rem); line-height: 1.02; letter-spacing: -0.035em; }
+  .gd-sum { color: var(--text-2); font-size: clamp(1.05rem, 2vw, 1.25rem); margin-top: 1rem; max-width: 62ch; line-height: 1.5; }
+  .toc { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.76rem; color: var(--muted); margin: 1.25rem 0 2rem; }
+  .toc a { color: var(--accent-2); }
+  .toc a:hover { color: var(--accent); }
+  .gd-prose { max-width: 78ch; color: var(--text-2); font-size: 1.02rem; line-height: 1.7; }
+  .gd-prose :global(h2) { font-family: var(--display); font-size: 1.7rem; letter-spacing: -0.02em; color: var(--text); margin: 2.6rem 0 0.9rem; line-height: 1.15; scroll-margin-top: 6rem; }
+  .gd-prose :global(h3) { font-size: 1.2rem; color: var(--text); margin: 1.8rem 0 0.6rem; scroll-margin-top: 6rem; }
+  .gd-prose :global(p), .gd-prose :global(ul), .gd-prose :global(ol) { margin-bottom: 1rem; }
+  .gd-prose :global(ul), .gd-prose :global(ol) { padding-left: 1.3rem; }
+  .gd-prose :global(li) { margin-bottom: 0.4rem; }
+  .gd-prose :global(li::marker) { color: var(--accent); }
+  .gd-prose :global(code) { font-family: var(--mono); font-size: 0.88em; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 0.05rem 0.35rem; }
+  .gd-prose :global(pre) { margin: 1rem 0 1.4rem; padding: 1rem 1.2rem; border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; font-size: 0.86rem; }
+  .gd-prose :global(pre code) { background: none; border: 0; padding: 0; }
+  .gd-prose :global(table) { border-collapse: collapse; margin: 1rem 0 1.6rem; font-size: 0.88rem; display: block; overflow-x: auto; max-width: 100%; }
+  .gd-prose :global(th), .gd-prose :global(td) { border: 1px solid var(--line); padding: 0.5rem 0.75rem; text-align: left; vertical-align: top; }
+  .gd-prose :global(thead th) { background: var(--surface); color: var(--text); font-weight: 600; white-space: nowrap; }
+  .gd-prose :global(blockquote) { border-left: 3px solid var(--accent); padding-left: 1rem; color: var(--muted); margin: 1rem 0; }
+</style>

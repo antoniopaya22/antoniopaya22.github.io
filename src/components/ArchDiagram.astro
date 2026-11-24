@@ -1,5 +1,5 @@
 ---
-import { diagrams, platforms, route, NODE_H, NODE_W, W } from '../data/architecture';
+import { diagrams, platforms, route, svcText, NODE_H, NODE_W, W } from '../data/architecture';
 import type { Lang } from '../i18n/translations';
 
 interface Props { slug: string; lang: Lang; label: string; }
@@ -25,7 +25,7 @@ const mid = `arrow-${slug}`;
         <rect width={NODE_W} height={NODE_H} rx="10" />
         <rect width="4" height={NODE_H - 20} x="0" y="10" rx="2" class="dg-bar" />
         <text x="16" y="24" class="dg-role">{n.role[lang]}</text>
-        {platforms.map((p) => <text x="16" y="48" class={`dg-svc svc-${p}`}>{n.svc[p]}</text>)}
+        {platforms.map((p) => <text x="16" y="48" class={`dg-svc svc-${p}`}>{svcText(n.svc[p], lang)}</text>)}
       </g>
     ))}
     {edges.filter((e) => e.label).map((e) => (

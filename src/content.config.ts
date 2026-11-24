@@ -42,6 +42,31 @@ const platformNotes = z.object({
   notes: z.array(z.string()).min(2).max(6),
 });
 
+const perPlatform = { onprem: z.string(), aws: z.string(), azure: z.string(), gcp: z.string() };
+
+const tier = z.object({
+  name: z.string(),
+  /** who it is for: scale, team, constraints */
+  when: z.string(),
+  /** relative monthly cost, 1 (€) to 4 (€€€€) */
+  cost: z.number().int().min(1).max(4),
+  /** operational effort, 1 (low) to 3 (high) */
+  ops: z.number().int().min(1).max(3),
+  /** optional indicative figure, only when checked against official list prices */
+  estimate: z.string().optional(),
+  /** how this option is built on each platform */
+  ...perPlatform,
+  tradeoffs: z.string(),
+});
+
+const extension = z.object({
+  name: z.string(),
+  when: z.string(),
+  /** effect on the bill */
+  cost: z.enum(['low', 'medium', 'high']),
+  ...perPlatform,
+});
+
 /**
  * One Markdown file per case and language:
  *   src/content/architecture/es/<slug>.md  →  /arquitectura/<slug>/
@@ -61,7 +86,25 @@ const architecture = defineCollection({
     /** what the solution has to guarantee */
     requirements: z.array(z.string()).min(3).max(6),
     platforms: z.object({ onprem: platformNotes, aws: platformNotes, azure: platformNotes, gcp: platformNotes }),
+    /** 3 options from cheapest/smallest to largest/most resilient, compared in one table */
+    tiers: z.array(tier).min(3).max(4).optional(),
+    /** add-ons that extend the base design: cache, load balancing, replicas … */
+    extensions: z.array(extension).min(3).max(8).optional(),
+    /** case-specific ways to cut the bill */
+    savings: z.array(z.string()).min(3).max(8).optional(),
   }),
 });
 
-export const collections = { projects, architecture };
+/** Cross-cutting guides shown above the cases: long-form Markdown with tables. */
+const guides = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/guides' }),
+  schema: z.object({
+    title: z.string(),
+    short: z.string(),
+    summary: z.string(),
+    description: z.string().max(160),
+    order: z.number().int(),
+  }),
+});
+
+export const collections = { projects, architecture, guides };
