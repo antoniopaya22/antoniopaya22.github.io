@@ -2,3 +2,9 @@ User-agent: *
 Allow: /
 
 Sitemap: https://antoniopaya22.github.io/sitemap-index.xml
+Sitemap: https://antoniopaya22.github.io/go-rest-template/sitemap.xml
+Sitemap: https://antoniopaya22.github.io/proteus/sitemap.xml
+Sitemap: https://antoniopaya22.github.io/apollon/sitemap.xml
+Sitemap: https://antoniopaya22.github.io/Secure-SDP/sitemap.xml
+Sitemap: https://antoniopaya22.github.io/iam-ids-sdp/sitemap.xml
+Sitemap: https://antoniopaya22.github.io/Software-Defined-Perimeter/sitemap.xml

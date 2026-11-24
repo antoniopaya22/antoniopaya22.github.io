@@ -1,15 +1,22 @@
 ---
 import { t, ids, altLang, langPath, navSections, type Lang } from '../i18n/translations';
 
-interface Props { lang?: Lang; }
-const { lang = 'es' } = Astro.props;
+interface Props {
+  lang?: Lang;
+  /** path of this page in the other language; defaults to the other home */
+  alt?: string;
+  /** inner pages link the nav back to the home sections */
+  home?: boolean;
+}
+const { lang = 'es', alt, home = true } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const i = t(lang);
 const id = ids(lang);
 const other = altLang(lang);
-const otherPath = langPath(other, base);
-const links = navSections.map((key) => ({ href: `#${id[key]}`, label: i.sections[key].title, n: i.sections[key].n }));
+const otherPath = alt ?? langPath(other, base);
+const prefix = home ? '' : langPath(lang, base);
+const links = navSections.map((key) => ({ href: `${prefix}#${id[key]}`, label: i.sections[key].title, n: i.sections[key].n }));
 ---
 
 <header class="hdr" id="hdr">

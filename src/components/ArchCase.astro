@@ -1,0 +1,218 @@
+---
+import { render } from 'astro:content';
+import ArchShell from './ArchShell.astro';
+import ArchDiagram from './ArchDiagram.astro';
+import { langPath, type Lang } from '../i18n/translations';
+import { archIndexPath, archPath, archSlug, archStrings, diagrams, getCases, platformLabel, platforms, type ArchCase as Case } from '../data/architecture';
+import { siteUrl } from '../data/projects';
+
+interface Props { lang: Lang; item: Case; }
+const { lang, item } = Astro.props;
+const s = archStrings[lang];
+const d = item.data;
+const slug = archSlug(item);
+const dg = diagrams[slug];
+const { Content } = await render(item);
+
+const cases = await getCases(lang);
+const idx = cases.findIndex((c) => archSlug(c) === slug);
+const prev = cases[idx - 1];
+const next = cases[idx + 1];
+const kinds = [...new Set(dg.nodes.map((n) => n.kind))];
+
+const pageUrl = `${siteUrl}${archPath(lang, slug)}`;
+const graph = [
+  {
+    '@type': 'TechArticle',
+    '@id': `${pageUrl}#article`,
+    url: pageUrl,
+    headline: d.title,
+    description: d.description,
+    inLanguage: lang,
+    author: { '@id': `${siteUrl}/#person` },
+    isPartOf: { '@id': `${siteUrl}/#website` },
+    about: ['Software architecture', 'Cloud computing', 'AWS', 'Microsoft Azure', 'Google Cloud', 'On-premises'],
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Antonio Payá González', item: `${siteUrl}${langPath(lang, '/')}` },
+        { '@type': 'ListItem', position: 2, name: s.section, item: `${siteUrl}${archIndexPath(lang)}` },
+        { '@type': 'ListItem', position: 3, name: d.title, item: pageUrl },
+      ],
+    },
+  },
+];
+const title = `${d.title} — AWS, Azure, GCP ${lang === 'es' ? 'y' : 'and'} on-premises`;
+---
+
+<ArchShell lang={lang} title={title.length > 70 ? d.title + ' | Antonio Payá' : title} description={d.description} current={slug} jsonLd={graph}>
+  <article class="ac" data-arch data-platform="onprem">
+    <header class="ac-head">
+      <p class="ac-n mono">// {String(idx + 1).padStart(2, '0')} · {s.section.toLowerCase()}</p>
+      <h1 class="ac-title">{d.title}</h1>
+      <p class="ac-sum">{d.summary}</p>
+    </header>
+
+    <section class="ac-req card" aria-labelledby="req-h">
+      <h2 id="req-h" class="mini-h mono">{s.requirements}</h2>
+      <ul>{d.requirements.map((r) => <li>{r}</li>)}</ul>
+    </section>
+
+    <div class="pf-tabs mono" role="tablist" aria-label={s.platform}>
+      {platforms.map((p, i) => (
+        <button type="button" role="tab" id={`tab-${p}`} aria-controls={`pf-${p}`} aria-selected={i === 0 ? 'true' : 'false'} data-pf={p} class={`pf-tab t-${p}`}>{platformLabel[p]}</button>
+      ))}
+    </div>
+
+    <ArchDiagram slug={slug} lang={lang} label={`${s.diagramLabel}: ${d.title}`} />
+    <ul class="legend mono" aria-hidden="true">
+      {kinds.map((k) => <li class={`lg k-${k}`}><i></i>{s.legend[k]}</li>)}
+    </ul>
+
+    {platforms.map((p) => (
+      <section class={`pf-panel p-${p}`} id={`pf-${p}`} role="tabpanel" aria-labelledby={`tab-${p}`}>
+        <h2 class="pf-h"><span class="mono pf-badge">{platformLabel[p]}</span> {d.platforms[p].summary}</h2>
+        <ul class="pf-notes">{d.platforms[p].notes.map((n) => <li set:html={n.replace(/`([^`]+)`/g, '<code>$1</code>')} />)}</ul>
+      </section>
+    ))}
+
+    <section class="map" aria-labelledby="map-h">
+      <h2 id="map-h" class="sec-h">{s.mapping}</h2>
+      <div class="map-scroll">
+        <table>
+          <thead>
+            <tr><th scope="col">{s.role}</th>{platforms.map((p) => <th scope="col" class={`c-${p}`}>{platformLabel[p]}</th>)}</tr>
+          </thead>
+          <tbody>
+            {dg.nodes.filter((n) => n.kind !== 'client').map((n) => (
+              <tr><th scope="row">{n.role[lang]}</th>{platforms.map((p) => <td class={`c-${p}`}>{n.svc[p]}</td>)}</tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="prose ac-prose"><Content /></div>
+
+    <p class="ac-disc">{s.disclaimer}</p>
+
+    <nav class="pn mono" aria-label={s.cases}>
+      {prev ? <a href={archPath(lang, archSlug(prev))} class="pn-a"><span>← {s.prev}</span><strong>{prev.data.short}</strong></a> : <span></span>}
+      {next && <a href={archPath(lang, archSlug(next))} class="pn-a pn-next"><span>{s.next} →</span><strong>{next.data.short}</strong></a>}
+    </nav>
+  </article>
+</ArchShell>
+
+<script>
+  const KEY = 'arch-platform';
+  const valid = ['onprem', 'aws', 'azure', 'gcp'];
+  document.querySelectorAll<HTMLElement>('[data-arch]').forEach((root) => {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-pf]')];
+    const set = (p: string, save: boolean) => {
+      if (!valid.includes(p)) return;
+      root.dataset.platform = p;
+      tabs.forEach((t) => {
+        const on = t.dataset.pf === p;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+      });
+      if (save) {
+        try { localStorage.setItem(KEY, p); } catch {}
+        const u = new URL(location.href);
+        u.searchParams.set('p', p);
+        history.replaceState(null, '', u);
+      }
+    };
+    let start = new URL(location.href).searchParams.get('p');
+    if (!start) { try { start = localStorage.getItem(KEY); } catch {} }
+    set(start ?? 'onprem', false);
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => set(t.dataset.pf!, true));
+      t.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        n.focus();
+        set(n.dataset.pf!, true);
+      });
+    });
+  });
+</script>
+
+<style>
+  .ac-head { margin-bottom: 1.75rem; }
+  .ac-n { font-size: 0.78rem; color: var(--accent); margin-bottom: 0.8rem; }
+  .ac-title { font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 5.5vw, 4rem); line-height: 1; letter-spacing: -0.035em; }
+  .ac-sum { color: var(--text-2); font-size: clamp(1.05rem, 2vw, 1.25rem); margin-top: 1rem; max-width: 60ch; line-height: 1.5; }
+
+  .mini-h { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.7rem; font-weight: 500; }
+  .ac-req { padding: 1.1rem 1.3rem; margin-bottom: 2rem; }
+  .ac-req ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 0.45rem 1.5rem; }
+  .ac-req li { position: relative; padding-left: 1.2rem; color: var(--text-2); font-size: 0.93rem; line-height: 1.45; }
+  .ac-req li::before { content: '✓'; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); }
+
+  .pf-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.9rem; position: sticky; top: 4.6rem; z-index: 5; padding: 0.5rem 0; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(10px); }
+  .pf-tab { font: inherit; font-size: 0.82rem; padding: 0.5rem 0.95rem; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--text-2); cursor: pointer; transition: color 0.2s, border-color 0.2s, background-color 0.2s; }
+  .pf-tab:hover { color: var(--text); border-color: var(--accent); }
+  .pf-tab[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .pf-tab:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+
+  .legend { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; font-size: 0.72rem; color: var(--muted); margin: 0.7rem 0 2rem; }
+  .lg { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .lg i { width: 10px; height: 10px; border-radius: 3px; background: var(--kc); }
+  .k-client { --kc: var(--muted); }
+  .k-edge { --kc: var(--text-2); }
+  .k-compute { --kc: var(--accent); }
+  .k-data { --kc: var(--syn-num); }
+  .k-queue { --kc: var(--syn-key); }
+  .k-ai { --kc: var(--syn-prop); }
+  .k-security { --kc: var(--accent-2); }
+
+  /* platform switch: JS sets data-platform; without JS every panel shows */
+  .pf-panel { margin-bottom: 2rem; }
+  :global(.js) .pf-panel { display: none; }
+  :global(.js) [data-platform='onprem'] .p-onprem,
+  :global(.js) [data-platform='aws'] .p-aws,
+  :global(.js) [data-platform='azure'] .p-azure,
+  :global(.js) [data-platform='gcp'] .p-gcp { display: block; }
+  :global(html:not(.js)) .pf-tabs { display: none; }
+  [data-platform='onprem'] :global(.svc-onprem),
+  [data-platform='aws'] :global(.svc-aws),
+  [data-platform='azure'] :global(.svc-azure),
+  [data-platform='gcp'] :global(.svc-gcp) { display: inline; }
+  [data-platform='onprem'] .c-onprem,
+  [data-platform='aws'] .c-aws,
+  [data-platform='azure'] .c-azure,
+  [data-platform='gcp'] .c-gcp { background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--text); }
+
+  .pf-h { font-size: 1.15rem; line-height: 1.45; font-weight: 600; color: var(--text); margin-bottom: 0.9rem; }
+  .pf-badge { display: inline-block; font-size: 0.72rem; font-weight: 500; padding: 0.15rem 0.5rem; border-radius: 6px; border: 1px solid var(--accent); color: var(--accent); vertical-align: 0.15em; margin-right: 0.4rem; }
+  .pf-notes { padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.55rem; color: var(--text-2); line-height: 1.6; }
+  .pf-notes li::marker { color: var(--accent); }
+  .pf-notes :global(code) { font-family: var(--mono); font-size: 0.86em; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 0.05rem 0.35rem; }
+
+  .sec-h { font-family: var(--display); font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 1rem; }
+  .map { margin: 2.5rem 0; }
+  .map-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 640px; }
+  th, td { text-align: left; padding: 0.6rem 0.85rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { font-family: var(--mono); font-size: 0.74rem; font-weight: 500; color: var(--muted); background: var(--surface); }
+  tbody th { font-weight: 500; color: var(--text); white-space: nowrap; }
+  td { color: var(--text-2); transition: background-color 0.2s; }
+  tbody tr:last-child > * { border-bottom: 0; }
+
+  .ac-prose { max-width: 72ch; color: var(--text-2); font-size: 1.02rem; line-height: 1.7; }
+  .ac-prose :global(h2) { font-family: var(--display); font-size: 1.6rem; letter-spacing: -0.02em; color: var(--text); margin: 2.4rem 0 0.8rem; line-height: 1.15; }
+  .ac-prose :global(p), .ac-prose :global(ul), .ac-prose :global(ol) { margin-bottom: 1rem; }
+  .ac-prose :global(ul), .ac-prose :global(ol) { padding-left: 1.3rem; }
+  .ac-prose :global(li) { margin-bottom: 0.45rem; }
+  .ac-prose :global(li::marker) { color: var(--accent); }
+  .ac-prose :global(code) { font-family: var(--mono); font-size: 0.88em; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 0.05rem 0.35rem; }
+
+  .ac-disc { margin-top: 2rem; font-size: 0.88rem; color: var(--muted); border-left: 2px solid var(--line-strong); padding-left: 0.9rem; max-width: 72ch; }
+
+  .pn { display: flex; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  .pn-a { display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.76rem; color: var(--muted); }
+  .pn-a strong { font-family: var(--sans); font-size: 1rem; color: var(--accent-2); font-weight: 600; }
+  .pn-a:hover strong { color: var(--accent); }
+  .pn-next { text-align: right; margin-left: auto; }
+</style>

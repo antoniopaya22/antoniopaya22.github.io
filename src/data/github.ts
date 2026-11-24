@@ -10,6 +10,8 @@ export interface RepoStats {
   pushedAt?: string;
   paper?: string;
   homepage?: string;
+  /** project page on this site (src/content/projects/<lang>/<slug>.md) */
+  slug: string;
   tags: readonly string[];
 }
 
@@ -28,6 +30,7 @@ export function getFeaturedRepos(): Promise<RepoStats[]> {
         url: `https://github.com/${r.repo}`,
         paper: 'paper' in r ? r.paper : undefined,
         homepage: 'homepage' in r ? r.homepage : undefined,
+        slug: r.slug,
         tags: r.tags,
         ...r.fallback,
       };

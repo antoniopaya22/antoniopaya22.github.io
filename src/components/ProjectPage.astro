@@ -1,0 +1,243 @@
+---
+import { render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import { altLang, langPath, type Lang } from '../i18n/translations';
+import { getProjects, projectPath, projectsIndexPath, projectStrings, siteUrl, slugOf, type Project } from '../data/projects';
+
+interface Props { lang: Lang; project: Project; }
+const { lang, project } = Astro.props;
+
+const s = projectStrings[lang];
+const d = project.data;
+const slug = slugOf(project);
+const other = altLang(lang);
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const { Content } = await render(project);
+
+const pageUrl = `${siteUrl}${projectPath(lang, slug)}`;
+const altPath = projectPath(other, slug);
+const indexPath = projectsIndexPath(lang);
+
+const others = (await getProjects(lang)).filter((p) => slugOf(p) !== slug).slice(0, 3);
+const siteLabel = d.kind === 'product' ? s.app : s.site;
+
+const personRef = { '@id': `${siteUrl}/#person` };
+const entity = d.kind === 'product'
+  ? {
+      '@type': 'WebApplication',
+      '@id': `${pageUrl}#software`,
+      name: d.title,
+      description: d.description,
+      url: d.site ?? pageUrl,
+      applicationCategory: 'BusinessApplication',
+      operatingSystem: 'Web',
+      author: personRef,
+      ...(d.repo && { sameAs: [d.repo] }),
+    }
+  : {
+      '@type': 'SoftwareSourceCode',
+      '@id': `${pageUrl}#software`,
+      name: d.title,
+      description: d.description,
+      url: d.site ?? pageUrl,
+      ...(d.repo && { codeRepository: d.repo }),
+      programmingLanguage: d.stack.slice(0, 3),
+      keywords: d.stack.join(', '),
+      author: personRef,
+      ...(d.paper && { citation: { '@type': 'ScholarlyArticle', url: d.paper, sameAs: d.paper } }),
+    };
+
+const graph = [
+  {
+    '@type': 'WebPage',
+    '@id': `${pageUrl}#page`,
+    url: pageUrl,
+    name: `${d.title} — Antonio Payá González`,
+    description: d.description,
+    inLanguage: lang,
+    isPartOf: { '@id': `${siteUrl}/#website` },
+    about: { '@id': `${pageUrl}#software` },
+    author: personRef,
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Antonio Payá González', item: `${siteUrl}${langPath(lang, '/')}` },
+        { '@type': 'ListItem', position: 2, name: s.section, item: `${siteUrl}${indexPath}` },
+        { '@type': 'ListItem', position: 3, name: d.title, item: pageUrl },
+      ],
+    },
+  },
+  entity,
+];
+---
+
+<Layout
+  title={`${d.title} — ${d.tagline} | Antonio Payá González`.length > 70 ? `${d.title} — Antonio Payá González` : `${d.title} — ${d.tagline} | Antonio Payá González`}
+  description={d.description}
+  lang={lang}
+  alternate={`${siteUrl}${altPath}`}
+  jsonLd={graph}
+>
+  <Header lang={lang} alt={altPath} home={false} />
+  <main id="main-content" class="pj wrap">
+    <nav class="crumbs mono" aria-label="Breadcrumb">
+      <a href={langPath(lang, base)}>~/antonio-paya</a>
+      <span aria-hidden="true">/</span>
+      <a href={indexPath}>{s.section.toLowerCase()}</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{slug}</span>
+    </nav>
+
+    <header class="pj-head">
+      <p class="pj-meta mono">
+        <span class={`kind kind-${d.kind}`}>{s.kind[d.kind]}</span>
+        <span>{d.status}</span>
+        {!d.status.includes(String(d.year)) && <span>{d.year}</span>}
+      </p>
+      <h1 class="pj-title">{d.title}</h1>
+      <p class="pj-tagline">{d.tagline}</p>
+      <div class="pj-actions">
+        {d.site && (
+          <a class="btn btn-primary" href={d.site} target="_blank" rel="noopener">
+            {siteLabel}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+        )}
+        {d.repo && <a class="btn btn-ghost" href={d.repo} target="_blank" rel="noopener noreferrer">{s.repo} ↗</a>}
+        {d.paper && <a class="btn btn-ghost" href={d.paper} target="_blank" rel="noopener noreferrer">{s.paper} ↗</a>}
+      </div>
+    </header>
+
+    {d.facts.length > 0 && (
+      <section class="facts" aria-label={s.facts}>
+        {d.facts.map((f) => (
+          <div class="fact card">
+            <span class="fact-v">{f.value}</span>
+            <span class="fact-l">{f.label}</span>
+          </div>
+        ))}
+      </section>
+    )}
+
+    <div class="pj-body">
+      <article class="prose pj-prose">
+        <Content />
+      </article>
+
+      <aside class="pj-side">
+        <section class="side card">
+          <h2 class="side-h mono">{s.stack}</h2>
+          <div class="chips">{d.stack.map((t) => <span class="chip">{t}</span>)}</div>
+        </section>
+        {d.links.length > 0 && (
+          <section class="side card">
+            <h2 class="side-h mono">{s.docs}</h2>
+            <ul class="side-links">
+              {d.links.map((l) => (
+                <li><a href={l.href} target="_blank" rel="noopener">{l.label} <span aria-hidden="true">↗</span></a></li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </aside>
+    </div>
+
+    {others.length > 0 && (
+      <section class="more-pj" aria-labelledby="more-pj-h">
+        <div class="more-head">
+          <h2 id="more-pj-h" class="more-h">{s.more}</h2>
+          <a class="link mono" href={indexPath}>{s.all} →</a>
+        </div>
+        <ul class="more-list">
+          {others.map((p) => (
+            <li>
+              <a class="more-card card" href={projectPath(lang, slugOf(p))}>
+                <span class="mono more-kind">{s.kind[p.data.kind]}</span>
+                <span class="more-title">{p.data.title}</span>
+                <span class="more-tag">{p.data.tagline}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </main>
+  <Footer lang={lang} />
+</Layout>
+
+<style>
+  .pj { padding-top: clamp(6.5rem, 12vw, 9rem); padding-bottom: clamp(4rem, 8vw, 6rem); }
+
+  .crumbs { display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: 0.78rem; color: var(--muted); margin-bottom: 2rem; }
+  .crumbs a { color: var(--accent-2); transition: color 0.2s; }
+  .crumbs a:hover { color: var(--accent); }
+  .crumbs [aria-current] { color: var(--text-2); }
+
+  .pj-head { max-width: 62rem; margin-bottom: 2.5rem; }
+  .pj-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem; }
+  .kind { padding: 0.15rem 0.55rem; border-radius: 6px; border: 1px solid currentColor; }
+  .kind-research { color: var(--syn-num); }
+  .kind-oss { color: var(--accent); }
+  .kind-product { color: var(--accent-2); }
+
+  .pj-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    overflow-wrap: anywhere;
+  }
+  .pj-tagline { font-size: clamp(1.1rem, 2.2vw, 1.4rem); color: var(--text-2); margin-top: 1rem; max-width: 48ch; line-height: 1.45; }
+  .pj-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
+
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: 1rem; margin-bottom: 3rem; }
+  @media (max-width: 560px) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; } .fact { padding: 1rem; } }
+  .fact { display: flex; flex-direction: column; gap: 0.35rem; padding: 1.2rem 1.3rem; }
+  .fact-v { font-family: var(--display); font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.1rem); letter-spacing: -0.02em; color: var(--accent); line-height: 1.05; overflow-wrap: anywhere; }
+  .fact-l { font-size: 0.88rem; color: var(--muted); line-height: 1.4; }
+
+  .pj-body { display: grid; grid-template-columns: minmax(0, 1fr) 20rem; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+
+  .pj-prose { max-width: 70ch; color: var(--text-2); font-size: 1.02rem; line-height: 1.7; }
+  .pj-prose :global(h2) { font-family: var(--display); font-size: 1.6rem; letter-spacing: -0.02em; color: var(--text); margin: 2.4rem 0 0.8rem; line-height: 1.15; }
+  .pj-prose :global(h2:first-child) { margin-top: 0; }
+  .pj-prose :global(h3) { font-size: 1.15rem; color: var(--text); margin: 1.8rem 0 0.6rem; }
+  .pj-prose :global(p), .pj-prose :global(ul), .pj-prose :global(ol) { margin-bottom: 1rem; }
+  .pj-prose :global(ul), .pj-prose :global(ol) { padding-left: 1.3rem; }
+  .pj-prose :global(li) { margin-bottom: 0.35rem; }
+  .pj-prose :global(li::marker) { color: var(--accent); }
+  .pj-prose :global(code) { font-family: var(--mono); font-size: 0.88em; background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 0.05rem 0.35rem; }
+  .pj-prose :global(pre) { margin: 1rem 0 1.4rem; padding: 1rem 1.2rem; border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; font-size: 0.86rem; line-height: 1.6; }
+  .pj-prose :global(pre code) { background: none; border: 0; padding: 0; font-size: inherit; }
+  .pj-prose :global(blockquote) { border-left: 3px solid var(--accent); padding-left: 1rem; color: var(--muted); margin: 1rem 0; }
+  .pj-prose :global(table) { border-collapse: collapse; margin: 1rem 0 1.4rem; font-size: 0.92rem; display: block; overflow-x: auto; }
+  .pj-prose :global(th), .pj-prose :global(td) { border: 1px solid var(--line); padding: 0.45rem 0.7rem; text-align: left; }
+
+  .pj-side { position: sticky; top: 6rem; display: flex; flex-direction: column; gap: 1rem; }
+  .side { padding: 1.2rem 1.3rem; }
+  .side-h { font-size: 0.75rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.8rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .side-links { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; font-size: 0.92rem; }
+  .side-links a { color: var(--accent-2); transition: color 0.2s; }
+  .side-links a:hover { color: var(--accent); }
+
+  .more-pj { margin-top: clamp(4rem, 8vw, 6rem); padding-top: 2.5rem; border-top: 1px solid var(--line); }
+  .more-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 1.5rem; }
+  .more-h { font-family: var(--display); font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -0.02em; }
+  .more-list { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .more-list li { display: flex; }
+  .more-card { display: flex; flex-direction: column; gap: 0.45rem; padding: 1.2rem 1.3rem; width: 100%; }
+  .more-card:hover { transform: translateY(-4px); }
+  .more-kind { font-size: 0.72rem; color: var(--muted); }
+  .more-title { font-family: var(--display); font-weight: 700; font-size: 1.3rem; color: var(--text); }
+  .more-tag { font-size: 0.9rem; color: var(--text-2); line-height: 1.5; }
+
+  @media (max-width: 960px) {
+    .pj-body { grid-template-columns: minmax(0, 1fr); }
+    .pj-side { position: static; }
+    .more-list { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

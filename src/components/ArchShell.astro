@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import { altLang, langPath, type Lang } from '../i18n/translations';
+import { archIndexPath, archPath, archSlug, archStrings, getCases } from '../data/architecture';
+import { siteUrl } from '../data/projects';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** current case slug; undefined on the index */
+  current?: string;
+  jsonLd: Record<string, unknown>[];
+}
+const { lang, title, description, current, jsonLd } = Astro.props;
+const s = archStrings[lang];
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const cases = await getCases(lang);
+const other = altLang(lang);
+const altPath = current ? archPath(other, current) : archIndexPath(other);
+---
+
+<Layout title={title} description={description} lang={lang} alternate={`${siteUrl}${altPath}`} jsonLd={jsonLd}>
+  <Header lang={lang} alt={altPath} home={false} />
+  <main id="main-content" class="ar wrap">
+    <nav class="crumbs mono" aria-label="Breadcrumb">
+      <a href={langPath(lang, base)}>~/antonio-paya</a>
+      <span aria-hidden="true">/</span>
+      {current
+        ? <><a href={archIndexPath(lang)}>{s.section.toLowerCase()}</a><span aria-hidden="true">/</span><span aria-current="page">{current}</span></>
+        : <span aria-current="page">{s.section.toLowerCase()}</span>}
+    </nav>
+    <div class="ar-grid">
+      <aside class="ar-side">
+        <p class="side-h mono">{s.cases}</p>
+        <ol class="side-list">
+          {cases.map((c, i) => {
+            const slug = archSlug(c);
+            return (
+              <li>
+                <a href={archPath(lang, slug)} class:list={['side-a', { on: slug === current }]} aria-current={slug === current ? 'page' : undefined}>
+                  <span class="mono side-n">{String(i + 1).padStart(2, '0')}</span>
+                  <span>{c.data.short}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ol>
+      </aside>
+      <div class="ar-main">
+        <slot />
+      </div>
+    </div>
+  </main>
+  <Footer lang={lang} />
+</Layout>
+
+<style>
+  .ar { padding-top: clamp(6.5rem, 12vw, 9rem); padding-bottom: clamp(4rem, 8vw, 6rem); }
+  .crumbs { display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: 0.78rem; color: var(--muted); margin-bottom: 2rem; }
+  .crumbs a { color: var(--accent-2); }
+  .crumbs a:hover { color: var(--accent); }
+  .crumbs [aria-current] { color: var(--text-2); }
+
+  .ar-grid { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: clamp(2rem, 4vw, 3.5rem); align-items: start; }
+  .ar-side { position: sticky; top: 6rem; }
+  .side-h { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.8rem; }
+  .side-list { list-style: none; display: flex; flex-direction: column; gap: 0.2rem; border-left: 1px solid var(--line); }
+  .side-a { display: flex; gap: 0.7rem; align-items: baseline; padding: 0.55rem 0.8rem; margin-left: -1px; border-left: 2px solid transparent; color: var(--text-2); font-size: 0.93rem; transition: color 0.2s, border-color 0.2s, background-color 0.2s; }
+  .side-a:hover { color: var(--text); background: var(--surface); }
+  .side-a.on { color: var(--accent); border-left-color: var(--accent); background: var(--surface); }
+  .side-n { font-size: 0.72rem; color: var(--muted); }
+
+  @media (max-width: 900px) {
+    .ar-grid { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+    .ar-side { position: static; }
+    .side-list { flex-direction: row; overflow-x: auto; border-left: 0; border-bottom: 1px solid var(--line); gap: 0; scrollbar-width: thin; }
+    .side-a { white-space: nowrap; border-left: 0; border-bottom: 2px solid transparent; margin: 0 0 -1px; }
+    .side-a.on { border-bottom-color: var(--accent); }
+  }
+</style>

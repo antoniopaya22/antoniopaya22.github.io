@@ -1,0 +1,71 @@
+---
+title: "Frontend, backend y base de datos"
+short: "Web + API + BBDD"
+summary: "La base de casi cualquier producto: una SPA servida desde CDN, una API sin estado en contenedores y una base de datos relacional, con identidad, caché y secretos resueltos desde el primer día."
+description: "SPA, API en contenedores y base de datos relacional con CDN, WAF, OIDC, caché y secretos: arquitectura de referencia en AWS, Azure, GCP y on-premises."
+order: 1
+requirements:
+  - "La API es sin estado y escala en horizontal."
+  - "Todo el tráfico entra por TLS y atraviesa un WAF antes de llegar a la API."
+  - "La autenticación se delega en un proveedor OIDC; la API solo valida tokens."
+  - "Ninguna credencial vive en el código, en las imágenes ni en variables en claro."
+  - "La base de datos tiene alta disponibilidad, copias y restauración a un punto en el tiempo."
+platforms:
+  onprem:
+    summary: "Kubernetes con HAProxy y Coraza WAF en la entrada, Keycloak como IdP, PostgreSQL con Patroni, Valkey y OpenBao, todo operado por tu equipo."
+    notes:
+      - "Patroni necesita un almacén de consenso (etcd) y un punto de entrada que siga siempre al primario; sin eso, cada failover deja a la API escribiendo contra una réplica."
+      - "Coraza (vía SPOA en HAProxy) con el OWASP Core Rule Set da falsos positivos al principio: arranca en modo detección y ajusta exclusiones antes de bloquear. Coraza es el sucesor mantenido de ModSecurity."
+      - "Vault pasó a licencia BSL; OpenBao es el fork open source con API compatible, por eso va primero."
+      - "Keycloak y Valkey también son estado: necesitan réplicas, copias y actualizaciones como la base de datos."
+      - "No hay factura por uso: el coste es operación (parches, guardias, copias probadas) y capacidad reservada para el pico."
+  aws:
+    summary: "CloudFront con S3 para el frontend, ALB con AWS WAF delante de ECS Fargate, Cognito para identidad, Aurora PostgreSQL, ElastiCache y Secrets Manager."
+    notes:
+      - "CloudFront puede servir S3 y además enrutar `/api/*` al ALB: un único dominio elimina CORS y permite aplicar el WAF también en el borde."
+      - "Usa Origin Access Control para que el bucket no sea público y solo CloudFront pueda leerlo."
+      - "Inyecta los secretos en la definición de tarea de ECS desde Secrets Manager y activa la rotación de las credenciales de Aurora."
+      - "ElastiCache admite Valkey además de Redis OSS; para sesiones, réplicas en varias zonas o la sesión se pierde con el nodo."
+      - "Fargate cobra por vCPU y memoria asignadas; Aurora por instancia (o capacidad en Serverless v2), almacenamiento y E/S. NAT Gateway y tráfico entre zonas suelen ser la sorpresa de la factura."
+  azure:
+    summary: "Front Door con Storage para estáticos, Application Gateway con WAF delante de Container Apps, Entra External ID, Azure Database for PostgreSQL, Azure Managed Redis y Key Vault."
+    notes:
+      - "Front Door también tiene WAF: si todo entra por él, valora prescindir de Application Gateway; si usas los dos, decide en cuál viven las reglas para no mantenerlas duplicadas."
+      - "Entra External ID sustituye a Azure AD B2C para clientes nuevos; no empieces un proyecto en B2C."
+      - "Azure Managed Redis es el sucesor de Azure Cache for Redis, que está en retirada."
+      - "Con identidades administradas, Container Apps lee Key Vault y entra en PostgreSQL con autenticación de Entra, sin contraseñas que rotar."
+      - "Application Gateway tiene coste fijo por hora más unidades de capacidad; Container Apps escala a cero en consumo, pero una API con tráfico constante paga sus réplicas igual."
+  gcp:
+    summary: "Un balanceador de aplicaciones externo con Cloud Armor sirve el bucket a través de Cloud CDN y enruta `/api` a Cloud Run; Identity Platform, Cloud SQL, Memorystore y Secret Manager completan el diseño."
+    notes:
+      - "El mismo balanceador sirve un backend bucket con Cloud CDN y un NEG serverless hacia Cloud Run: un dominio y una sola política de Cloud Armor."
+      - "Restringe la entrada de Cloud Run a tráfico interno y del balanceador; si no, la URL `run.app` permite saltarse Cloud Armor."
+      - "Memorystore solo es accesible por red privada: Cloud Run llega con salida VPC directa o con un conector."
+      - "Con muchas instancias de Cloud Run, las conexiones a Cloud SQL se disparan: limita el pool por instancia o pon PgBouncer delante."
+      - "Identity Platform se paga por usuario activo mensual; Cloud Run, por CPU y memoria mientras atiende peticiones salvo que asignes CPU siempre."
+---
+
+## Cuándo lo necesitas
+
+Es el punto de partida de casi cualquier producto con usuarios: un panel de gestión, un SaaS B2B, la web de un servicio público. Hay una interfaz que se descarga una vez, una API que concentra la lógica de negocio y una base de datos relacional que es la fuente de verdad. Si tu carga es sobre todo CRUD con transacciones y unos miles de usuarios concurrentes, este diseño aguanta mucho más de lo que se suele pensar antes de necesitar algo más sofisticado.
+
+## Cómo encaja
+
+El cliente hace dos tipos de petición. Los estáticos (HTML, JS, CSS, imágenes) van a la CDN, que los sirve desde caché y solo acude al almacenamiento cuando expiran. Las llamadas a `/api` van al balanceador, que termina TLS, aplica las reglas del WAF y reparte entre las réplicas de la API.
+
+La API no gestiona contraseñas: el usuario se autentica contra el proveedor de identidad mediante OIDC, y la API solo valida la firma y los claims del JWT con las claves públicas del emisor, que cachea. Para cada petición consulta primero la caché (sesiones, resultados caros, límites de uso) y después la base de datos relacional. Las credenciales de la base de datos y de terceros las obtiene del gestor de secretos al arrancar o mediante identidad de carga de trabajo, nunca de la imagen.
+
+## Decisiones clave
+
+- **Contenedores frente a funciones.** Una API con tráfico continuo y conexiones persistentes a la base de datos encaja mejor en contenedores; las funciones brillan con tráfico esporádico pero complican el pool de conexiones.
+- **Un dominio o dos.** Enrutar `/api` a través de la CDN evita CORS y unifica el WAF; separar dominios simplifica la caché pero obliga a gestionar orígenes cruzados.
+- **IdP gestionado o propio.** Un IdP gestionado ahorra operación; Keycloak da control total sobre flujos y datos a cambio de mantenerlo.
+- **Caché como optimización, no como dependencia.** Si la API no funciona con la caché caída, la caché se ha convertido en base de datos y necesita sus mismas garantías.
+
+## Errores habituales
+
+- Guardar la sesión en memoria de la réplica: el autoescalado y los despliegues la pierden.
+- Abrir la base de datos a Internet «solo para depurar». Va siempre en red privada.
+- Validar el JWT sin comprobar audiencia y expiración, o consultar al IdP en cada petición.
+- No probar nunca una restauración: las copias que no se han restaurado no cuentan.
+- Cachear en la CDN respuestas de la API con datos de usuario por una cabecera mal puesta.

@@ -1,0 +1,71 @@
+---
+import ArchShell from './ArchShell.astro';
+import ArchDiagram from './ArchDiagram.astro';
+import type { Lang } from '../i18n/translations';
+import { archIndexPath, archPath, archSlug, archStrings, getCases } from '../data/architecture';
+import { siteUrl } from '../data/projects';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const s = archStrings[lang];
+const cases = await getCases(lang);
+const pageUrl = `${siteUrl}${archIndexPath(lang)}`;
+const graph = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${pageUrl}#page`,
+    url: pageUrl,
+    name: s.indexTitle,
+    description: s.indexDescription,
+    inLanguage: lang,
+    isPartOf: { '@id': `${siteUrl}/#website` },
+    author: { '@id': `${siteUrl}/#person` },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: cases.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.data.title, url: `${siteUrl}${archPath(lang, archSlug(c))}` })),
+    },
+  },
+];
+---
+
+<ArchShell lang={lang} title={s.indexTitle} description={s.indexDescription} jsonLd={graph}>
+  <header class="ai-head">
+    <h1 class="ai-title">{s.section}</h1>
+    <p class="ai-lead">{s.indexLead}</p>
+    <p class="ai-how">{s.howTo}</p>
+  </header>
+  <ul class="ai-list">
+    {cases.map((c, i) => (
+      <li>
+        <a class="ai-card card" href={archPath(lang, archSlug(c))}>
+          <span class="ai-thumb" data-platform="onprem" aria-hidden="true"><ArchDiagram slug={archSlug(c)} lang={lang} label={c.data.title} /></span>
+          <span class="mono ai-n">{String(i + 1).padStart(2, '0')}</span>
+          <span class="ai-name">{c.data.title}</span>
+          <span class="ai-sum">{c.data.summary}</span>
+          <span class="mono ai-go">{s.open} →</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</ArchShell>
+
+<style>
+  .ai-head { margin-bottom: 2.5rem; }
+  .ai-title { font-family: var(--display); font-weight: 700; font-size: clamp(2.8rem, 8vw, 5.5rem); line-height: 0.95; letter-spacing: -0.035em; }
+  .ai-lead { color: var(--text-2); font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 60ch; margin-top: 1.2rem; line-height: 1.55; }
+  .ai-how { color: var(--muted); max-width: 60ch; margin-top: 0.8rem; }
+  .ai-list { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .ai-list li { display: flex; }
+  .ai-card { display: flex; flex-direction: column; gap: 0.5rem; padding: 1.2rem 1.3rem 1.3rem; width: 100%; }
+  .ai-card:hover { transform: translateY(-4px); }
+  .ai-thumb { display: block; pointer-events: none; margin-bottom: 0.6rem; }
+  .ai-thumb :global(.dg) { min-width: 0; }
+  .ai-thumb :global(.dg-elabel) { display: none; }
+  .ai-thumb :global(.svc-onprem) { display: inline; }
+  .ai-n { font-size: 0.72rem; color: var(--accent); }
+  .ai-name { font-family: var(--display); font-weight: 700; font-size: 1.4rem; letter-spacing: -0.02em; color: var(--text); line-height: 1.15; }
+  .ai-sum { color: var(--text-2); font-size: 0.93rem; line-height: 1.5; }
+  .ai-go { margin-top: auto; padding-top: 0.5rem; font-size: 0.78rem; color: var(--accent-2); }
+  .ai-card:hover .ai-go { color: var(--accent); }
+  @media (max-width: 760px) { .ai-list { grid-template-columns: minmax(0, 1fr); } }
+</style>

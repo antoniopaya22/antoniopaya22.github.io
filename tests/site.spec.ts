@@ -110,3 +110,53 @@ test('security.txt is published', async ({ request }) => {
   expect(res.status()).toBe(200);
   expect(await res.text()).toContain('Contact: mailto:');
 });
+
+test.describe('project pages', () => {
+  test('index lists every project and each page links back home and to its translation', async ({ page }) => {
+    const errors = trackErrors(page);
+    await page.goto('/proyectos/');
+    const cards = page.locator('.pi-card');
+    expect(await cards.count()).toBeGreaterThanOrEqual(6);
+    await page.goto('/proyectos/apollon/');
+    await expect(page.locator('h1')).toHaveText('Apollon');
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', 'https://antoniopaya22.github.io/en/projects/apollon/');
+    expect(await page.locator('script[type="application/ld+json"]').textContent()).toContain('SoftwareSourceCode');
+    await expect(page.locator('a.nav-link').first()).toHaveAttribute('href', /^\/#/);
+    await page.goto('/en/projects/apollon/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    expect(errors).toEqual([]);
+  });
+
+  test('home project cards open their page', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('#proyectos .r-page').first().click();
+    await expect(page).toHaveURL(/\/proyectos\/[a-z0-9-]+\/$/);
+  });
+});
+
+test.describe('architecture', () => {
+  test('platform tabs switch the diagram, notes and table', async ({ page }) => {
+    const errors = trackErrors(page);
+    await page.goto('/arquitectura/web-app/');
+    const svc = (p: string) => page.locator(`.dg .svc-${p}`).first();
+    await expect(svc('onprem')).toBeVisible();
+    await expect(svc('aws')).toBeHidden();
+    await page.getByRole('tab', { name: 'AWS' }).click();
+    await expect(svc('aws')).toBeVisible();
+    await expect(svc('onprem')).toBeHidden();
+    await expect(page.locator('#pf-aws')).toBeVisible();
+    await expect(page.locator('#pf-onprem')).toBeHidden();
+    await expect(page).toHaveURL(/\?p=aws$/);
+    await page.goto('/arquitectura/background-jobs/?p=gcp');
+    await expect(page.getByRole('tab', { name: 'Google Cloud' })).toHaveAttribute('aria-selected', 'true');
+    expect(errors).toEqual([]);
+  });
+
+  test('has no serious accessibility violations', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/arquitectura/web-app/');
+    const results = await new AxeBuilder({ page }).disableRules(['color-contrast']).analyze();
+    const serious = results.violations.filter((v) => ['serious', 'critical'].includes(v.impact ?? ''));
+    expect(serious.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([]);
+  });
+});

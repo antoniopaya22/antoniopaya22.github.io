@@ -13,15 +13,21 @@ interface Props {
   ogImage?: string;
   /** keep utility pages (404) out of the index */
   noindex?: boolean;
+  /** absolute URL of this page in the other language (adds hreflang on inner pages) */
+  alternate?: string;
+  /** JSON-LD graph nodes for inner pages; the Person node is always appended */
+  jsonLd?: Record<string, unknown>[];
 }
 
-const { title, description = 'Antonio Payá González — Software Architect, Professor at UNIR and PhD in Computer Science specializing in cybersecurity, Zero Trust, cloud architecture and AI.', lang = 'es', ogImage = '/images/og-card.png', noindex = false } = Astro.props;
+const { title, description = 'Antonio Payá González — Software Architect, Professor at UNIR and PhD in Computer Science specializing in cybersecurity, Zero Trust, cloud architecture and AI.', lang = 'es', ogImage = '/images/og-card.png', noindex = false, alternate, jsonLd: pageGraph } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const siteUrl = 'https://antoniopaya22.github.io';
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const altLang = lang === 'es' ? 'en' : 'es';
-const altUrl = lang === 'es' ? `${siteUrl}/en/` : `${siteUrl}/`;
 const isHome = canonicalUrl === `${siteUrl}/` || canonicalUrl === `${siteUrl}/en/`;
+const altUrl = alternate ?? (lang === 'es' ? `${siteUrl}/en/` : `${siteUrl}/`);
+const hasAlternate = isHome || alternate !== undefined;
+const defaultUrl = lang === 'es' ? canonicalUrl : altUrl;
 const ogAlt = lang === 'es'
   ? 'Antonio Payá González — Arquitecto de Software, Profesor en UNIR y PhD'
   : 'Antonio Payá González — Software Architect, Professor at UNIR & PhD';
@@ -167,19 +173,23 @@ const jsonLd = {
 
     <!-- Canonical & Hreflang -->
     {!noindex && <link rel="canonical" href={canonicalUrl} />}
-    {isHome && (
+    {hasAlternate && (
       <>
         <link rel="alternate" hreflang={lang} href={canonicalUrl} />
         <link rel="alternate" hreflang={altLang} href={altUrl} />
-        <link rel="alternate" hreflang="x-default" href={`${siteUrl}/`} />
+        <link rel="alternate" hreflang="x-default" href={defaultUrl} />
       </>
     )}
 
     <!-- Open Graph -->
-    <meta property="og:type" content="profile" />
-    <meta property="profile:first_name" content="Antonio" />
-    <meta property="profile:last_name" content="Payá González" />
-    <meta property="profile:username" content="antoniopaya22" />
+    <meta property="og:type" content={isHome ? 'profile' : 'website'} />
+    {isHome && (
+      <>
+        <meta property="profile:first_name" content="Antonio" />
+        <meta property="profile:last_name" content="Payá González" />
+        <meta property="profile:username" content="antoniopaya22" />
+      </>
+    )}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
@@ -201,6 +211,7 @@ const jsonLd = {
 
     <!-- JSON-LD Structured Data -->
     {isHome && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    {pageGraph && <script type="application/ld+json" set:html={JSON.stringify({ "@context": "https://schema.org", "@graph": [...pageGraph, person] })} />}
 
     <link rel="preload" as="font" type="font/woff2" href={displayFont} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={sansFont} crossorigin />
@@ -278,6 +289,12 @@ const jsonLd = {
   }
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* Shiki code blocks (dual theme, no default colour) */
+  .astro-code { background-color: var(--shiki-dark-bg); }
+  .astro-code, .astro-code span { color: var(--shiki-dark); }
+  :root[data-theme="light"] .astro-code { background-color: var(--shiki-light-bg); }
+  :root[data-theme="light"] .astro-code, :root[data-theme="light"] .astro-code span { color: var(--shiki-light); }
 
   html {
     scroll-behavior: smooth;

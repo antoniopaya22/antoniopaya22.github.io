@@ -1,0 +1,56 @@
+---
+import { diagrams, platforms, route, NODE_H, NODE_W, W } from '../data/architecture';
+import type { Lang } from '../i18n/translations';
+
+interface Props { slug: string; lang: Lang; label: string; }
+const { slug, lang, label } = Astro.props;
+const dg = diagrams[slug];
+const byId = Object.fromEntries(dg.nodes.map((n) => [n.id, n]));
+const edges = dg.edges.map((e) => ({ ...e, path: route(byId[e.from], byId[e.to]) }));
+const mid = `arrow-${slug}`;
+---
+
+<div class="dg-scroll">
+  <svg class="dg" viewBox={`0 0 ${W} ${dg.height}`} role="img" aria-label={label}>
+    <defs>
+      <marker id={mid} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" class="dg-arrow" />
+      </marker>
+    </defs>
+    {edges.map((e) => (
+      <path d={e.path.d} class:list={['dg-line', { dashed: e.dashed }]} marker-end={`url(#${mid})`} />
+    ))}
+    {dg.nodes.map((n) => (
+      <g class={`dg-node k-${n.kind}`} transform={`translate(${n.x} ${n.y})`}>
+        <rect width={NODE_W} height={NODE_H} rx="10" />
+        <rect width="4" height={NODE_H - 20} x="0" y="10" rx="2" class="dg-bar" />
+        <text x="16" y="24" class="dg-role">{n.role[lang]}</text>
+        {platforms.map((p) => <text x="16" y="48" class={`dg-svc svc-${p}`}>{n.svc[p]}</text>)}
+      </g>
+    ))}
+    {edges.filter((e) => e.label).map((e) => (
+      <text x={e.path.lx} y={e.path.ly} text-anchor={e.path.anchor} class="dg-elabel">{e.label![lang]}</text>
+    ))}
+  </svg>
+</div>
+
+<style>
+  .dg-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: var(--r); background:
+    radial-gradient(circle at 1px 1px, var(--grid) 1px, transparent 0) 0 0 / 22px 22px, var(--bg-2); }
+  .dg { display: block; width: 100%; min-width: 720px; height: auto; padding: 0.5rem; }
+  .dg-line { fill: none; stroke: var(--line-strong); stroke-width: 1.6; }
+  .dg-line.dashed { stroke-dasharray: 5 5; }
+  .dg-arrow { fill: var(--muted); }
+  .dg-elabel { font-family: var(--mono); font-size: 12px; fill: var(--muted); paint-order: stroke; stroke: var(--bg-2); stroke-width: 5px; stroke-linejoin: round; }
+  .dg-node rect:first-child { fill: var(--surface); stroke: color-mix(in srgb, var(--kc) 55%, var(--line)); stroke-width: 1.3; }
+  .dg-bar { fill: var(--kc); }
+  .dg-role { font-family: var(--mono); font-size: 11.5px; fill: var(--muted); }
+  .dg-svc { font-family: var(--sans); font-size: 15px; font-weight: 600; fill: var(--text); display: none; }
+  .k-client { --kc: var(--muted); }
+  .k-edge { --kc: var(--text-2); }
+  .k-compute { --kc: var(--accent); }
+  .k-data { --kc: var(--syn-num); }
+  .k-queue { --kc: var(--syn-key); }
+  .k-ai { --kc: var(--syn-prop); }
+  .k-security { --kc: var(--accent-2); }
+</style>

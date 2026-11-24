@@ -75,10 +75,10 @@ export const publications = [
 
 /** Featured repositories (pinned on GitHub); live stats are fetched at build time (see github.ts). */
 export const featuredRepos = [
-  { repo: 'antoniopaya22/go-rest-template', key: 'go-rest-template', tags: ['Go', 'chi', 'OpenAPI'], fallback: { stars: 174, forks: 36, language: 'Go' } },
-  { repo: 'antoniopaya22/proteus', key: 'proteus', homepage: 'https://antoniopaya22.github.io/proteus/', tags: ['Certified IDS', 'Adversarial ML', 'NetFlow'], fallback: { stars: 0, forks: 0, language: 'Python' } },
-  { repo: 'antoniopaya22/apollon', key: 'apollon', homepage: 'https://antoniopaya22.github.io/apollon/', paper: 'https://doi.org/10.1016/j.cose.2023.103546', tags: ['Adversarial ML', 'IDS'], fallback: { stars: 6, forks: 2, language: 'Jupyter Notebook' } },
-  { repo: 'antoniopaya22/Secure-SDP', key: 'Secure-SDP', homepage: 'https://antoniopaya22.github.io/Secure-SDP/', paper: 'https://doi.org/10.1007/s10207-024-00863-7', tags: ['SDP', 'Zero Trust', 'SPA'], fallback: { stars: 0, forks: 0, language: 'Go' } },
-  { repo: 'antoniopaya22/Software-Defined-Perimeter', key: 'Software-Defined-Perimeter', homepage: 'https://antoniopaya22.github.io/Software-Defined-Perimeter/', paper: 'https://doi.org/10.1007/s10207-024-00863-7', tags: ['SDP', 'fwknop', 'Docker'], fallback: { stars: 21, forks: 3, language: 'Go Template' } },
-  { repo: 'Egida-Kassandra/egida', key: 'egida', homepage: 'https://egida-kassandra.github.io/egida/', paper: 'https://doi.org/10.1016/j.cose.2022.102638', tags: ['Hardening', 'DSL', 'Ansible'], fallback: { stars: 10, forks: 1, language: 'Java' } },
+  { repo: 'antoniopaya22/go-rest-template', key: 'go-rest-template', slug: 'go-rest-template', homepage: 'https://antoniopaya22.github.io/go-rest-template/', tags: ['Go', 'chi', 'OpenAPI'], fallback: { stars: 174, forks: 36, language: 'Go' } },
+  { repo: 'antoniopaya22/proteus', key: 'proteus', slug: 'proteus', homepage: 'https://antoniopaya22.github.io/proteus/', tags: ['Certified IDS', 'Adversarial ML', 'NetFlow'], fallback: { stars: 0, forks: 0, language: 'Python' } },
+  { repo: 'antoniopaya22/apollon', key: 'apollon', slug: 'apollon', homepage: 'https://antoniopaya22.github.io/apollon/', paper: 'https://doi.org/10.1016/j.cose.2023.103546', tags: ['Adversarial ML', 'IDS'], fallback: { stars: 6, forks: 2, language: 'Jupyter Notebook' } },
+  { repo: 'antoniopaya22/Secure-SDP', key: 'Secure-SDP', slug: 'secure-sdp', homepage: 'https://antoniopaya22.github.io/Secure-SDP/', paper: 'https://doi.org/10.1007/s10207-024-00863-7', tags: ['SDP', 'Zero Trust', 'SPA'], fallback: { stars: 0, forks: 0, language: 'Go' } },
+  { repo: 'antoniopaya22/Software-Defined-Perimeter', key: 'Software-Defined-Perimeter', slug: 'sdp-lab', homepage: 'https://antoniopaya22.github.io/Software-Defined-Perimeter/', paper: 'https://doi.org/10.1007/s10207-024-00863-7', tags: ['SDP', 'fwknop', 'Docker'], fallback: { stars: 21, forks: 3, language: 'Go Template' } },
+  { repo: 'Egida-Kassandra/egida', key: 'egida', slug: 'egida', homepage: 'https://egida-kassandra.github.io/egida/', paper: 'https://doi.org/10.1016/j.cose.2022.102638', tags: ['Hardening', 'DSL', 'Ansible'], fallback: { stars: 10, forks: 1, language: 'Java' } },
 ] as const;

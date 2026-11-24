@@ -1,0 +1,14 @@
+---
+import ArchCase from '../../../components/ArchCase.astro';
+import { archSlug, getCases, type ArchCase as Case } from '../../../data/architecture';
+
+export async function getStaticPaths() {
+  const cases = await getCases('en');
+  return cases.map((item) => ({ params: { slug: archSlug(item) }, props: { item } }));
+}
+
+interface Props { item: Case; }
+const { item } = Astro.props;
+---
+
+<ArchCase lang="en" item={item} />
