@@ -12,16 +12,16 @@
     "check": "astro check"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.5",
+    "@astrojs/sitemap": "^3.7.6",
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",
     "@fontsource-variable/geist": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
-    "astro": "^7.4.12",
+    "astro": "^7.4.13",
     "gsap": "^3.15.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
-    "@axe-core/playwright": "^4.14.0",
+    "@axe-core/playwright": "^4.14.1",
     "@playwright/test": "^1.65.1",
     "typescript": "^6.0.3"
   }
